@@ -27,6 +27,11 @@
   a{color:#F1F2EE;text-decoration:none}a:hover{color:#4E76E8}
   ::selection{background:#1E3FA8;color:#F1F2EE}
   input{font-family:Archivo,Helvetica,sans-serif}
+  html{overscroll-behavior-y:contain}
+  a,button,label,input{-webkit-tap-highlight-color:rgba(78,118,232,.24)}
+  a:active,button:active,label:active{opacity:.62}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #4E76E8;outline-offset:2px}
+  @media (hover:none){a:hover{color:inherit}}
   input::placeholder{color:#7C858C}
   #candidatura input::placeholder{color:#7A8078}
   @keyframes riccFlash{0%{opacity:1}50%{opacity:.25}100%{opacity:1}}
@@ -71,9 +76,9 @@
     </div>
   </div>
 
-  <div data-nav style="position:fixed;top:0;left:0;right:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,4vw,40px)">
+  <div data-nav style="position:fixed;top:0;left:0;right:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,4vw,40px);pointer-events:none">
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,15,.86) 0%,rgba(11,13,15,.55) 55%,transparent 100%);pointer-events:none"></div>
-    <div style="position:relative;display:flex;align-items:center;gap:11px">
+    <div style="position:relative;display:flex;align-items:center;gap:11px;pointer-events:auto">
       <div style="width:38px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:none">
         <div style="display:flex;align-items:flex-end;gap:3px;height:29px"><div style="width:12px;height:23px;background:#F1F2EE;clip-path:polygon(100% 0,100% 100%,0 100%)"></div><div style="width:15px;height:29px;background:#F1F2EE;clip-path:polygon(0 0,100% 100%,0 100%)"></div></div>
         <div style="width:29px;height:3px;background:#F1F2EE;clip-path:polygon(0 0,100% 0,86% 100%,14% 100%)"></div>
@@ -84,18 +89,18 @@
         <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:500;text-transform:uppercase;color:#F1F2EE"><span>P</span><span>A</span><span>R</span><span>T</span><span>N</span><span>E</span><span>R</span><span>S</span></div>
       </div>
     </div>
-    <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE">CANDIDATURA</a>
+    <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
   <section data-fold="1" style="position:relative;height:660vh;background:#0B0D0F">
-    <div data-pin="1" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#0B0D0F">
+    <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
         <div data-shotimg style="position:absolute;left:-3%;right:-3%;top:-5%;bottom:-5%;will-change:transform"><video poster="./img/hero-poster.jpg" muted="muted" autoplay="autoplay" loop="loop" playsinline="playsinline" preload="metadata" style="display:block;width:100%;height:100%;object-fit:cover"><source src="./img/hero-video-mobile.mp4" type="video/mp4" media="(max-width:760px)"><source src="./img/hero-video.mp4" type="video/mp4"></video></div>
         <div data-veil style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,15,.5) 0%,rgba(11,13,15,.04) 30%,rgba(11,13,15,.62) 66%,rgba(11,13,15,.9) 100%)"></div>
       </div>
 
-      <svg data-sail viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+      <svg data-sail viewBox="0 0 1216 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <g data-s="1" opacity="0">
           <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".1">
             <path d="M180 195h880M180 250h880M180 305h880M180 415h880M180 470h880M180 525h880"></path>
@@ -160,7 +165,7 @@
             <path d="M1094 168l-6 11M1094 168l6 11M1094 448l-6-11M1094 448l6-11"></path>
           </g>
           <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".7">
-            <text x="1112" y="300">DELTA</text><text x="1112" y="322">DE RECEITA</text>
+            <text x="1094" y="486" text-anchor="middle">DELTA</text><text x="1094" y="508" text-anchor="middle">DE RECEITA</text>
           </g>
           <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".9">
             <path d="M180 664h286"></path><path d="M180 664l12-8M180 664l12 8"></path>
@@ -205,7 +210,7 @@
       
       </div>
 
-      <div data-st="a" style="position:absolute;left:0;right:0;bottom:0;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) clamp(40px,7vh,86px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px;align-items:flex-start">
+      <div data-st="a" style="position:absolute;left:0;right:0;bottom:0;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) calc(clamp(40px,7vh,86px) + env(safe-area-inset-bottom,0px));box-sizing:border-box;display:flex;flex-direction:column;gap:29px;align-items:flex-start">
         <h1 style="margin:0;font-size:clamp(34px,6.6vw,72px);line-height:.9;letter-spacing:-0.03em;font-weight:400;max-width:none;text-wrap:nowrap;text-shadow:0 4px 34px rgba(6,8,10,.6);display:flex;flex-direction:column">
           <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-h1line style="display:block">Partner não é agência.</span></span>
           <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-h1line style="display:block">Entenda a diferença.</span></span>
@@ -224,7 +229,7 @@
     </div>
   </section>
 
-  <section data-fold="2" style="position:relative;z-index:2;margin-top:-100vh;background:#0E1114;color:#F1F2EE">
+  <section data-fold="2" style="position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;background:#0E1114;color:#F1F2EE">
     <div style="margin:0 1.6rem">
       <div data-decode data-reveal style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B;padding-top:14.5rem">02 — O modelo</div>
       <h2 data-reveal style="margin:0;font-size:clamp(30px,7.4vw,6.4rem);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:67rem;padding:2.4rem 0 7.5rem;text-wrap:pretty">Custo zero na entrada. Participação no lucro do braço novo.</h2>
@@ -274,7 +279,7 @@
   </section>
 
   <section data-fold="3" style="position:relative;z-index:3;height:520vh;background:#0E1114;color:#F1F2EE">
-    <div data-pin="3" style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
       <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
       <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
         <span data-decode>03 — O QUE ENTRA NA OPERAÇÃO</span>
@@ -406,7 +411,7 @@
     </div>
   </section>
 
-  <section data-fold="4" style="position:relative;z-index:4;min-height:100vh;background:#1E3FA8;color:#F1F2EE;display:flex;align-items:center;overflow:hidden">
+  <section data-fold="4" style="position:relative;z-index:4;min-height:100vh;min-height:100dvh;background:#1E3FA8;color:#F1F2EE;display:flex;align-items:center;overflow:hidden">
     <div data-img data-parallax="-64" style="position:absolute;left:0;right:0;top:-8%;height:116%;opacity:.3;mix-blend-mode:soft-light"><image-slot id="v2-agua" shape="rect" fit="cover" src="./img/agua-textura.jpg" placeholder="Água"></image-slot></div>
     <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(241,242,238,.18) 1px,transparent 1px);background-size:22px 22px"></div>
     <div style="position:relative;max-width:1200px;width:100%;margin:0 auto;padding:clamp(90px,14vh,150px) clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
@@ -429,28 +434,28 @@
         <h2 style="margin:0;font-size:clamp(30px,5.4vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400">Uma vaga. Aberta até fechar.</h2>
         <p style="margin:0;font-size:18px;line-height:1.62;letter-spacing:-0.03em;color:#5C6560;max-width:44ch">A triagem é curta e a checagem vem antes da reunião. Se não servir, você recebe um não com o motivo.</p>
       </div>
-      <div data-reveal style="display:flex;flex-direction:column;gap:21px">
+      <form data-reveal id="v2-form" novalidate style="display:flex;flex-direction:column;gap:21px;margin:0">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px">
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-setor" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">SETOR</label><input id="v2-setor" type="text" placeholder="Advocacia, saúde, engenharia…" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-fat" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">FATURAMENTO ANUAL</label><input id="v2-fat" type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-verba" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">VERBA DE MÍDIA / MÊS</label><input id="v2-verba" type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-tel" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">TELEFONE DIRETO DO DONO</label><input id="v2-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+55" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-setor" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">SETOR</label><input id="v2-setor" name="setor" autocapitalize="sentences" enterkeyhint="next" required type="text" placeholder="Advocacia, saúde, engenharia…" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-fat" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">FATURAMENTO ANUAL</label><input id="v2-fat" name="faturamento" enterkeyhint="next" required type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-verba" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">VERBA DE MÍDIA / MÊS</label><input id="v2-verba" name="verba" enterkeyhint="next" type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-tel" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">TELEFONE DIRETO DO DONO</label><input id="v2-tel" name="telefone" enterkeyhint="next" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+55" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-conc" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">QUAL CONCORRENTE FATURA MAIS QUE VOCÊ</label><input id="v2-conc" type="text" placeholder="Nome ou descrição" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+        <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-conc" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">QUAL CONCORRENTE FATURA MAIS QUE VOCÊ</label><input id="v2-conc" name="concorrente" autocapitalize="sentences" enterkeyhint="done" type="text" placeholder="Nome ou descrição" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
         <div style="display:flex;flex-direction:column;gap:9px">
           <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">A DECISÃO É SUA, SOZINHO?</span>
           <div style="display:flex;flex-wrap:wrap;gap:9px">
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">SIM</label>
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">TENHO SÓCIO</label>
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">COMITÊ</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="sim" style="accent-color:#1E3FA8">SIM</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="socio" style="accent-color:#1E3FA8">TENHO SÓCIO</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="comite" style="accent-color:#1E3FA8">COMITÊ</label>
           </div>
         </div>
-        <button type="button" style="align-self:flex-start;font-family:'Chivo Mono',monospace;font-size:14px;padding:14px 18px;border:none;background:#13140E;color:#F4F3E8;text-transform:uppercase;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)">Submeter empresa</button>
-      </div>
+        <button type="submit" style="align-self:flex-start;font-family:'Chivo Mono',monospace;font-size:14px;padding:14px 18px;border:none;background:#13140E;color:#F4F3E8;text-transform:uppercase;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)">Submeter empresa</button>
+      </form>
     </div>
 
     <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) clamp(29px,4vw,59px);box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:29px;font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">
-      <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">CONTATO</div><div style="margin-top:9px">contato@riccpartners.com</div></div>
+      <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">CONTATO</div><div style="margin-top:9px"><a href="mailto:contato@riccpartners.com" style="color:inherit;text-decoration:none;padding:14px 0;margin:-14px 0;display:inline-block">contato@riccpartners.com</a></div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">ESTRUTURA</div><div style="margin-top:9px">Contrato de produtividade</div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">SIGILO</div><div style="margin-top:9px">NDA antes de qualquer número</div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">2026</div><div style="margin-top:9px">Uma operação por vez</div></div>
@@ -676,7 +681,7 @@ class Component extends DCLogic {
     let mx = window.innerWidth * 0.34, my = window.innerHeight * 0.6, mAt = 0;
     window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
     const win = (p, a, b, f) => clamp01(Math.min((p - a) / f, (b - p) / f));
-    const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
+    const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.pointerEvents = v < 0.08 ? 'none' : 'auto'; el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
     // ---- adaptação mobile: mesma composição, medidas de retrato ----
     const RESP = [];
     const ATT = ['viewBox', 'preserveAspectRatio', 'font-size', 'letter-spacing', 'y'];
@@ -698,6 +703,8 @@ class Component extends DCLogic {
       e.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     });
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
+    // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
+    resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
     resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '460vh'; });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '440vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
@@ -733,7 +740,7 @@ class Component extends DCLogic {
     q('[data-st] h1').forEach(el => resp(el, e => { e.style.fontSize = '21px'; e.style.lineHeight = '1.18'; e.style.maxWidth = '100%'; }));
     q('[data-st] p').forEach(el => resp(el, e => { e.style.fontSize = '19px'; e.style.lineHeight = '1.32'; e.style.maxWidth = '100%'; }));
     q('[data-st] [data-decode]').forEach(el => resp(el, e => { e.style.fontSize = '11px'; e.style.letterSpacing = '.16em'; }));
-    q('[data-st] a').forEach(el => resp(el, e => { e.style.fontSize = '14px'; e.style.padding = '11px 16px'; }));
+    q('[data-st] a').forEach(el => resp(el, e => { e.style.fontSize = '14px'; e.style.padding = '14px 18px'; }));
     q('[data-st="a"], [data-st="b"]').forEach(el => resp(el, e => { e.style.paddingLeft = '16px'; e.style.paddingRight = '16px'; }));
     // dobra 02 no celular: empilha, foto acima do texto
     resp(document.querySelector('[data-st="b"]'), e => { e.style.top = 'auto'; e.style.bottom = 'clamp(28px,7vh,72px)'; e.style.transform = 'none'; });
@@ -1024,6 +1031,29 @@ class Component extends DCLogic {
     this._off = () => { alive = false; clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
 
     this._applyProps();
+
+    // --- candidatura: nao havia <form>, nem name, nem handler; o botao nao fazia nada ---
+    const form = document.getElementById('v2-form');
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = '1';
+      const btn = form.querySelector('button[type="submit"]');
+      form.addEventListener('submit', ev => {
+        ev.preventDefault();
+        const falta = [...form.querySelectorAll('[required]')].find(c => !c.value.trim());
+        if (falta) { falta.focus(); falta.style.borderBottomColor = '#B4402E'; return; }
+        const d = new FormData(form);
+        const rot = { setor: 'Setor', faturamento: 'Faturamento anual', verba: 'Verba de midia/mes',
+                      telefone: 'Telefone do dono', concorrente: 'Concorrente que fatura mais',
+                      v2decisor: 'Decisao sozinho' };
+        const corpo = Object.keys(rot).map(k => rot[k] + ': ' + (d.get(k) || '—')).join('\n');
+        if (btn) { btn.textContent = 'ABRINDO E-MAIL…'; btn.disabled = true; }
+        window.location.href = 'mailto:contato@riccpartners.com'
+          + '?subject=' + encodeURIComponent('Candidatura — ' + (d.get('setor') || 'empresa'))
+          + '&body=' + encodeURIComponent(corpo);
+        setTimeout(() => { if (btn) { btn.textContent = 'SUBMETER EMPRESA'; btn.disabled = false; } }, 2500);
+      });
+      form.addEventListener('input', ev => { ev.target.style.borderBottomColor = ''; });
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', ev => {
