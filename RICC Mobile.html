@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>RICC — Mobile</title>
+<style>
+  html,body{margin:0;height:100%;background:#0B0D0F;font-family:'Chivo Mono',ui-monospace,monospace}
+  .wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 12px 40px;box-sizing:border-box}
+  .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#84837B}
+  .phone{width:390px;height:844px;border-radius:44px;padding:10px;background:#1C1F22;box-shadow:0 0 0 2px #33393E;box-sizing:content-box}
+  .screen{width:390px;height:844px;border-radius:36px;overflow:hidden;background:#0B0D0F;position:relative}
+  iframe{width:390px;height:844px;border:0;display:block}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:112px;height:30px;border-radius:16px;background:#0B0D0F;z-index:2;pointer-events:none}
+  .home{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:132px;height:4px;border-radius:3px;background:rgba(244,243,232,.55);z-index:2;pointer-events:none}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="lbl">RICC Partners · iPhone 390 × 844</div>
+    <div class="phone">
+      <div class="screen">
+        <div class="notch"></div>
+        <iframe src="./RICC Site v2.dc.html" title="RICC Site v2"></iframe>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
