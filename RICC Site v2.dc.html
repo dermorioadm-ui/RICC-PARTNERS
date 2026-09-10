@@ -27,6 +27,11 @@
   a{color:#F1F2EE;text-decoration:none}a:hover{color:#4E76E8}
   ::selection{background:#1E3FA8;color:#F1F2EE}
   input{font-family:Archivo,Helvetica,sans-serif}
+  html{overscroll-behavior-y:contain}
+  a,button,label,input{-webkit-tap-highlight-color:rgba(78,118,232,.24)}
+  a:active,button:active,label:active{opacity:.62}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #4E76E8;outline-offset:2px}
+  @media (hover:none){a:hover{color:inherit}}
   input::placeholder{color:#7C858C}
   #candidatura input::placeholder{color:#7A8078}
   @keyframes riccFlash{0%{opacity:1}50%{opacity:.25}100%{opacity:1}}
@@ -71,9 +76,9 @@
     </div>
   </div>
 
-  <div data-nav style="position:fixed;top:0;left:0;right:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,4vw,40px)">
+  <div data-nav style="position:fixed;top:0;left:0;right:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,4vw,40px);pointer-events:none">
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,15,.86) 0%,rgba(11,13,15,.55) 55%,transparent 100%);pointer-events:none"></div>
-    <div style="position:relative;display:flex;align-items:center;gap:11px">
+    <div style="position:relative;display:flex;align-items:center;gap:11px;pointer-events:auto">
       <div style="width:38px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:none">
         <div style="display:flex;align-items:flex-end;gap:3px;height:29px"><div style="width:12px;height:23px;background:#F1F2EE;clip-path:polygon(100% 0,100% 100%,0 100%)"></div><div style="width:15px;height:29px;background:#F1F2EE;clip-path:polygon(0 0,100% 100%,0 100%)"></div></div>
         <div style="width:29px;height:3px;background:#F1F2EE;clip-path:polygon(0 0,100% 0,86% 100%,14% 100%)"></div>
@@ -84,18 +89,18 @@
         <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:500;text-transform:uppercase;color:#F1F2EE"><span>P</span><span>A</span><span>R</span><span>T</span><span>N</span><span>E</span><span>R</span><span>S</span></div>
       </div>
     </div>
-    <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE">CANDIDATURA</a>
+    <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
   <section data-fold="1" style="position:relative;height:660vh;background:#0B0D0F">
-    <div data-pin="1" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#0B0D0F">
+    <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
-        <div data-shotimg style="position:absolute;left:-3%;right:-3%;top:-5%;bottom:-5%;will-change:transform"><video src="./img/hero-video.mp4" muted="muted" autoplay="autoplay" loop="loop" playsinline="playsinline" style="display:block;width:100%;height:100%;object-fit:cover"></video></div>
+        <div data-shotimg style="position:absolute;left:-3%;right:-3%;top:-5%;bottom:-5%;will-change:transform"><video poster="./img/hero-poster.jpg" muted="muted" autoplay="autoplay" loop="loop" playsinline="playsinline" preload="metadata" style="display:block;width:100%;height:100%;object-fit:cover"><source src="./img/hero-video-mobile.mp4" type="video/mp4" media="(max-width:760px)"><source src="./img/hero-video.mp4" type="video/mp4"></video></div>
         <div data-veil style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,15,.5) 0%,rgba(11,13,15,.04) 30%,rgba(11,13,15,.62) 66%,rgba(11,13,15,.9) 100%)"></div>
       </div>
 
-      <svg data-sail viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+      <svg data-sail viewBox="0 0 1216 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <g data-s="1" opacity="0">
           <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".1">
             <path d="M180 195h880M180 250h880M180 305h880M180 415h880M180 470h880M180 525h880"></path>
@@ -160,7 +165,7 @@
             <path d="M1094 168l-6 11M1094 168l6 11M1094 448l-6-11M1094 448l6-11"></path>
           </g>
           <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".7">
-            <text x="1112" y="300">DELTA</text><text x="1112" y="322">DE RECEITA</text>
+            <text x="1094" y="486" text-anchor="middle">DELTA</text><text x="1094" y="508" text-anchor="middle">DE RECEITA</text>
           </g>
           <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".9">
             <path d="M180 664h286"></path><path d="M180 664l12-8M180 664l12 8"></path>
@@ -205,7 +210,7 @@
       
       </div>
 
-      <div data-st="a" style="position:absolute;left:0;right:0;bottom:0;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) clamp(40px,7vh,86px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px;align-items:flex-start">
+      <div data-st="a" style="position:absolute;left:0;right:0;bottom:0;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) calc(clamp(40px,7vh,86px) + env(safe-area-inset-bottom,0px));box-sizing:border-box;display:flex;flex-direction:column;gap:29px;align-items:flex-start">
         <h1 style="margin:0;font-size:clamp(34px,6.6vw,72px);line-height:.9;letter-spacing:-0.03em;font-weight:400;max-width:none;text-wrap:nowrap;text-shadow:0 4px 34px rgba(6,8,10,.6);display:flex;flex-direction:column">
           <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-h1line style="display:block">Partner não é agência.</span></span>
           <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-h1line style="display:block">Entenda a diferença.</span></span>
@@ -224,10 +229,10 @@
     </div>
   </section>
 
-  <section data-fold="2" style="position:relative;z-index:2;margin-top:-100vh;background:#0E1114;color:#F1F2EE">
+  <section data-fold="2" style="position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;background:#0E1114;color:#F1F2EE">
     <div style="margin:0 1.6rem">
-      <div data-decode data-reveal style="font-family:'Chivo Mono',monospace;font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;color:#84837B;padding-top:14.5rem">02 — O modelo</div>
-      <h2 data-reveal style="margin:0;font-size:6.4rem;line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:67rem;padding:2.4rem 0 7.5rem;text-wrap:pretty">Custo zero na entrada. Participação no lucro do braço novo.</h2>
+      <div data-decode data-reveal style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B;padding-top:14.5rem">02 — O modelo</div>
+      <h2 data-reveal style="margin:0;font-size:clamp(30px,7.4vw,6.4rem);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:67rem;padding:2.4rem 0 7.5rem;text-wrap:pretty">Custo zero na entrada. Participação no lucro do braço novo.</h2>
 
       <div style="display:flex;flex-direction:column;gap:11.5rem">
       <div data-blk style="display:flex;flex-wrap:wrap;gap:3.2rem 0;align-items:stretch;">
@@ -264,7 +269,7 @@
           </div>
           <div style="font-size:3.2rem;line-height:1.1;letter-spacing:-0.03em;max-width:38rem;margin-bottom:2.4rem">R$ 0 na entrada.</div>
           <p style="margin:0 0 6rem;font-size:2rem;line-height:1.25;letter-spacing:-0.03em;max-width:38rem;color:#C8CDD2">Sem honorário, sem mensalidade e sem sociedade. A remuneração é de 33% a 50% do lucro do braço novo, por contrato de produtividade.</p>
-          <a href="#candidatura" style="align-self:flex-start;height:4.5rem;padding-inline:2rem;display:inline-flex;align-items:center;font-family:'Chivo Mono',monospace;font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;background:#F4F3E8;color:#13140E;clip-path:polygon(0 0,100% 0,100% calc(100% - 1.5rem),calc(100% - 1.5rem) 100%,0 100%)">Submeter empresa</a>
+          <a href="#candidatura" style="align-self:flex-start;padding:14px 18px;display:inline-flex;align-items:center;font-family:'Chivo Mono',monospace;font-size:14px;letter-spacing:.1em;text-transform:uppercase;background:#F4F3E8;color:#13140E;clip-path:polygon(0 0,100% 0,100% calc(100% - 1.5rem),calc(100% - 1.5rem) 100%,0 100%)">Submeter empresa</a>
         </div>
       </div>
       </div>
@@ -274,7 +279,7 @@
   </section>
 
   <section data-fold="3" style="position:relative;z-index:3;height:520vh;background:#0E1114;color:#F1F2EE">
-    <div data-pin="3" style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
       <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
       <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
         <span data-decode>03 — O QUE ENTRA NA OPERAÇÃO</span>
@@ -383,30 +388,30 @@
         <div data-asset-socio style="position:relative;width:100%;aspect-ratio:776/830;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 4rem),calc(100% - 4rem) 100%,0 100%)">
           <div data-img data-parallax="-140" style="position:absolute;left:0;right:0;top:-10%;height:120%"><image-slot id="v2-socio" shape="rect" fit="cover" src="./img/renato.jpg" placeholder="Paulo Renato Boechat"></image-slot></div>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding-top:1.8rem;font-family:'Chivo Mono',monospace;font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;color:#84837B">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding-top:1.8rem;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B">
           <span>Paulo Renato Boechat</span><span>Rio de Janeiro</span>
         </div>
       </div>
 
       <div data-reveal style="display:flex;flex-direction:column;gap:2.4rem;padding-top:clamp(0px,4vw,6rem)">
-        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:1.2rem;color:#84837B">
+        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:1.2rem;color:#84837B">
           <span style="width:.6rem;height:.6rem;background:#4E76E8;flex:none"></span>04 — Quem conduz a operação
         </div>
         <h2 style="margin:0;font-size:4.4rem;line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">Alguém precisa responder pelo número. Sou eu.</h2>
-        <div style="font-family:'Chivo Mono',monospace;font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;color:#9DB4F5">Sócio-fundador · Diretor de Operação</div>
+        <div style="font-family:'Chivo Mono',monospace;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#9DB4F5">Sócio-fundador · Diretor de Operação</div>
         <div style="display:flex;flex-direction:column;gap:1.8rem;max-width:46rem">
           <p style="margin:0;font-size:2rem;line-height:1.45;letter-spacing:-0.03em">Passei anos vendo empresas boas — com licença, com entrega, com nome — perderem mercado para concorrentes piores que só sabiam vender. O problema nunca foi o produto. Era não existir ninguém dentro da casa responsável por construir receita nova.</p>
           <p style="margin:0;font-size:2rem;line-height:1.45;letter-spacing:-0.03em;color:#C8CDD2">A RICC nasceu para ocupar essa cadeira. Eu entro na operação do cliente, desenho o produto que ainda não existe, monto o funil, subo o tráfego e fico no fechamento até o caixa provar que funciona. Sem honorário na entrada — se o braço novo não lucrar, eu não recebo.</p>
           <p style="margin:0;font-size:2rem;line-height:1.45;letter-spacing:-0.03em;color:#C8CDD2">Por isso é uma empresa por vez. Não dá para responder por faturamento de dez donos ao mesmo tempo.</p>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:1.2rem 3.2rem;padding-top:1.2rem;border-top:1px solid #404040;font-family:'Chivo Mono',monospace;font-size:1.3rem;letter-spacing:.12em;text-transform:uppercase;color:#84837B">
+        <div style="display:flex;flex-wrap:wrap;gap:1.2rem 3.2rem;padding-top:1.2rem;border-top:1px solid #404040;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#84837B">
           <span>Produto e oferta</span><span>Tráfego e copy</span><span>Sistema e IA</span><span>Fechamento</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section data-fold="4" style="position:relative;z-index:4;min-height:100vh;background:#1E3FA8;color:#F1F2EE;display:flex;align-items:center;overflow:hidden">
+  <section data-fold="4" style="position:relative;z-index:4;min-height:100vh;min-height:100dvh;background:#1E3FA8;color:#F1F2EE;display:flex;align-items:center;overflow:hidden">
     <div data-img data-parallax="-64" style="position:absolute;left:0;right:0;top:-8%;height:116%;opacity:.3;mix-blend-mode:soft-light"><image-slot id="v2-agua" shape="rect" fit="cover" src="./img/agua-textura.jpg" placeholder="Água"></image-slot></div>
     <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(241,242,238,.18) 1px,transparent 1px);background-size:22px 22px"></div>
     <div style="position:relative;max-width:1200px;width:100%;margin:0 auto;padding:clamp(90px,14vh,150px) clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
@@ -429,28 +434,28 @@
         <h2 style="margin:0;font-size:clamp(30px,5.4vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400">Uma vaga. Aberta até fechar.</h2>
         <p style="margin:0;font-size:18px;line-height:1.62;letter-spacing:-0.03em;color:#5C6560;max-width:44ch">A triagem é curta e a checagem vem antes da reunião. Se não servir, você recebe um não com o motivo.</p>
       </div>
-      <div data-reveal style="display:flex;flex-direction:column;gap:21px">
+      <form data-reveal id="v2-form" novalidate style="display:flex;flex-direction:column;gap:21px;margin:0">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px">
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-setor" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">SETOR</label><input id="v2-setor" type="text" placeholder="Advocacia, saúde, engenharia…" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-fat" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">FATURAMENTO ANUAL</label><input id="v2-fat" type="text" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-verba" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">VERBA DE MÍDIA / MÊS</label><input id="v2-verba" type="text" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
-          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-tel" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">TELEFONE DIRETO DO DONO</label><input id="v2-tel" type="tel" placeholder="+55" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-setor" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">SETOR</label><input id="v2-setor" name="setor" autocapitalize="sentences" enterkeyhint="next" required type="text" placeholder="Advocacia, saúde, engenharia…" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-fat" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">FATURAMENTO ANUAL</label><input id="v2-fat" name="faturamento" enterkeyhint="next" required type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-verba" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">VERBA DE MÍDIA / MÊS</label><input id="v2-verba" name="verba" enterkeyhint="next" type="text" inputmode="numeric" placeholder="R$" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-tel" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">TELEFONE DIRETO DO DONO</label><input id="v2-tel" name="telefone" enterkeyhint="next" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+55" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-conc" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">QUAL CONCORRENTE FATURA MAIS QUE VOCÊ</label><input id="v2-conc" type="text" placeholder="Nome ou descrição" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
+        <div style="display:flex;flex-direction:column;gap:7px"><label for="v2-conc" style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">QUAL CONCORRENTE FATURA MAIS QUE VOCÊ</label><input id="v2-conc" name="concorrente" autocapitalize="sentences" enterkeyhint="done" type="text" placeholder="Nome ou descrição" style="background:transparent;border:none;border-bottom:1px solid #C9CDC7;color:#13140E;font-size:16px;padding:9px 0"></div>
         <div style="display:flex;flex-direction:column;gap:9px">
           <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">A DECISÃO É SUA, SOZINHO?</span>
           <div style="display:flex;flex-wrap:wrap;gap:9px">
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">SIM</label>
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">TENHO SÓCIO</label>
-            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" style="accent-color:#1E3FA8">COMITÊ</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="sim" style="accent-color:#1E3FA8">SIM</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="socio" style="accent-color:#1E3FA8">TENHO SÓCIO</label>
+            <label style="font-family:'Chivo Mono',monospace;font-size:13px;padding:9px 14px;border:1px solid #C9CDC7;display:flex;align-items:center;gap:7px"><input type="radio" name="v2decisor" value="comite" style="accent-color:#1E3FA8">COMITÊ</label>
           </div>
         </div>
-        <button type="button" style="align-self:flex-start;font-family:'Chivo Mono',monospace;font-size:14px;padding:14px 18px;border:none;background:#13140E;color:#F4F3E8;text-transform:uppercase;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)">Submeter empresa</button>
-      </div>
+        <button type="submit" style="align-self:flex-start;font-family:'Chivo Mono',monospace;font-size:14px;padding:14px 18px;border:none;background:#13140E;color:#F4F3E8;text-transform:uppercase;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)">Submeter empresa</button>
+      </form>
     </div>
 
     <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px) clamp(29px,4vw,59px);box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:29px;font-family:'Chivo Mono',monospace;font-size:13px;color:#5C6560">
-      <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">CONTATO</div><div style="margin-top:9px">contato@riccpartners.com</div></div>
+      <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">CONTATO</div><div style="margin-top:9px"><a href="mailto:contato@riccpartners.com" style="color:inherit;text-decoration:none;padding:14px 0;margin:-14px 0;display:inline-block">contato@riccpartners.com</a></div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">ESTRUTURA</div><div style="margin-top:9px">Contrato de produtividade</div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">SIGILO</div><div style="margin-top:9px">NDA antes de qualquer número</div></div>
       <div style="position:relative;padding:18px 0 0"><div style="position:absolute;left:0;top:0;width:10px;height:10px;border-left:1px solid #1E3FA8;border-top:1px solid #1E3FA8"></div><div style="color:#13140E">2026</div><div style="margin-top:9px">Uma operação por vez</div></div>
@@ -528,11 +533,15 @@ class Component extends DCLogic {
 
       // 120ms — a barra enche com o carregamento real
       let loaded = 0;
-      const vsrc = './img/hero-video.mp4';
-      fetch(new URL(vsrc, location.href).href)
-        .then(r => r.blob())
-        .then(bl => { window.__riccHeroBlob = URL.createObjectURL(bl); loaded = 1; })
-        .catch(() => { loaded = 1; });
+      const hv0 = document.querySelector('[data-shotimg] video');
+      if (hv0) {
+        if (hv0.readyState >= 3) loaded = 1;
+        else {
+          hv0.addEventListener('canplaythrough', () => { loaded = 1; }, { once: true });
+          hv0.addEventListener('loadeddata', () => { loaded = Math.max(loaded, 0.85); }, { once: true });
+          hv0.addEventListener('error', () => { loaded = 1; }, { once: true });
+        }
+      } else { loaded = 1; }
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { loaded = Math.max(loaded, 0.5); });
 
       let shown = 0;
@@ -586,20 +595,27 @@ class Component extends DCLogic {
       };
     })();
 
-    // o servidor de arquivos não aceita range request: o <video> só decodifica via blob
+    // A hospedagem serve range request, entao o <video> transmite direto: nada de baixar o
+    // arquivo inteiro como blob antes de comecar. O blob fica so como rede de seguranca,
+    // para o caso de um servidor sem range (o preview do canvas, por exemplo).
     const hv = document.querySelector('[data-shotimg] video');
     if (hv) {
-      const raw = hv.getAttribute('src');
-      fetch(new URL(raw, location.href).href)
-        .then(r => r.blob())
-        .then(b => {
-          this._blobUrl = URL.createObjectURL(b);
-          hv.muted = true;
-          hv.addEventListener('canplay', () => { hv.play().catch(e => console.warn('hero video play:', e.name)); }, { once: true });
-          hv.src = this._blobUrl;
-          hv.load();
-        })
-        .catch(e => console.warn('hero video fetch:', e.message));
+      hv.muted = true;
+      const tocar = () => hv.play().catch(e => console.warn('hero video play:', e.name));
+      hv.addEventListener('canplay', tocar, { once: true });
+      hv.addEventListener('error', () => {
+        const raw = hv.currentSrc || (hv.querySelector('source') || {}).src;
+        if (!raw || this._blobUrl) return;
+        fetch(raw)
+          .then(r => r.blob())
+          .then(b => {
+            this._blobUrl = URL.createObjectURL(b);
+            hv.addEventListener('canplay', tocar, { once: true });
+            hv.src = this._blobUrl;
+            hv.load();
+          })
+          .catch(e => console.warn('hero video fetch:', e.message));
+      }, { once: true });
     }
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -618,6 +634,18 @@ class Component extends DCLogic {
     fill.style.cssText = 'position:absolute;left:0;top:0;width:1px;height:0;background:#4E76E8';
     rail.appendChild(fill);
     hud.appendChild(hudTxt); hud.appendChild(rail);
+    // no retrato o trilho vertical ocupava ~118px de altura em cima da coluna de texto
+    const hudDeitado = window.matchMedia('(pointer: coarse)').matches;
+    if (hudDeitado) {
+      hud.style.flexDirection = 'row';
+      hud.style.alignItems = 'center';
+      hud.style.bottom = '12px';
+      hud.style.fontSize = '10px';
+      rail.style.width = '56px';
+      rail.style.height = '1px';
+      fill.style.width = '0';
+      fill.style.height = '1px';
+    }
     document.body.appendChild(hud);
     this._hud = hud;
 
@@ -653,11 +681,30 @@ class Component extends DCLogic {
     let mx = window.innerWidth * 0.34, my = window.innerHeight * 0.6, mAt = 0;
     window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
     const win = (p, a, b, f) => clamp01(Math.min((p - a) / f, (b - p) / f));
-    const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
+    const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.pointerEvents = v < 0.08 ? 'none' : 'auto'; el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
     // ---- adaptação mobile: mesma composição, medidas de retrato ----
     const RESP = [];
-    const resp = (el, fn) => { if (!el) return; if (el.dataset.dsk === undefined) el.dataset.dsk = el.getAttribute('style') || ''; RESP.push([el, fn]); };
-    resp(document.querySelector('[data-marks] svg'), e => { e.setAttribute('viewBox', '260 60 700 760'); });
+    const ATT = ['viewBox', 'preserveAspectRatio', 'font-size', 'letter-spacing', 'y'];
+    const resp = (el, fn) => {
+      if (!el) return;
+      if (el.dataset.dsk === undefined) {
+        el.dataset.dsk = el.getAttribute('style') || '';
+        el.dataset.dskatt = JSON.stringify(ATT.map(a => el.getAttribute(a)));
+      }
+      RESP.push([el, fn]);
+    };
+    resp(document.querySelector('[data-marks] svg'), e => {
+      e.setAttribute('viewBox', '400 100 740 700');
+      e.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    });
+    q('[data-marks] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '26'); e.setAttribute('letter-spacing', '4'); }));
+    resp(document.querySelector('[data-sail]'), e => {
+      e.setAttribute('viewBox', '-60 110 1370 650');
+      e.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    });
+    q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
+    // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
+    resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
     resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '460vh'; });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '440vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
@@ -671,26 +718,29 @@ class Component extends DCLogic {
         e.setAttribute('style', e.getAttribute('style') + ';' + SCRIM);
       });
     });
-    resp(document.querySelector('[data-marks]'), e => { e.style.zIndex = '1'; });
+    resp(document.querySelector('[data-marks]'), e => { e.style.zIndex = '1'; e.style.left = '0'; e.style.width = 'auto'; });
     resp(document.querySelector('[data-st="b"] p'), e => { e.style.fontSize = 'clamp(19px,5.2vw,23px)'; e.style.lineHeight = '1.3'; e.style.maxWidth = 'none'; });
     resp(document.querySelector('[data-st="a"] h1'), e => { e.style.fontSize = 'clamp(26px,7.4vw,42px)'; });
     resp(document.querySelector('[data-st="a"]'), e => { e.style.gap = '21px'; e.style.paddingBottom = 'clamp(28px,5vh,56px)'; });
     q('[data-panel] h2').forEach(el => resp(el, e => { e.style.fontSize = 'clamp(23px,6.4vw,32px)'; e.style.maxWidth = '100%'; }));
     q('[data-panel]').forEach(el => resp(el, e => { e.style.alignItems = 'center'; e.style.paddingTop = 'clamp(64px,11vh,110px)'; e.style.paddingBottom = 'clamp(40px,8vh,80px)'; }));
-    resp(document.querySelector('[data-panel="0"] div[style*="minmax(180px"]'), e => { e.style.gridTemplateColumns = '1fr 1fr'; e.style.fontSize = '15px'; e.style.gap = '10px 18px'; });
-    q('[data-panel="1"] div[style*="justify-content:space-between"]').forEach(el => resp(el, e => { e.style.fontSize = '15px'; e.style.padding = '10px 0'; }));
-    q('[data-panel="2"] div[style*="gap:29px"]').forEach(el => resp(el, e => { e.style.gap = '14px'; e.style.fontSize = '15px'; e.style.padding = '10px 0'; }));
-    q('[data-panel="3"] div[style*="1.1fr 1fr 1fr"]').forEach(el => resp(el, e => {
+    resp(document.querySelector('[data-panel="0"] div[style*="minmax(220px"]'), e => { e.style.gridTemplateColumns = '1fr 1fr'; e.style.fontSize = '15px'; e.style.gap = '10px 18px'; });
+    q('[data-panel="1"] div[style*="space-between"]').forEach((el, i, a) => resp(el, e => {
+      e.style.fontSize = '15px'; e.style.paddingBlock = '10px';
+      // a ultima linha e o total: rotulo longo + numero em mono nao cabem lado a lado no retrato
+      if (i === a.length - 1) { e.style.flexDirection = 'column'; e.style.alignItems = 'flex-start'; e.style.gap = '4px'; }
+    }));
+    q('[data-panel="2"] div[style*="32px minmax(0px"]').forEach(el => resp(el, e => { e.style.gap = '14px'; e.style.fontSize = '15px'; e.style.paddingBlock = '10px'; }));
+    q('[data-panel="3"] div[style*="1.1fr"]').forEach(el => resp(el, e => {
       e.style.gridTemplateColumns = '1fr 1fr'; e.style.fontSize = '13px'; e.style.gap = '4px 14px';
       const first = e.firstElementChild;
-      if (first) { first.style.gridColumn = '1 / -1'; first.style.fontFamily = "'Chivo Mono',monospace"; first.style.fontSize = '10px'; first.style.letterSpacing = '.14em'; first.style.textTransform = 'uppercase'; }
+      if (first) { first.style.gridColumn = '1 / -1'; first.style.fontFamily = "'Chivo Mono',monospace"; first.style.fontSize = '12px'; first.style.letterSpacing = '.14em'; first.style.textTransform = 'uppercase'; }
     }));
-    resp(document.querySelector('[data-prova-slot]'), e => { e.style.minHeight = '4.8em'; });
     // celular: cartões compactos, tipografia mais fechada
     q('[data-st] h1').forEach(el => resp(el, e => { e.style.fontSize = '21px'; e.style.lineHeight = '1.18'; e.style.maxWidth = '100%'; }));
     q('[data-st] p').forEach(el => resp(el, e => { e.style.fontSize = '19px'; e.style.lineHeight = '1.32'; e.style.maxWidth = '100%'; }));
     q('[data-st] [data-decode]').forEach(el => resp(el, e => { e.style.fontSize = '11px'; e.style.letterSpacing = '.16em'; }));
-    q('[data-st] a').forEach(el => resp(el, e => { e.style.fontSize = '14px'; e.style.padding = '11px 16px'; }));
+    q('[data-st] a').forEach(el => resp(el, e => { e.style.fontSize = '14px'; e.style.padding = '14px 18px'; }));
     q('[data-st="a"], [data-st="b"]').forEach(el => resp(el, e => { e.style.paddingLeft = '16px'; e.style.paddingRight = '16px'; }));
     // dobra 02 no celular: empilha, foto acima do texto
     resp(document.querySelector('[data-st="b"]'), e => { e.style.top = 'auto'; e.style.bottom = 'clamp(28px,7vh,72px)'; e.style.transform = 'none'; });
@@ -699,14 +749,24 @@ class Component extends DCLogic {
     resp(document.querySelector('[data-asset-socio]'), e => { e.style.aspectRatio = '4/3'; });
     q('[data-fold="35"] p').forEach(el => resp(el, e => { e.style.fontSize = '1.8rem'; }));
     q('[data-blk]').forEach(el => resp(el, e => { e.style.flexDirection = 'column'; }));
-    q('[data-asset]').forEach(el => resp(el, e => { e.style.width = '100%'; e.style.aspectRatio = '4/3'; }));
-    q('[data-content]').forEach(el => resp(el, e => { e.style.width = '100%'; e.style.paddingInline = '0'; e.style.paddingTop = '3.2rem'; }));
-    resp(document.querySelector('[data-fold="2"] h2'), e => { e.style.padding = '2.4rem 0 5rem'; e.style.maxWidth = 'none'; });
+    // os pontos ficavam numa coluna colada a direita, por cima da tabela de salarios
+    resp((document.querySelector('[data-p3-dot]') || {}).parentElement, e => {
+      e.style.top = 'auto'; e.style.bottom = 'clamp(46px,7vh,72px)';
+      e.style.right = 'auto'; e.style.left = '50%'; e.style.transform = 'translateX(-50%)';
+      e.style.flexDirection = 'row'; e.style.gap = '8px';
+    });
+    q('[data-asset]').forEach(el => resp(el, e => { e.style.flex = '0 0 auto'; e.style.width = '100%'; e.style.aspectRatio = '4/3'; }));
+    q('[data-content]').forEach(el => resp(el, e => { e.style.flex = '0 0 auto'; e.style.width = '100%'; e.style.paddingInline = '0'; e.style.paddingTop = '3.2rem'; }));
+    q('[data-fold="2"] [data-content] > p:last-child').forEach(el => resp(el, e => { e.style.marginBottom = '0'; }));
+    resp(document.querySelector('[data-fold="2"] h2'), e => { e.style.fontSize = '4rem'; e.style.padding = '2.4rem 0 5rem'; e.style.maxWidth = 'none'; });
     resp(document.querySelector('[data-fold="2"] [data-decode]'), e => { e.style.paddingTop = '8rem'; });
-    resp(document.querySelector('[data-fold="2"] div[style*="gap:11.5rem"]'), e => { e.style.gap = '7rem'; });
+    resp(document.querySelector('[data-fold="2"] div[style*="gap: 11.5rem"]'), e => { e.style.gap = '7rem'; });
+    // o espacador de 14.5rem abria 136px de preto antes da dobra 03
+    resp(document.querySelector('[data-fold="2"] > div > div[style^="height"]'), e => { e.style.height = '4rem'; });
 
     const meterEl = document.querySelector('[data-meter]');
     const coarse = window.matchMedia('(pointer: coarse)').matches;
+    let narrow = window.innerWidth < 760;
     this._dock = coarse;
     if (coarse && meterEl) {
       meterEl.style.left = '50%';
@@ -715,25 +775,37 @@ class Component extends DCLogic {
       meterEl.style.margin = '0';
       meterEl.style.transform = 'translateX(-50%)';
     }
+    const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
     const responsive = () => {
       const m = window.innerWidth < 760;
-      RESP.forEach(([el, fn]) => { el.setAttribute('style', el.dataset.dsk); if (m) fn(el); });
+      narrow = m;
+      const feitos = new Set();
+      RESP.forEach(([el]) => {
+        if (feitos.has(el)) return;
+        feitos.add(el);
+        // preserva o que a coreografia ja escreveu: restaurar o style cru fazia o CTA sumir
+        const guarda = KEEP.map(k => [k, el.style[k]]);
+        el.setAttribute('style', el.dataset.dsk);
+        guarda.forEach(([k, v]) => { if (v) el.style[k] = v; });
+        const att = JSON.parse(el.dataset.dskatt || '[]');
+        ATT.forEach((a, i) => { if (att[i] == null) el.removeAttribute(a); else el.setAttribute(a, att[i]); });
+      });
+      if (m) RESP.forEach(([el, fn]) => fn(el));
     };
-    responsive();
+    responsive();   // daqui para baixo nenhum resp() novo tem efeito no carregamento — registre acima
     window.addEventListener('resize', responsive);
     this._resp = () => window.removeEventListener('resize', responsive);
 
     // traçado sobre o vídeo: entra em sequência e sai antes da máscara fechar
     const sail = document.querySelector('[data-sail]');
     const sSteps = q('[data-s]');
-    const sWin = [0.03, 0.08, 0.13, 0.18];
+    const sWin = [0.02, 0.06, 0.10, 0.14];
 
     const fold1 = document.querySelector('[data-fold="1"]');
     const fold3 = document.querySelector('[data-fold="3"]');
     const panels = q('[data-panel]');
     const dots = q('[data-p3-dot]');
     const f1fill = null;
-    resp(document.querySelector('[data-proj] svg'), e => { e.setAttribute('viewBox', '300 90 780 700'); });
     const imgs = q('[data-img]');
     const paras = q('[data-parallax]').filter(el => !el.hasAttribute('data-img'));
     const reveals = q('[data-reveal]');
@@ -744,7 +816,10 @@ class Component extends DCLogic {
     // rótulos mono com decodificação letra a letra
     const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·/%';
     const decode = (el) => {
-      const final = el.textContent;
+      // embaralha so o no de texto — trocar textContent apagaria o marcador <span> filho
+      const no = [...el.childNodes].reverse().find(n => n.nodeType === 3 && n.textContent.trim());
+      if (!no) return;
+      const final = no.textContent;
       let step = 0;
       const total = 14;
       const id = setInterval(() => {
@@ -755,8 +830,8 @@ class Component extends DCLogic {
           const c = final[i];
           out += (i < keep || c === ' ') ? c : CH[(Math.random() * CH.length) | 0];
         }
-        el.textContent = out;
-        if (step >= total) { clearInterval(id); el.textContent = final; }
+        no.textContent = out;
+        if (step >= total) { clearInterval(id); no.textContent = final; }
       }, 38);
     };
     this._decoded = new Set();
@@ -781,7 +856,11 @@ class Component extends DCLogic {
           pi = (pi + 1) % provas.length;
           provaSlot.textContent = provas[pi];
           if (provaNum) provaNum.textContent = String(pi + 1).padStart(3, '0');
+          provaSlot.style.transition = 'none';
+          provaSlot.style.opacity = '0';
           provaSlot.style.transform = 'translateY(14px)';
+          void provaSlot.offsetHeight;
+          provaSlot.style.transition = 'opacity .4s linear, transform .5s ' + EASE;
           provaSlot.style.opacity = '1';
           provaSlot.style.transform = 'none';
         }, 420);
@@ -799,7 +878,7 @@ class Component extends DCLogic {
         const hh = fold1.offsetHeight - vh;
         const p = clamp01((y - fold1.offsetTop) / (hh || 1));
 
-        const close = clamp01((p - 0.10) / 0.24);
+        const close = clamp01((p - 0.10) / 0.40);
         const open = clamp01((p - 0.60) / 0.24);
         const t = clamp01(close - open);
         const mono = clamp01(close * 1.1 - open * 1.1);
@@ -825,7 +904,7 @@ class Component extends DCLogic {
               return { el, L };
             }).filter(Boolean);
             const n = Math.max(1, this._draw.length - 1);
-            this._draw.forEach((d, i) => { d.from = 0.10 + (i / n) * 0.68; });
+            this._draw.forEach((d, i) => { d.from = 0.10 + (i / n) * 0.46; });
           }
           this._draw.forEach(d => {
             const v = clamp01((p - d.from) / 0.14);
@@ -834,12 +913,12 @@ class Component extends DCLogic {
           });
         }
         if (sail) {
-          const out = clamp01((p - 0.24) / 0.06);
+          const out = clamp01((p - 0.26) / 0.07);
           sail.style.opacity = (1 - out).toFixed(3);
           sSteps.forEach((g, i) => { g.setAttribute('opacity', clamp01((p - sWin[i % sWin.length]) / 0.045).toFixed(3)); });
         }
         fade(sA, win(p, -0.4, 0.18, 0.06));
-        fade(sB, win(p, 0.22, 0.94, 0.05));
+        fade(sB, win(p, 0.22, 0.70, 0.045));
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
         if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
       }
@@ -852,8 +931,8 @@ class Component extends DCLogic {
         panels.forEach((pan, i) => {
           const d = pos - i;
           const off = Math.max(-1.15, Math.min(1.15, d));
-          pan.style.transform = 'translate3d(' + (-off * 42).toFixed(2) + 'vw,0,0)';
-          pan.style.opacity = String(clamp01(1.6 - Math.abs(d) * 2.2));
+          pan.style.transform = 'translate3d(' + (-off * (narrow ? 14 : 42)).toFixed(2) + 'vw,0,0)';
+          pan.style.opacity = String(clamp01((narrow ? 2.2 : 1.6) - Math.abs(d) * (narrow ? 4.4 : 2.2)));
           pan.style.pointerEvents = Math.abs(d) < 0.5 ? 'auto' : 'none';
         });
         const act = Math.round(pos);
@@ -867,7 +946,11 @@ class Component extends DCLogic {
         const w = el.parentElement;
         const r = w.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) return;
-        const rel = (r.top + r.height / 2 - vh / 2) / vh;
+        // dentro de um [data-pin] o rect fica imovel (sticky): mede pela secao dona, nao pelo pin
+        const dono = w.hasAttribute('data-pin') ? w.parentElement : null;
+        const rel = dono
+          ? (clamp01((y - dono.offsetTop) / ((dono.offsetHeight - vh) || 1)) - 0.5) * 2
+          : (r.top + r.height / 2 - vh / 2) / vh;
         const depth = Number(el.getAttribute('data-parallax') || w.getAttribute('data-parallax') || -54);
         const slack = (el.offsetHeight - w.clientHeight) / 2;
         if (!(slack > 1)) return;
@@ -894,6 +977,8 @@ class Component extends DCLogic {
       }
       q('[data-decode]').forEach(el => {
         if (this._decoded.has(el)) return;
+        const host = el.closest('[data-st],[data-panel]');
+        if (host && +getComputedStyle(host).opacity < 0.35) return;
         const r = el.getBoundingClientRect();
         if (r.top < vh * 0.92 && r.bottom > 0) { this._decoded.add(el); if (!reduce) decode(el); }
       });
@@ -902,7 +987,10 @@ class Component extends DCLogic {
         if (!this._dock) meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
         if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
         this._lastY = y;
-        meter.style.opacity = (Date.now() - mAt < 900) ? '1' : '0';
+        // no celular o medidor fica ancorado no centro do rodape e cobria texto e foto:
+        // vira convite so na primeira tela, que e onde ele tem funcao
+        const cabe = !this._dock || y < vh * 0.9;
+        meter.style.opacity = (Date.now() - mAt < 900 && cabe) ? '1' : '0';
       }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
@@ -912,7 +1000,7 @@ class Component extends DCLogic {
       const max = (doc.scrollHeight - vh) || 1;
       const pct = clamp01(y / max) * 100;
       hudTxt.textContent = 'FASE ' + String(Math.round(pct)).padStart(2, '0') + '%';
-      fill.style.height = pct.toFixed(2) + '%';
+      if (hudDeitado) fill.style.width = pct.toFixed(2) + '%'; else fill.style.height = pct.toFixed(2) + '%';
     };
 
     // estado inicial só é aplicado no primeiro quadro real
@@ -943,6 +1031,29 @@ class Component extends DCLogic {
     this._off = () => { alive = false; clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
 
     this._applyProps();
+
+    // --- candidatura: nao havia <form>, nem name, nem handler; o botao nao fazia nada ---
+    const form = document.getElementById('v2-form');
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = '1';
+      const btn = form.querySelector('button[type="submit"]');
+      form.addEventListener('submit', ev => {
+        ev.preventDefault();
+        const falta = [...form.querySelectorAll('[required]')].find(c => !c.value.trim());
+        if (falta) { falta.focus(); falta.style.borderBottomColor = '#B4402E'; return; }
+        const d = new FormData(form);
+        const rot = { setor: 'Setor', faturamento: 'Faturamento anual', verba: 'Verba de midia/mes',
+                      telefone: 'Telefone do dono', concorrente: 'Concorrente que fatura mais',
+                      v2decisor: 'Decisao sozinho' };
+        const corpo = Object.keys(rot).map(k => rot[k] + ': ' + (d.get(k) || '—')).join('\n');
+        if (btn) { btn.textContent = 'ABRINDO E-MAIL…'; btn.disabled = true; }
+        window.location.href = 'mailto:contato@riccpartners.com'
+          + '?subject=' + encodeURIComponent('Candidatura — ' + (d.get('setor') || 'empresa'))
+          + '&body=' + encodeURIComponent(corpo);
+        setTimeout(() => { if (btn) { btn.textContent = 'SUBMETER EMPRESA'; btn.disabled = false; } }, 2500);
+      });
+      form.addEventListener('input', ev => { ev.target.style.borderBottomColor = ''; });
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', ev => {
