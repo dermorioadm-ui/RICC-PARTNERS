@@ -38,6 +38,14 @@
   @keyframes riccBlink{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
   @keyframes riccPulse{0%,100%{opacity:1}50%{opacity:.28}}
   @keyframes riccHalo{0%{transform:translate(-50%,-50%) scale(.72);opacity:.55}70%{transform:translate(-50%,-50%) scale(1.5);opacity:0}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+  @keyframes riccRoute{to{stroke-dashoffset:0}}
+  @keyframes riccBuoy{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .scale-chart{display:grid;grid-template-columns:minmax(230px,.72fr) minmax(480px,1.28fr);gap:clamp(40px,7vw,100px);align-items:center}
+  .scale-chart__visual{position:relative;min-height:clamp(430px,56vw,680px);border:1px solid #32383D;background:linear-gradient(145deg,rgba(78,118,232,.1),transparent 42%),#101417;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 34px),calc(100% - 34px) 100%,0 100%)}
+  .scale-chart__route{stroke-dasharray:1100;stroke-dashoffset:1100;animation:riccRoute 2.2s cubic-bezier(.165,.84,.44,1) .3s forwards}
+  .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
+  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:470px}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
+  @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -278,11 +286,51 @@
     </div>
   </section>
 
+  <section data-scale-chart style="position:relative;z-index:3;background:#0E1114;color:#F1F2EE;border-top:1px solid #252A2E;border-bottom:1px solid #252A2E;overflow:hidden">
+    <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 24%,rgba(78,118,232,.12),transparent 30%)"></div>
+    <div class="scale-chart" style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(90px,13vw,168px) clamp(20px,4vw,40px);box-sizing:border-box">
+      <div class="scale-chart__copy" data-reveal style="display:flex;flex-direction:column;align-items:flex-start">
+        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B;margin-bottom:2.4rem">03 — CARTA DE ESCALA</div>
+        <h2 style="margin:0;font-size:clamp(34px,5.4vw,64px);line-height:1.01;letter-spacing:-.04em;font-weight:400;max-width:10ch;text-wrap:balance">Escalar não é acelerar sem rumo.</h2>
+        <p style="margin:2.6rem 0 0;font-size:18px;line-height:1.55;letter-spacing:-.025em;color:#C8CDD2;max-width:38ch">É sair do cais com uma tese, provar a rota em águas controladas e só então abrir vela. Cada real de mídia acompanha capacidade real de entrega.</p>
+        <div class="scale-chart__legend" style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:4.8rem;padding-top:2rem;border-top:1px solid #404040;font-family:'Chivo Mono',monospace;font-size:12px;letter-spacing:.08em;color:#84837B">
+          <span><b style="display:block;color:#F1F2EE;font-weight:400;margin-bottom:7px">01 · PROVAR</b>Oferta + primeira venda</span>
+          <span><b style="display:block;color:#9DB4F5;font-weight:400;margin-bottom:7px">02 · REPETIR</b>Funil + processo</span>
+          <span><b style="display:block;color:#F1F2EE;font-weight:400;margin-bottom:7px">03 · ESCALAR</b>Mídia + operação</span>
+        </div>
+      </div>
+
+      <div class="scale-chart__visual" data-reveal aria-label="Carta náutica ilustrando a rota da validação até a escala">
+        <svg viewBox="0 0 720 680" preserveAspectRatio="xMidYMid meet" role="img" style="position:absolute;inset:0;width:100%;height:100%">
+          <title>Rota náutica da prova à escala</title>
+          <defs><pattern id="scaleGrid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#F1F2EE" stroke-opacity=".07" stroke-width="1"/></pattern></defs>
+          <rect width="720" height="680" fill="url(#scaleGrid)"/>
+          <g fill="none" stroke="#F1F2EE" opacity=".16"><circle cx="360" cy="340" r="250"/><circle cx="360" cy="340" r="170"/><path d="M360 54V626M74 340H646M158 138l404 404M562 138 158 542"/></g>
+          <g font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#84837B"><text x="24" y="34">23°00' S</text><text x="605" y="34">043°10' W</text><text x="24" y="652">RICC / ROTA 01</text><text x="574" y="652">ESCALA 1:90</text></g>
+
+          <path d="M90 558C155 527 180 485 223 463C278 435 322 468 367 414C406 367 389 320 448 284C495 255 535 260 608 156" fill="none" stroke="#4E76E8" stroke-opacity=".14" stroke-width="16" stroke-linecap="round"/>
+          <path class="scale-chart__route" d="M90 558C155 527 180 485 223 463C278 435 322 468 367 414C406 367 389 320 448 284C495 255 535 260 608 156" fill="none" stroke="#9DB4F5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M595 159l17-8-1 19" fill="none" stroke="#9DB4F5" stroke-width="2"/>
+
+          <g transform="translate(91 558)"><circle r="10" fill="#101417" stroke="#F1F2EE" stroke-width="2"/><circle r="3" fill="#F1F2EE"/><path d="M-1-18v-28M-1-46l-17 25h17zM2-43l16 22H2zM-20-18h39l-6 7h-27z" fill="none" stroke="#F1F2EE"/><text x="-4" y="31" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#F1F2EE">CAIS</text></g>
+          <g transform="translate(367 414)"><circle r="17" fill="#101417" stroke="#9DB4F5" stroke-width="2"/><path d="M-7 0h14M0-7v14" stroke="#9DB4F5"/><path d="M0 23v35M-17 58h34" stroke="#F1F2EE" stroke-opacity=".4" stroke-dasharray="4 5"/><text x="0" y="78" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#9DB4F5">VALIDAÇÃO</text></g>
+          <g class="scale-chart__buoy" transform="translate(608 156)"><circle r="34" fill="none" stroke="#4E76E8" stroke-opacity=".35"/><circle r="21" fill="#1E3FA8"/><path d="M-10 8 0-14 10 8zM-14 13h28" fill="none" stroke="#F1F2EE" stroke-width="1.6"/><path d="M0-14v-15M-8-29H8" stroke="#F1F2EE" stroke-width="1.6"/><text x="0" y="58" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE">ESCALA</text></g>
+
+          <g transform="translate(190 175)" fill="none" stroke="#F1F2EE" stroke-opacity=".52"><circle r="54"/><circle r="39"/><circle r="6" fill="#F1F2EE" fill-opacity=".8"/><path d="M0-65V65M-65 0H65M-46-46l92 92M46-46l-92 92"/><path d="M0-48 9-8 0 0-9-8z" fill="#9DB4F5" stroke="none" transform="rotate(42)"/></g>
+          <g font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="1.8" fill="#84837B"><text x="119" y="260">RISCO CALCULADO</text><text x="452" y="375">REPETIÇÃO</text><text x="451" y="393">COM MARGEM</text></g>
+          <g stroke="#F1F2EE" stroke-opacity=".28"><path d="M452 402h96"/><path d="M118 270h105"/></g>
+        </svg>
+        <div style="position:absolute;left:18px;top:18px;border-left:1px solid #4E76E8;border-top:1px solid #4E76E8;width:18px;height:18px"></div>
+        <div style="position:absolute;right:18px;bottom:18px;border-right:1px solid #4E76E8;border-bottom:1px solid #4E76E8;width:18px;height:18px"></div>
+      </div>
+    </div>
+  </section>
+
   <section data-fold="3" style="position:relative;z-index:3;height:520vh;background:#0E1114;color:#F1F2EE">
     <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
       <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
       <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-        <span data-decode>03 — O QUE ENTRA NA OPERAÇÃO</span>
+        <span data-decode>04 — O QUE ENTRA NA OPERAÇÃO</span>
         <span style="white-space:nowrap"><span data-p3-num style="color:#F1F2EE">001</span> / 004</span>
       </div>
 
@@ -395,7 +443,7 @@
 
       <div data-reveal style="display:flex;flex-direction:column;gap:2.4rem;padding-top:clamp(0px,4vw,6rem)">
         <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:1.2rem;color:#84837B">
-          <span style="width:.6rem;height:.6rem;background:#4E76E8;flex:none"></span>04 — Quem conduz a operação
+          <span style="width:.6rem;height:.6rem;background:#4E76E8;flex:none"></span>05 — Quem conduz a operação
         </div>
         <h2 style="margin:0;font-size:4.4rem;line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">Alguém precisa responder pelo número. Sou eu.</h2>
         <div style="font-family:'Chivo Mono',monospace;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#9DB4F5">Sócio-fundador · Diretor de Operação</div>
@@ -416,7 +464,7 @@
     <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(241,242,238,.18) 1px,transparent 1px);background-size:22px 22px"></div>
     <div style="position:relative;max-width:1200px;width:100%;margin:0 auto;padding:clamp(90px,14vh,150px) clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em">
-        <span data-decode>05 — Primeira parceria da RICC Partners</span><span><span data-prova-num>001</span> / 003</span>
+        <span data-decode>06 — Primeira parceria da RICC Partners</span><span><span data-prova-num>001</span> / 003</span>
       </div>
       <div data-prova-slot style="font-size:clamp(34px,7vw,84px);line-height:.98;letter-spacing:-0.03em;font-weight:400;max-width:24ch;min-height:3.2em">R$ 2 milhões em faturamento em quatro meses.</div>
       <div style="height:1px;background:rgba(241,242,238,.35)"></div>
@@ -430,7 +478,7 @@
   <section id="candidatura" style="position:relative;z-index:5;background:#F4F3E8;color:#13140E">
     <div style="max-width:1200px;margin:0 auto;padding:clamp(64px,11vh,140px) clamp(20px,4vw,40px) clamp(40px,7vw,86px);box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(29px,5vw,59px)">
       <div data-reveal style="display:flex;flex-direction:column;gap:21px">
-        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#5C6560">06 — CANDIDATURA</div>
+        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#5C6560">07 — CANDIDATURA</div>
         <h2 style="margin:0;font-size:clamp(30px,5.4vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400">Uma vaga. Aberta até fechar.</h2>
         <p style="margin:0;font-size:18px;line-height:1.62;letter-spacing:-0.03em;color:#5C6560;max-width:44ch">A triagem é curta e a checagem vem antes da reunião. Se não servir, você recebe um não com o motivo.</p>
       </div>
