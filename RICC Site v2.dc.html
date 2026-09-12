@@ -201,9 +201,14 @@
   }
 
   @media(max-width:759px){
-    [data-pin="1"][data-pin-state="active"]{position:fixed!important;top:0!important;left:0;right:0;width:100%;margin:0;transform:none}
-    [data-pin="1"][data-pin-state="before"]{position:absolute!important;top:0!important;left:0;right:0;width:100%}
-    [data-pin="1"][data-pin-state="after"]{position:absolute!important;top:var(--ricc-pin-release)!important;left:0;right:0;width:100%}
+    /* O pin da hero no celular e o position:sticky nativo do inline. A maquina de estados
+       fixed/absolute ligada por JS (PR #17) foi removida: o WebView do Instagram move a camada
+       antes de entregar o evento de scroll e executa position:fixed mal; o sticky e resolvido
+       no compositor. A dobra mede cover + duration em px, entao o sticky solta exatamente
+       no fim da timeline. Para o sticky valer, nenhum ancestral do pin pode ter overflow
+       diferente de visible (o wrapper abre o overflow-x no celular; as dobras sem pin clipam). */
+    div[data-dc-tpl][style*="overflow-x"]{overflow-x:visible!important}
+    [data-fold="2"],[data-fold="35"],[data-fold="4"],#candidatura,#candidatura ~ div{overflow-x:clip}
   }
 </style>
 </helmet>
@@ -1062,18 +1067,10 @@ class Component extends DCLogic {
     const syncHeroPin = () => {
       if (!heroPin || !fold1) return;
       if (!this._stableVh) setStableViewport(false);   // retries esgotadas e viewport sao sem resize: mede no scroll
-      if (!narrow || !heroTimeline || !isFinite(heroTimeline.duration) || heroTimeline.duration < 200) {
-        // sem timeline confiavel o estado sai de cena e o sticky nativo do inline vale
-        heroPin.removeAttribute('data-pin-state');
-        heroPin.style.removeProperty('--ricc-pin-release');
-        return;
-      }
-      const start = fold1.getBoundingClientRect().top + scrollY();
-      const distance = scrollY() - start;
-      const end = heroTimeline.duration;
-      const state = distance < 0 ? 'before' : distance <= end ? 'active' : 'after';
-      heroPin.style.setProperty('--ricc-pin-release', end + 'px');
-      if (heroPin.dataset.pinState !== state) heroPin.dataset.pinState = state;
+      // O pin e sempre o sticky nativo: nenhum estado fixed/absolute e escrito. A funcao
+      // continua existindo pelos listeners e pela re-medicao do viewport acima.
+      heroPin.removeAttribute('data-pin-state');
+      heroPin.style.removeProperty('--ricc-pin-release');
     };
     this._syncHeroPin = syncHeroPin;
     window.addEventListener('scroll', syncHeroPin, { passive: true });
