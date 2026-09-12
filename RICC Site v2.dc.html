@@ -132,7 +132,7 @@
     [data-st="b"]{align-items:center!important;justify-content:center!important;padding:80px 28px 100px!important;box-sizing:border-box}
     [data-st="b"] p{font-size:clamp(28px,7.4vw,38px)!important;line-height:1.16!important;text-wrap:balance}
     [data-st="b"]>div{gap:24px!important}
-    .eligibility-scene{margin-top:calc(-1 * var(--ricc-vh,100dvh))!important}
+    .eligibility-scene{margin-top:0!important}
   }
 </style>
 </helmet>
@@ -998,8 +998,9 @@ class Component extends DCLogic {
         const open = smooth((p - 0.60) / 0.24);
         const t = clamp01(close - open);
         const motion = reduce ? 0 : mo;
-        // The next section overlaps the final viewport: finish this beat before p=.82.
-        const finale = smooth((p - 0.84) / 0.06);
+        // Mobile gets a full third beat before the next section enters normal document flow.
+        const finaleStart = narrow ? 0.76 : 0.84;
+        const finale = smooth((p - finaleStart) / 0.06);
         if (cinema) cinema.style.opacity = Math.max(t * 0.78, finale).toFixed(3);
         shot.style.filter = 'saturate(' + (1 - t * 0.32).toFixed(3) + ') contrast(' + (1 + t * 0.08).toFixed(3) + ') brightness(' + (1 - t * 0.12 - finale * 0.65).toFixed(3) + ')';
         if (shotImg) shotImg.style.transform = 'scale(' + (1 + smooth(p) * 0.08 * motion).toFixed(4) + ') translate3d(0,' + (-smooth(p) * 14 * motion).toFixed(1) + 'px,0)';
@@ -1034,8 +1035,9 @@ class Component extends DCLogic {
         }
         fade(sA, win(p, -0.4, 0.18, 0.06));
         if (sB) {
-          sB.style.opacity = smooth((p - 0.90) / 0.045).toFixed(3);
-          sB.style.transform = 'translate3d(0,' + ((1 - smooth((p - 0.90) / 0.045)) * 18 * motion).toFixed(1) + 'px,0)';
+          const finalCopy = smooth((p - (narrow ? 0.82 : 0.90)) / (narrow ? 0.05 : 0.045));
+          sB.style.opacity = finalCopy.toFixed(3);
+          sB.style.transform = 'translate3d(0,' + ((1 - finalCopy) * 18 * motion).toFixed(1) + 'px,0)';
         }
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
         if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
