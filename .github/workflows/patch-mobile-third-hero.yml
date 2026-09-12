@@ -1,0 +1,52 @@
+name: Patch mobile third hero beat
+
+on:
+  push:
+    branches:
+      - fix/mobile-third-hero-beat
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/mobile-third-hero-beat
+      - name: Patch hero choreography
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('RICC Site v2.dc.html')
+          s = path.read_text(encoding='utf-8')
+
+          old_overlap = '.eligibility-scene{margin-top:calc(-1 * var(--ricc-vh,100dvh))!important}'
+          new_overlap = '.eligibility-scene{margin-top:0!important}'
+          if old_overlap not in s:
+              raise SystemExit('mobile overlap rule not found')
+          s = s.replace(old_overlap, new_overlap, 1)
+
+          old_finale = "        // The next section overlaps the final viewport: finish this beat before p=.82.\n        const finale = smooth((p - 0.84) / 0.06);"
+          new_finale = "        // Mobile gets a full third beat before the next section enters normal document flow.\n        const finaleStart = narrow ? 0.76 : 0.84;\n        const finale = smooth((p - finaleStart) / 0.06);"
+          if old_finale not in s:
+              raise SystemExit('finale timing block not found')
+          s = s.replace(old_finale, new_finale, 1)
+
+          old_copy = "        if (sB) {\n          sB.style.opacity = smooth((p - 0.90) / 0.045).toFixed(3);\n          sB.style.transform = 'translate3d(0,' + ((1 - smooth((p - 0.90) / 0.045)) * 18 * motion).toFixed(1) + 'px,0)';\n        }"
+          new_copy = "        if (sB) {\n          const finalCopy = smooth((p - (narrow ? 0.82 : 0.90)) / (narrow ? 0.05 : 0.045));\n          sB.style.opacity = finalCopy.toFixed(3);\n          sB.style.transform = 'translate3d(0,' + ((1 - finalCopy) * 18 * motion).toFixed(1) + 'px,0)';\n        }"
+          if old_copy not in s:
+              raise SystemExit('final copy timing block not found')
+          s = s.replace(old_copy, new_copy, 1)
+
+          path.write_text(s, encoding='utf-8')
+      - name: Commit scoped fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/patch-mobile-third-hero.yml
+          git add "RICC Site v2.dc.html"
+          git commit -m "Fix mobile third hero beat"
+          git push origin HEAD:fix/mobile-third-hero-beat
