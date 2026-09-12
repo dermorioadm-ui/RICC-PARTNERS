@@ -199,6 +199,12 @@
     .operation-table td{font-size:16px;line-height:1.4;padding:12px 10px;border:0;overflow-wrap:break-word}.operation-table td:nth-child(2){padding-left:0}
     .operation-mobile-label{display:block;font:9px/1.5 'Chivo Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;color:#A6B3C0}.operation-table td:last-child .operation-mobile-label{color:#AEC7FF}
   }
+
+  @media(max-width:759px){
+    [data-pin="1"][data-pin-state="active"]{position:fixed!important;top:0!important;left:0;right:0;width:100%;margin:0;transform:none}
+    [data-pin="1"][data-pin-state="before"]{position:absolute!important;top:0!important;left:0;right:0;width:100%}
+    [data-pin="1"][data-pin-state="after"]{position:absolute!important;top:var(--ricc-pin-release)!important;left:0;right:0;width:100%}
+  }
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -948,7 +954,7 @@ class Component extends DCLogic {
       });
       if (m) RESP.forEach(([el, fn]) => fn(el));
     };
-    syncHeroViewport = () => responsive(true);
+    syncHeroViewport = () => { responsive(true); if (this._syncHeroPin) this._syncHeroPin(); };
     responsive();   // daqui para baixo nenhum resp() novo tem efeito no carregamento — registre acima
     window.addEventListener('resize', responsive);
     this._resp = () => window.removeEventListener('resize', responsive);
@@ -960,6 +966,35 @@ class Component extends DCLogic {
     const sWin = [0.20, 0.24, 0.28, 0.32];
 
     const fold1 = document.querySelector('[data-fold="1"]');
+    const heroPin = document.querySelector('[data-pin="1"]');
+    // Fixed while traversing the hero; absolute at either boundary. No touch interception.
+    const syncHeroPin = () => {
+      if (!heroPin || !fold1) return;
+      if (!narrow || !heroTimeline) {
+        heroPin.removeAttribute('data-pin-state');
+        heroPin.style.removeProperty('--ricc-pin-release');
+        return;
+      }
+      const start = fold1.getBoundingClientRect().top + scrollY();
+      const distance = scrollY() - start;
+      const end = heroTimeline.duration;
+      const state = distance < 0 ? 'before' : distance <= end ? 'active' : 'after';
+      heroPin.style.setProperty('--ricc-pin-release', end + 'px');
+      if (heroPin.dataset.pinState !== state) heroPin.dataset.pinState = state;
+    };
+    this._syncHeroPin = syncHeroPin;
+    window.addEventListener('scroll', syncHeroPin, { passive: true });
+    window.addEventListener('resize', syncHeroPin);
+    window.addEventListener('pageshow', syncHeroPin);
+    this._heroPinOff = () => {
+      window.removeEventListener('scroll', syncHeroPin);
+      window.removeEventListener('resize', syncHeroPin);
+      window.removeEventListener('pageshow', syncHeroPin);
+      if (heroPin) heroPin.removeAttribute('data-pin-state');
+      this._syncHeroPin = null;
+    };
+    syncHeroPin();
+
 
     const f1fill = null;
     const imgs = q('[data-img]');
@@ -1201,6 +1236,7 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    if (this._heroPinOff) this._heroPinOff();
     if (this._viewportOff) this._viewportOff();
     if (this._off) this._off();
     if (this._resp) this._resp();
