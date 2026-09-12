@@ -192,7 +192,7 @@
     <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
-  <section data-fold="1" style="position:relative;height:660vh;background:#0B0D0F">
+  <section data-fold="1" style="position:relative;height:473vh;background:#0B0D0F">
     <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
@@ -834,7 +834,7 @@ class Component extends DCLogic {
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
-    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '520svh'; });
+    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '380svh'; });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
