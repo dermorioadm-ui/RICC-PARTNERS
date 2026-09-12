@@ -46,6 +46,13 @@
   .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
   @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:0}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
   @media(max-width:760px){[data-pin="1"],[data-pin="3"]{height:var(--ricc-vh,100dvh)!important}}
+  [data-hero-stage]{display:contents}
+  @media(max-width:759px){
+    /* Cover retracted browser chrome without moving the foreground composition. */
+    [data-pin="1"]{height:var(--ricc-hero-cover-vh,100lvh)!important}
+    [data-hero-stage]{display:block;position:absolute;inset:0;height:var(--ricc-vh,100svh)}
+    [data-hero-stage] [data-cinema]{height:var(--ricc-hero-cover-vh,100lvh)}
+  }
   @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
   /* Final hero beat: open typography, separate from the chart. */
   [data-st="b"]{inset:0!important;max-width:none!important;max-inline-size:none!important;display:flex;align-items:center;justify-content:center;padding:100px clamp(24px,7vw,112px)!important;pointer-events:none!important}
@@ -200,6 +207,7 @@
         <div data-veil style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,15,.5) 0%,rgba(11,13,15,.04) 30%,rgba(11,13,15,.62) 66%,rgba(11,13,15,.9) 100%)"></div>
       </div>
 
+      <div data-hero-stage>
       <svg data-sail viewBox="0 0 1216 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <g data-s="1" opacity="0">
           <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".24">
@@ -341,6 +349,7 @@
           <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.18em;color:#9DB4F5">REALIDADE</div>
           <p style="margin:0;font-size:clamp(22px,3vw,34px);line-height:1.28;letter-spacing:-0.02em;text-wrap:pretty;text-shadow:0 4px 30px rgba(6,8,10,.6)">Agência cobra porque promete resultado — e aceita você mesmo sem potencial de crescimento.</p>
         </div>
+      </div>
       </div>
 
 
@@ -607,12 +616,22 @@ class Component extends DCLogic {
       const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0) || 1;
       this._stableVh = Math.round(h);
       document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
-      if (window.innerWidth < 760) syncHeroViewport();
+      if (window.innerWidth < 760) {
+        // innerHeight/visualViewport only describe the CURRENT chrome state.
+        // Measure the largest viewport once, not on toolbar-only resize events.
+        const probe = document.createElement('div');
+        probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:0;height:100vh;height:100lvh';
+        document.body.appendChild(probe);
+        this._heroCoverVh = Math.max(this._stableVh, Math.ceil(probe.getBoundingClientRect().height));
+        probe.remove();
+        document.documentElement.style.setProperty('--ricc-hero-cover-vh', this._heroCoverVh + 'px');
+        syncHeroViewport();
+      }
     };
     setStableViewport();
     const refreshStableViewport = () => {
       const w = window.innerWidth;
-      if (Math.abs(w - riccViewportW) < 80) return;
+      if (Math.abs(w - riccViewportW) < 80 && (w < 760) === (riccViewportW < 760)) return;
       riccViewportW = w;
       setStableViewport();
     };
@@ -850,8 +869,9 @@ class Component extends DCLogic {
       const copyEnd = copyStart + copy;
       const duration = Math.round(copyEnd + 0.12 * vh);
       heroTimeline = { unit, copyEnd, duration };
-      // Sticky travel = section height - pin height = timeline duration, exactly.
-      e.style.height = (vh + duration) + 'px';
+      // Coverage height differs from the safe composition height, not from the pin.
+      // Sticky travel = (cover + duration) - cover = duration, exactly.
+      e.style.height = (this._heroCoverVh + duration) + 'px';
     });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
@@ -1134,7 +1154,7 @@ class Component extends DCLogic {
         meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
         if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
         this._lastY = y;
-        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
+        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + (narrow ? heroTimeline.duration : fold1.offsetHeight - vh) + 4;
         if (coarse) {
           meter.style.opacity = (touchActive || Date.now() - touchAt < 180) ? '1' : '0';
         } else {
