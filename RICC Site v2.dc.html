@@ -832,35 +832,43 @@ class Component extends DCLogic {
     const meterEl = document.querySelector('[data-meter]');
     const coarse = window.matchMedia('(pointer: coarse)').matches;
     let narrow = window.innerWidth < 760;
-    this._dock = coarse;
-    if (coarse && meterEl) {
-      meterEl.style.left = '50%';
-      meterEl.style.top = 'auto';
-      meterEl.style.bottom = 'clamp(18px,4vh,34px)';
-      meterEl.style.margin = '0';
-      meterEl.style.transform = 'translateX(-50%)';
-    }
+    this._dock = false;
+
+    // Desktop: o círculo acompanha o mouse. Mobile: acompanha exatamente o dedo,
+    // sem bloquear o gesto de scroll e sem ficar ancorado no rodapé/centro.
+    let touchAt = 0;
+    const placeTouchMeter = (x, y) => {
+      if (!coarse || !meterEl) return;
+      mx = x; my = y; touchAt = Date.now();
+      meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
+    };
+    const onTouchStart = e => {
+      const t = e.touches && e.touches[0];
+      if (t) placeTouchMeter(t.clientX, t.clientY);
+    };
+    const onTouchMove = e => {
+      const t = e.touches && e.touches[0];
+      if (t) placeTouchMeter(t.clientX, t.clientY);
+    };
+    const onPointerDown = e => {
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY);
+    };
+    const onPointerMove = e => {
+      if ((e.pointerType === 'touch' || e.pointerType === 'pen') && e.buttons) placeTouchMeter(e.clientX, e.clientY);
+    };
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    this._meterTouchOff = () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+    };
+
+    // A barra de referência inferior continua independente do círculo SCROLL.
     let routeFill = null, routeLabel = null, routeTicks = [];
-    if (coarse && meterEl) {
-      meterEl.innerHTML = '';
-      meterEl.style.cssText = 'position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(286px,calc(100vw - 42px));height:auto;margin:0;transform:translateX(-50%);z-index:12;pointer-events:none;opacity:0;transition:opacity .28s linear;font-family:"Chivo Mono",monospace;color:#F1F2EE';
-      const top = document.createElement('div');
-      top.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:10px;letter-spacing:.16em;color:#AEB6BC';
-      routeLabel = document.createElement('span'); routeLabel.textContent = 'ROTA 01 / 03';
-      const tag = document.createElement('span'); tag.textContent = 'NAVEGAÇÃO'; tag.style.color = '#657079';
-      top.appendChild(routeLabel); top.appendChild(tag);
-      const railM = document.createElement('div');
-      railM.style.cssText = 'position:relative;height:2px;background:#31383D;overflow:visible';
-      routeFill = document.createElement('div');
-      routeFill.style.cssText = 'position:absolute;left:0;top:0;height:2px;width:0;background:#4E76E8;transition:width .08s linear';
-      railM.appendChild(routeFill);
-      [0,50,100].forEach((pct,i) => {
-        const t = document.createElement('i');
-        t.style.cssText = 'position:absolute;left:'+pct+'%;top:50%;width:5px;height:5px;border:1px solid #657079;background:#0E1114;transform:translate(-50%,-50%) rotate(45deg);box-sizing:border-box';
-        railM.appendChild(t); routeTicks.push(t);
-      });
-      meterEl.appendChild(top); meterEl.appendChild(railM);
-    }
 
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
     const responsive = () => {
@@ -1080,14 +1088,16 @@ class Component extends DCLogic {
       });
 
       if (meter) {
-        if (!this._dock) meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
+        meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
         if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
         this._lastY = y;
-        // no celular o medidor fica ancorado no centro do rodape e cobria texto e foto:
-        // vira convite so na primeira tela, que e onde ele tem funcao
         const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
-        const cabe = !this._dock || inFold1;
-        meter.style.opacity = this._dock ? (cabe ? '1' : '0') : ((Date.now() - mAt < 900 && cabe) ? '1' : '0');
+        if (coarse) {
+          // Só aparece junto do gesto e sempre na coordenada real do toque.
+          meter.style.opacity = (inFold1 && Date.now() - touchAt < 420) ? '1' : '0';
+        } else {
+          meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';
+        }
       }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
@@ -1189,6 +1199,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._off) this._off();
     if (this._resp) this._resp();
+    if (this._meterTouchOff) this._meterTouchOff();
     if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);
     if (this._hud && this._hud.parentElement) this._hud.parentElement.removeChild(this._hud);
   }
