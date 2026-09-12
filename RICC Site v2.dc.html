@@ -156,6 +156,49 @@
     [data-pin="3"]>div:nth-child(2){position:relative!important;top:auto!important;padding-top:32px}[data-pin="3"]>div:nth-child(2)>span:last-child{display:none}[data-pin="3"]>[data-img]{inset:0!important;height:100%!important;overflow:hidden}
     [data-fold="3"] [data-parallax]{transform:none!important}[data-panel]>div{padding-right:44px!important}.eligibility-scene{padding-right:40px!important}
   }
+
+  .operation-open{position:relative;z-index:3;height:auto;background:#0E1821;color:#F1F2EE;isolation:isolate}
+  .operation-open::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,18,26,.88),rgba(10,18,26,.97)),url('./img/mar-azul.jpg') center top/cover}
+  .operation-inner{max-width:1240px;margin:auto;padding:110px 64px 120px}
+  .operation-kicker{font:11px/1.6 'Chivo Mono',monospace;letter-spacing:.16em;color:#AEC7FF;margin:0 0 24px}
+  .operation-header{padding-bottom:64px;border-bottom:1px solid #34424D}
+  .operation-header h2{font-size:clamp(40px,4.6vw,68px);font-weight:400;line-height:1.06;letter-spacing:-.04em;margin:0}
+  .operation-header h2 span{color:#A6B3C0}
+  .operation-overview{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:64px 0 80px}
+  .operation-open h3{font-size:clamp(27px,2.7vw,39px);font-weight:400;line-height:1.13;letter-spacing:-.03em;margin:0 0 32px}
+  .operation-team ul{padding:0;margin:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+  .operation-team li{padding:16px 0;border-top:1px solid #34424D;font-size:17px;line-height:1.35;color:#D0D8DE}
+  .operation-cost dl{margin:0}
+  .operation-cost dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;padding:15px 0;border-top:1px solid #34424D;font-size:16px;line-height:1.4}
+  .operation-cost dt{color:#D0D8DE}.operation-cost dd{margin:0;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}.operation-cost small{font-size:12px;color:#A6B3C0}
+  .operation-total{border-top:1px solid #AEC7FF;padding-top:25px;margin-top:16px}
+  .operation-total>span{font:10px 'Chivo Mono',monospace;letter-spacing:.14em;color:#AEC7FF}
+  .operation-total strong{display:block;font-size:clamp(34px,3.5vw,48px);line-height:1.2;font-weight:400;letter-spacing:-.035em;margin:12px 0}.operation-total strong small{font-size:16px}
+  .operation-total p{font-size:15px;color:#D0D8DE;line-height:1.5;margin:0}
+  .operation-comparison{border-top:1px solid #34424D;padding-top:60px}
+  .operation-comparison-title{display:flex;justify-content:space-between;gap:40px;align-items:start;margin-bottom:26px}
+  .operation-comparison-title h3{max-width:26ch;margin:0}
+  .operation-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:left;font-size:20px;line-height:1.4}
+  .operation-table th,.operation-table td{padding:24px;border-bottom:1px solid #34424D;vertical-align:top;font-weight:400}
+  .operation-table thead th{font:12px 'Chivo Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A6B3C0}
+  .operation-table th:first-child{width:21%;padding-left:0}
+  .operation-table tbody th{font:11px/1.6 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#A6B3C0}
+  .operation-table td:nth-child(2){color:#BBC6CE}
+  .operation-table td:last-child,.operation-table thead th:last-child{background:rgba(78,118,232,.12);color:#C3D5FF}
+  .operation-mobile-label{display:none}
+  .operation-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  @media(max-width:760px){
+    .operation-inner{padding:80px 40px 80px 24px}.operation-header{padding-bottom:36px}.operation-header h2{font-size:36px}
+    .operation-overview{grid-template-columns:1fr;gap:44px;padding:40px 0 48px}.operation-open h3{font-size:29px;margin-bottom:24px}.operation-kicker{font-size:10px;margin-bottom:18px}
+    .operation-team li{font-size:15px;padding:14px 0}.operation-team ul{gap:0 20px}
+    .operation-cost dl>div{font-size:15px;gap:12px}.operation-cost dd small{display:block;font-size:11px}.operation-total strong{font-size:40px}
+    .operation-comparison{padding-top:40px}.operation-comparison-title{display:block;margin-bottom:28px}
+    .operation-table,.operation-table tbody{display:block}.operation-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+    .operation-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid #34424D;padding:22px 0;gap:14px 12px}
+    .operation-table tbody th{grid-column:1/-1;width:auto!important;padding:0!important;border:0;color:#F1F2EE}
+    .operation-table td{font-size:16px;line-height:1.4;padding:12px 10px;border:0;overflow-wrap:break-word}.operation-table td:nth-child(2){padding-left:0}
+    .operation-mobile-label{display:block;font:9px/1.5 'Chivo Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;color:#A6B3C0}.operation-table td:last-child .operation-mobile-label{color:#AEC7FF}
+  }
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -463,62 +506,15 @@
     </div>
   </section>
 
-  <section data-fold="3" style="position:relative;z-index:3;height:380vh;background:#0E1114;color:#F1F2EE">
-    <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
-      <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
-      <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-        <span data-decode>04 — O QUE ENTRA NA OPERAÇÃO</span>
-        <span style="white-space:nowrap"><span data-p3-num style="color:#F1F2EE">001</span> / 003</span>
+  <section data-fold="3" class="operation-open" aria-labelledby="operation-title">
+    <div class="operation-inner">
+      <header class="operation-header"><p class="operation-kicker">04 — O QUE ENTRA NA OPERAÇÃO</p><h2 id="operation-title">Uma operação inteira.<br><span>Do produto ao fechamento.</span></h2></header>
+      <div class="operation-overview">
+        <div class="operation-team"><p class="operation-kicker">01 / COMPETÊNCIAS</p><h3>As competências que<br>entram com a gente.</h3><ul><li>Head de Produto</li><li>Diretor de Criação</li><li>Media Buyer sênior</li><li>Arquiteto de Funil</li><li>Desenvolvimento de Software</li><li>Especialista em IA aplicada</li><li>Head Comercial</li><li>Closer</li><li>Diretor de Operações</li></ul></div>
+        <div class="operation-cost"><p class="operation-kicker">02 / ESTRUTURA</p><h3>O time que você<br>deixaria de contratar.</h3><dl><div><dt>Media Buyer sênior</dt><dd>R$ 15 mil <small>/ mês</small></dd></div><div><dt>Diretor de Criação</dt><dd>R$ 18 mil <small>/ mês</small></dd></div><div><dt>Desenvolvimento de Software</dt><dd>R$ 22 mil <small>/ mês</small></dd></div><div><dt>Closer e SDR</dt><dd>R$ 16 mil <small>/ mês</small></dd></div><div><dt>Head Comercial</dt><dd>R$ 28 mil <small>/ mês</small></dd></div></dl><div class="operation-total"><span>FOLHA ESTIMADA</span><strong>R$ 99 mil <small>/ mês</small></strong><p>Com a RICC, zero em folha dessa equipe.</p></div></div>
       </div>
-
-      <div data-panel="0" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">As competências que entram com a gente.</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px 59px;font-size:18px;line-height:1.25;letter-spacing:-0.03em;max-width:900px">
-            <span>Head de Produto</span><span>Diretor de Criação</span><span>Media Buyer sênior</span>
-            <span>Arquiteto de Funil</span><span>Desenvolvimento de Software</span><span>Especialista em IA aplicada</span>
-            <span>Head Comercial</span><span>Closer</span><span>Diretor de Operações</span>
-          </div>
-        </div>
-      </div>
-
-      <div data-panel="1" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">O time que você deixaria de contratar.</h2>
-          <div style="display:flex;flex-direction:column;gap:18px;max-width:720px">
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Media Buyer sênior</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 15 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Diretor de Criação</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 18 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Desenvolvimento de Software</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 22 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Closer e SDR</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 16 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Head Comercial</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 28 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;align-items:baseline;padding-top:18px;border-top:1px solid #404040">
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">FOLHA ESTIMADA · COM A RICC, ZERO</span>
-              <span style="font-family:'Chivo Mono',monospace;font-weight:300;font-size:clamp(24px,3vw,29px);letter-spacing:-0.02em">R$ 99 MIL / MÊS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-panel="2" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(26px,3.8vw,44px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:24ch;text-wrap:pretty">Agência e partner não são a mesma coisa.</h2>
-          <div style="display:flex;flex-direction:column;max-width:980px">
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding-bottom:14px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-              <span></span><span>AGÊNCIA</span><span style="color:#9DB4F5">RICC PARTNERS</span>
-            </div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">COBRANÇA</span><span>Valor fixo + comissão</span><span style="color:#9DB4F5">Zero na entrada</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">REMUNERAÇÃO</span><span>Cobra mesmo sem resultado</span><span style="color:#9DB4F5">33% a 50% do lucro</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">O QUE VENDE</span><span>O que a empresa já vende</span><span style="color:#9DB4F5">O que ela ainda não vende</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">RISCO</span><span>Todo do cliente</span><span style="color:#9DB4F5">Sem lucro, sem pagamento</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;border-bottom:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">SELEÇÃO</span><span>Qualquer cliente que pague</span><span style="color:#9DB4F5">Uma empresa por vez</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div style="position:absolute;right:clamp(14px,2.4vw,26px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:10px">
-        <div data-p3-dot="0" style="width:7px;height:7px;border-radius:3.6px;background:#4E76E8"></div>
-        <div data-p3-dot="1" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
-        <div data-p3-dot="2" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
+      <div class="operation-comparison"><div class="operation-comparison-title"><p class="operation-kicker">03 / MODELO DE PARCERIA</p><h3>Agência e partner<br>não são a mesma coisa.</h3></div>
+      <table class="operation-table"><caption class="operation-sr">Comparação entre agência e RICC Partners</caption><thead><tr><th scope="col">Critério</th><th scope="col">Agência</th><th scope="col">RICC Partners</th></tr></thead><tbody><tr><th scope="row">Cobrança</th><td><span class="operation-mobile-label">Agência</span>Valor fixo + comissão</td><td><span class="operation-mobile-label">RICC Partners</span>Zero na entrada</td></tr><tr><th scope="row">Remuneração</th><td><span class="operation-mobile-label">Agência</span>Cobra mesmo sem resultado</td><td><span class="operation-mobile-label">RICC Partners</span>33% a 50% do lucro</td></tr><tr><th scope="row">O que vende</th><td><span class="operation-mobile-label">Agência</span>O que a empresa já vende</td><td><span class="operation-mobile-label">RICC Partners</span>O que ela ainda não vende</td></tr><tr><th scope="row">Risco</th><td><span class="operation-mobile-label">Agência</span>Todo do cliente</td><td><span class="operation-mobile-label">RICC Partners</span>Sem lucro, sem pagamento</td></tr><tr><th scope="row">Seleção</th><td><span class="operation-mobile-label">Agência</span>Qualquer cliente que pague</td><td><span class="operation-mobile-label">RICC Partners</span>Uma empresa por vez</td></tr></tbody></table>
       </div>
     </div>
   </section>
@@ -873,7 +869,7 @@ class Component extends DCLogic {
       // Sticky travel = (cover + duration) - cover = duration, exactly.
       e.style.height = (this._heroCoverVh + duration) + 'px';
     });
-    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = 'auto'; });
+
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
     ['a', 'b', 'c', 'd'].forEach(k => {
@@ -964,9 +960,7 @@ class Component extends DCLogic {
     const sWin = [0.20, 0.24, 0.28, 0.32];
 
     const fold1 = document.querySelector('[data-fold="1"]');
-    const fold3 = document.querySelector('[data-fold="3"]');
-    const panels = q('[data-panel]');
-    const dots = q('[data-p3-dot]');
+
     const f1fill = null;
     const imgs = q('[data-img]');
     const paras = q('[data-parallax]').filter(el => !el.hasAttribute('data-img'));
@@ -1062,24 +1056,6 @@ class Component extends DCLogic {
         }
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - progress)).toFixed(1));
         if (f1fill) f1fill.style.height = (progress * 100).toFixed(1) + '%';
-      }
-
-      // dobra 3: carrossel horizontal movido a scroll
-      if (fold3 && panels.length && !narrow) {
-        const h = fold3.offsetHeight - vh;
-        const p = clamp01((y - fold3.offsetTop) / (h || 1));
-        const pos = p * (panels.length - 1);
-        panels.forEach((pan, i) => {
-          const d = pos - i;
-          const off = Math.max(-1.15, Math.min(1.15, d));
-          pan.style.transform = 'translate3d(' + (-off * (narrow ? 14 : 42)).toFixed(2) + 'vw,0,0)';
-          pan.style.opacity = String(clamp01((narrow ? 2.2 : 1.6) - Math.abs(d) * (narrow ? 4.4 : 2.2)));
-          pan.style.pointerEvents = Math.abs(d) < 0.5 ? 'auto' : 'none';
-        });
-        const act = Math.round(pos);
-        dots.forEach((dt, i) => { dt.style.background = i === act ? '#4E76E8' : '#404040'; });
-        const num = document.querySelector('[data-p3-num]');
-        if (num) num.textContent = String(act + 1).padStart(3, '0');
       }
 
       // paralaxe das imagens
