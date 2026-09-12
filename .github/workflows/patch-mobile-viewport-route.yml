@@ -1,0 +1,64 @@
+name: Patch mobile viewport and route marker
+
+on:
+  push:
+    branches:
+      - fix/instagram-mobile-viewport-route
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/instagram-mobile-viewport-route
+      - name: Stabilize mobile viewport and add route marker
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('RICC Site v2.dc.html')
+          s = p.read_text(encoding='utf-8')
+
+          old = "  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:470px}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}"
+          new = "  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:470px}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}[data-pin=\"1\"],[data-pin=\"3\"]{height:var(--ricc-vh,100dvh)!important}}"
+          if old not in s: raise SystemExit('mobile media query anchor not found')
+          s = s.replace(old, new, 1)
+
+          old = "  componentDidMount() {\n    try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}"
+          new = "  componentDidMount() {\n    try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}\n    // Instagram/Safari mobile chrome changes visible height while scrolling.\n    // Keep sticky choreography on a stable viewport; refresh only on real orientation/width changes.\n    let riccViewportW = window.innerWidth;\n    const setStableViewport = () => {\n      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 1;\n      this._stableVh = Math.round(h);\n      document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');\n    };\n    setStableViewport();\n    const refreshStableViewport = () => {\n      const w = window.innerWidth;\n      if (Math.abs(w - riccViewportW) < 80) return;\n      riccViewportW = w;\n      setStableViewport();\n    };\n    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));\n    window.addEventListener('resize', refreshStableViewport);"
+          if old not in s: raise SystemExit('componentDidMount anchor not found')
+          s = s.replace(old, new, 1)
+
+          old = "    const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];"
+          new = "    let routeFill = null, routeLabel = null, routeTicks = [];\n    if (coarse && meterEl) {\n      meterEl.innerHTML = '';\n      meterEl.style.cssText = 'position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(286px,calc(100vw - 42px));height:auto;margin:0;transform:translateX(-50%);z-index:12;pointer-events:none;opacity:0;transition:opacity .28s linear;font-family:\"Chivo Mono\",monospace;color:#F1F2EE';\n      const top = document.createElement('div');\n      top.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:10px;letter-spacing:.16em;color:#AEB6BC';\n      routeLabel = document.createElement('span'); routeLabel.textContent = 'ROTA 01 / 03';\n      const tag = document.createElement('span'); tag.textContent = 'NAVEGAÇÃO'; tag.style.color = '#657079';\n      top.appendChild(routeLabel); top.appendChild(tag);\n      const railM = document.createElement('div');\n      railM.style.cssText = 'position:relative;height:2px;background:#31383D;overflow:visible';\n      routeFill = document.createElement('div');\n      routeFill.style.cssText = 'position:absolute;left:0;top:0;height:2px;width:0;background:#4E76E8;transition:width .08s linear';\n      railM.appendChild(routeFill);\n      [0,50,100].forEach((pct,i) => {\n        const t = document.createElement('i');\n        t.style.cssText = 'position:absolute;left:'+pct+'%;top:50%;width:5px;height:5px;border:1px solid #657079;background:#0E1114;transform:translate(-50%,-50%) rotate(45deg);box-sizing:border-box';\n        railM.appendChild(t); routeTicks.push(t);\n      });\n      meterEl.appendChild(top); meterEl.appendChild(railM);\n    }\n\n    const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];"
+          if old not in s: raise SystemExit('KEEP anchor not found')
+          s = s.replace(old, new, 1)
+
+          if s.count("      const vh = window.innerHeight || 1;") < 2:
+              raise SystemExit('viewport calculation anchors not found')
+          s = s.replace("      const vh = window.innerHeight || 1;", "      const vh = this._stableVh || window.innerHeight || 1;", 2)
+
+          old = "        if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';"
+          new = "        if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';\n        if (routeFill) {\n          routeFill.style.width = (p * 100).toFixed(1) + '%';\n          const etapa = p < .34 ? 1 : p < .67 ? 2 : 3;\n          if (routeLabel) routeLabel.textContent = 'ROTA 0' + etapa + ' / 03';\n          routeTicks.forEach((t, i) => {\n            t.style.borderColor = i < etapa ? '#4E76E8' : '#657079';\n            t.style.background = i < etapa ? '#4E76E8' : '#0E1114';\n          });\n        }"
+          if old not in s: raise SystemExit('fold1 progress anchor not found')
+          s = s.replace(old, new, 1)
+
+          old = "        const cabe = !this._dock || y < vh * 0.9;\n        meter.style.opacity = (Date.now() - mAt < 900 && cabe) ? '1' : '0';"
+          new = "        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;\n        const cabe = !this._dock || inFold1;\n        meter.style.opacity = this._dock ? (cabe ? '1' : '0') : ((Date.now() - mAt < 900 && cabe) ? '1' : '0');"
+          if old not in s: raise SystemExit('meter visibility anchor not found')
+          s = s.replace(old, new, 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit isolated mobile UX patch
+        run: |
+          rm .github/workflows/patch-mobile-viewport-route.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "RICC Site v2.dc.html" .github/workflows/patch-mobile-viewport-route.yml
+          git commit -m "fix: stabilize Instagram viewport and add mobile route marker"
+          git push origin HEAD:fix/instagram-mobile-viewport-route
