@@ -45,6 +45,7 @@
   .scale-chart__route{stroke-dasharray:1100;stroke-dashoffset:1100;animation:riccRoute 2.2s cubic-bezier(.165,.84,.44,1) .3s forwards}
   .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
   @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:0}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
+  @media(max-width:760px){[data-pin="1"],[data-pin="3"]{height:var(--ricc-vh,100dvh)!important}}
   @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
   /* Final hero beat: open typography, separate from the chart. */
   [data-st="b"]{inset:0!important;max-width:none!important;max-inline-size:none!important;display:flex;align-items:center;justify-content:center;padding:100px clamp(24px,7vw,112px)!important;pointer-events:none!important}
@@ -53,7 +54,7 @@
   [data-st="b"] [data-decode]{font-size:11px!important;letter-spacing:.24em!important;color:#9DB4F5}
   [data-marks]{display:none!important}
   @media(max-width:760px){[data-st="b"]{padding:90px 24px!important}[data-st="b"] p{font-size:clamp(28px,7vw,42px)!important}}
-  .eligibility-scene{position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:flex;align-items:center;color:#F1F2EE;background:linear-gradient(90deg,rgba(11,15,21,.58),rgba(11,15,21,.28)),url('./img/partnership-harbor.png') center/cover;padding:clamp(90px,10vw,150px) clamp(24px,7vw,112px)}
+  .eligibility-scene{position:relative;z-index:2;margin-top:0;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:flex;align-items:center;color:#F1F2EE;background:linear-gradient(90deg,rgba(11,15,21,.58),rgba(11,15,21,.28)),url('./img/partnership-harbor.png') center/cover;padding:clamp(90px,10vw,150px) clamp(24px,7vw,112px)}
   .eligibility-inner{width:100%;max-width:1040px;margin:auto}
   .eligibility-kicker{font:11px 'Chivo Mono',monospace;letter-spacing:.24em;color:#9DB4F5;margin:0 0 28px}
   .eligibility-scene h2{font-size:clamp(34px,4.6vw,66px);font-weight:400;line-height:1.04;letter-spacing:-.035em;max-width:20ch;margin:0 0 clamp(32px,5vh,60px);text-wrap:balance}
@@ -599,6 +600,22 @@
 class Component extends DCLogic {
   componentDidMount() {
     try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}
+    // Stable viewport for Instagram/Safari dynamic browser chrome.
+    let riccViewportW = window.innerWidth;
+    const setStableViewport = () => {
+      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 1;
+      this._stableVh = Math.round(h);
+      document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
+    };
+    setStableViewport();
+    const refreshStableViewport = () => {
+      const w = window.innerWidth;
+      if (Math.abs(w - riccViewportW) < 80) return;
+      riccViewportW = w;
+      setStableViewport();
+    };
+    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));
+    window.addEventListener('resize', refreshStableViewport);
     // abertura: fios desenham, mosaico decodifica, moldura sangra, título sobe
     (() => {
       let boot = document.querySelector('[data-boot]');
@@ -770,7 +787,7 @@ class Component extends DCLogic {
       hud.style.alignItems = 'center';
       hud.style.bottom = '12px';
       hud.style.fontSize = '10px';
-      rail.style.width = '56px';
+      rail.style.width = '112px';
       rail.style.height = '1px';
       fill.style.width = '0';
       fill.style.height = '1px';
@@ -878,14 +895,24 @@ class Component extends DCLogic {
     const meterEl = document.querySelector('[data-meter]');
     const coarse = window.matchMedia('(pointer: coarse)').matches;
     let narrow = window.innerWidth < 760;
-    this._dock = coarse;
-    if (coarse && meterEl) {
-      meterEl.style.left = '50%';
-      meterEl.style.top = 'auto';
-      meterEl.style.bottom = 'clamp(18px,4vh,34px)';
-      meterEl.style.margin = '0';
-      meterEl.style.transform = 'translateX(-50%)';
-    }
+    this._dock = false;
+    let touchAt = 0;
+    const placeTouchMeter = (x, y) => {
+      if (!coarse || !meterEl) return;
+      mx = x; my = y; touchAt = Date.now();
+      meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
+    };
+    const onTouchStart = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
+    const onTouchMove = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
+    const onPointerDown = e => { if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY); };
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    this._meterTouchOff = () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
     const responsive = () => {
       const m = window.innerWidth < 760;
@@ -951,7 +978,7 @@ class Component extends DCLogic {
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
-      const vh = window.innerHeight || 1;
+      const vh = this._stableVh || window.innerHeight || 1;
       const y = scrollY();
 
       // dobra 1: aproximação lenta e luz azul-grafite contínua
@@ -1069,13 +1096,15 @@ class Component extends DCLogic {
       });
 
       if (meter) {
-        if (!this._dock) meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
+        meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
         if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
         this._lastY = y;
-        // no celular o medidor fica ancorado no centro do rodape e cobria texto e foto:
-        // vira convite so na primeira tela, que e onde ele tem funcao
-        const cabe = !this._dock || y < vh * 0.9;
-        meter.style.opacity = (Date.now() - mAt < 900 && cabe) ? '1' : '0';
+        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
+        if (coarse) {
+          meter.style.opacity = (inFold1 && Date.now() - touchAt < 420) ? '1' : '0';
+        } else {
+          meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';
+        }
       }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
@@ -1092,7 +1121,7 @@ class Component extends DCLogic {
     const arm = () => {
       if (this._armed || reduce) return;
       this._armed = true;
-      const vh = window.innerHeight || 1;
+      const vh = this._stableVh || window.innerHeight || 1;
       this._pending = reveals.filter(el => el.getBoundingClientRect().top >= vh * 0.9);
       this._pending.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
     };
@@ -1177,6 +1206,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._off) this._off();
     if (this._resp) this._resp();
+    if (this._meterTouchOff) this._meterTouchOff();
     if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);
     if (this._hud && this._hud.parentElement) this._hud.parentElement.removeChild(this._hud);
   }
