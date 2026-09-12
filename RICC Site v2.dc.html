@@ -602,10 +602,12 @@ class Component extends DCLogic {
     try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}
     // Stable viewport for Instagram/Safari dynamic browser chrome.
     let riccViewportW = window.innerWidth;
+    let syncHeroViewport = () => {};
     const setStableViewport = () => {
       const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0) || 1;
       this._stableVh = Math.round(h);
       document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
+      if (window.innerWidth < 760) syncHeroViewport();
     };
     setStableViewport();
     const refreshStableViewport = () => {
@@ -834,7 +836,23 @@ class Component extends DCLogic {
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
-    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '520svh'; });
+    // Pixel budgets preserve the nominal scene speed (4.2 viewports per p unit).
+    // Only the unused tail after the copy reveal is replaced by a short reading beat.
+    let heroTimeline;
+    resp(document.querySelector('[data-fold="1"]'), e => {
+      const vh = this._stableVh;
+      const unit = 4.2 * vh;
+      const video = 0.20 * unit;
+      const chart = (0.76 - 0.20) * unit;
+      const dissolve = 0.06 * unit;
+      const copy = 0.05 * unit;
+      const copyStart = video + chart + dissolve;
+      const copyEnd = copyStart + copy;
+      const duration = Math.round(copyEnd + 0.12 * vh);
+      heroTimeline = { unit, copyEnd, duration };
+      // Sticky travel = section height - pin height = timeline duration, exactly.
+      e.style.height = (vh + duration) + 'px';
+    });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
@@ -920,8 +938,12 @@ class Component extends DCLogic {
       window.removeEventListener('pointerdown', onPointerDown);
     };
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
-    const responsive = () => {
+    let responsiveWidth;
+    const responsive = (force = false) => {
       const m = window.innerWidth < 760;
+      // Safari chrome resizes must not restore/rewrite the animated mobile styles.
+      if (m && narrow && responsiveWidth === window.innerWidth && force !== true) return;
+      responsiveWidth = window.innerWidth;
       narrow = m;
       const feitos = new Set();
       RESP.forEach(([el]) => {
@@ -936,6 +958,7 @@ class Component extends DCLogic {
       });
       if (m) RESP.forEach(([el, fn]) => fn(el));
     };
+    syncHeroViewport = () => responsive(true);
     responsive();   // daqui para baixo nenhum resp() novo tem efeito no carregamento — registre acima
     window.addEventListener('resize', responsive);
     this._resp = () => window.removeEventListener('resize', responsive);
@@ -989,8 +1012,12 @@ class Component extends DCLogic {
 
       // dobra 1: aproximação lenta e luz azul-grafite contínua
       if (fold1 && shot) {
-        const hh = fold1.offsetHeight - vh;
-        const p = clamp01((y - fold1.offsetTop) / (hh || 1));
+        const hh = narrow ? heroTimeline.duration : fold1.offsetHeight - vh;
+        const distance = Math.max(0, y - fold1.offsetTop);
+        const progress = clamp01(distance / (hh || 1));
+        const p = narrow
+          ? Math.min(distance, heroTimeline.copyEnd) / heroTimeline.unit
+          : progress;
 
         // A continuous dusk-and-reveal, with no tile boundaries or random flashing.
         const smooth = v => { const x = clamp01(v); return x * x * (3 - 2 * x); };
@@ -1039,8 +1066,8 @@ class Component extends DCLogic {
           sB.style.opacity = finalCopy.toFixed(3);
           sB.style.transform = 'translate3d(0,' + ((1 - finalCopy) * 18 * motion).toFixed(1) + 'px,0)';
         }
-        if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
-        if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
+        if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - progress)).toFixed(1));
+        if (f1fill) f1fill.style.height = (progress * 100).toFixed(1) + '%';
       }
 
       // dobra 3: carrossel horizontal movido a scroll
