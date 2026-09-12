@@ -255,7 +255,7 @@
     <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
-  <section data-fold="1" style="position:relative;height:616vh;background:#0B0D0F">
+  <section data-fold="1" style="position:relative;height:673vh;background:#0B0D0F">
     <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
@@ -1093,9 +1093,10 @@ class Component extends DCLogic {
 
       // dobra 1: aproximação lenta e luz azul-grafite contínua
       if (fold1 && shot) {
-        // desktop: hold de leitura em pixels depois do copy. Sem ele o painel REALIDADE vivia
-        // 269px de scroll e rolava embora junto com a hero (p fica em 1 enquanto o sticky segura).
-        const hold = narrow ? 0 : Math.round(0.4333 * vh);
+        // desktop: hold de leitura em pixels depois do copy — uma tela inteira de scroll com o
+        // painel REALIDADE parado e livre, antes de a cortina da elegibilidade comecar a subir.
+        // (p fica em 1 enquanto o sticky segura; 43vh era pouco: o texto era engolido cedo.)
+        const hold = narrow ? 0 : Math.round(1.0 * vh);
         // no desktop a .eligibility-scene sobe por cima dos ULTIMOS 100vh do pin (margin-top:-100vh).
         // O hold precisa acabar antes dela entrar, senao o copy fica o tempo todo atras da cortina.
         const curtain = narrow ? 0 : vh;
