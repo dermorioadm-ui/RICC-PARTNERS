@@ -38,6 +38,80 @@
   @keyframes riccBlink{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
   @keyframes riccPulse{0%,100%{opacity:1}50%{opacity:.28}}
   @keyframes riccHalo{0%{transform:translate(-50%,-50%) scale(.72);opacity:.55}70%{transform:translate(-50%,-50%) scale(1.5);opacity:0}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+  @keyframes riccRoute{to{stroke-dashoffset:0}}
+  @keyframes riccBuoy{0%,100%{translate:0 0}50%{translate:0 -5px}}
+  .scale-chart{display:grid;grid-template-columns:minmax(230px,.72fr) minmax(0,1.55fr);gap:clamp(24px,4vw,64px);align-items:center}
+  .scale-chart__visual{position:relative;min-width:0;width:100%;aspect-ratio:720/680;background:transparent}
+  .scale-chart__route{stroke-dasharray:1100;stroke-dashoffset:1100;animation:riccRoute 2.2s cubic-bezier(.165,.84,.44,1) .3s forwards}
+  .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
+  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:0}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
+  @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
+  /* Final hero beat: open typography, separate from the chart. */
+  [data-st="b"]{inset:0!important;max-width:none!important;max-inline-size:none!important;display:flex;align-items:center;justify-content:center;padding:100px clamp(24px,7vw,112px)!important;pointer-events:none!important}
+  [data-st="b"]>div{width:100%;max-width:1040px!important;background:none!important;border:0!important;clip-path:none!important;padding:0!important;gap:clamp(24px,4vh,44px)!important}
+  [data-st="b"] p{font-size:clamp(30px,4.6vw,66px)!important;line-height:1.08!important;letter-spacing:-.035em!important;max-width:25ch!important;text-wrap:balance;text-shadow:none!important}
+  [data-st="b"] [data-decode]{font-size:11px!important;letter-spacing:.24em!important;color:#9DB4F5}
+  [data-marks]{display:none!important}
+  @media(max-width:760px){[data-st="b"]{padding:90px 24px!important}[data-st="b"] p{font-size:clamp(28px,7vw,42px)!important}}
+  .eligibility-scene{position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:flex;align-items:center;color:#F1F2EE;background:linear-gradient(90deg,rgba(11,15,21,.58),rgba(11,15,21,.28)),url('./img/partnership-harbor.png') center/cover;padding:clamp(90px,10vw,150px) clamp(24px,7vw,112px)}
+  .eligibility-inner{width:100%;max-width:1040px;margin:auto}
+  .eligibility-kicker{font:11px 'Chivo Mono',monospace;letter-spacing:.24em;color:#9DB4F5;margin:0 0 28px}
+  .eligibility-scene h2{font-size:clamp(34px,4.6vw,66px);font-weight:400;line-height:1.04;letter-spacing:-.035em;max-width:20ch;margin:0 0 clamp(32px,5vh,60px);text-wrap:balance}
+  .eligibility-list{list-style:none;margin:0;padding:0;counter-reset:criteria}
+  .eligibility-list li{counter-increment:criteria;display:grid;grid-template-columns:36px minmax(0,1fr) minmax(150px,.55fr);gap:20px;align-items:baseline;padding:22px 0;border-top:1px solid rgba(241,242,238,.18)}
+  .eligibility-list li::before{content:counter(criteria,decimal-leading-zero);font:12px 'Chivo Mono',monospace;color:#9DB4F5}
+  .eligibility-list strong{font-size:clamp(19px,2vw,27px);line-height:1.22;font-weight:400;letter-spacing:-.025em}
+  .eligibility-list small{font:10px/1.6 'Chivo Mono',monospace;letter-spacing:.1em;color:#A9B3C0;text-align:right}
+  @media(max-width:760px){.eligibility-list li{grid-template-columns:26px minmax(0,1fr);gap:8px 14px;padding:18px 0}.eligibility-list small{grid-column:2;text-align:left}.eligibility-scene{padding:90px 24px 64px}}
+  /* Separate the chart from the moving footage without a surrounding card. */
+  [data-sail]{filter:drop-shadow(0 1px 2px rgba(0,0,0,.9))}
+  [data-sail] text{paint-order:stroke fill;stroke:#0B0D0F;stroke-width:2px;stroke-opacity:.75;stroke-linejoin:round}
+  /* Ivory sailcloth and sculpted photographic apertures for the business model. */
+  [data-fold="2"]{background:#F4F3E8 url('./img/modelo-sailcloth-ivory.png') center top/100% auto no-repeat!important;color:#17212A!important}
+  [data-fold="2"]>div{max-width:1440px;margin:0 auto!important;padding:0 clamp(24px,5vw,80px)}
+  [data-fold="2"] [data-decode]{color:#53616A!important}
+  [data-fold="2"] [data-content]>p{color:#46545F!important}
+  [data-fold="2"] [data-content]>a{background:#17212A!important;color:#F4F3E8!important}
+  [data-fold="2"] [data-asset]{position:relative;clip-path:polygon(0 10%,84% 0,100% 0,100% 78%,83% 100%,0 94%)!important;border-radius:2px 48px 2px 2px;aspect-ratio:1/1!important}
+  [data-fold="2"] [data-blk]:nth-child(2) [data-asset]{clip-path:polygon(0 0,100% 9%,100% 94%,17% 100%,0 78%)!important;border-radius:48px 2px 2px 2px}
+  [data-fold="2"] [data-blk]:nth-child(3) [data-asset]{clip-path:polygon(0 7%,100% 0,100% 82%,80% 100%,0 100%)!important}
+  [data-fold="2"] [data-content]{padding-right:clamp(12px,2vw,32px)}
+  @media(max-width:760px){[data-fold="2"]{background-size:auto 1100px!important}[data-fold="2"]>div{padding:0 24px}[data-fold="2"] [data-asset]{aspect-ratio:5/4!important;border-radius:2px 28px 2px 2px}[data-fold="2"] [data-blk]:nth-child(2) [data-asset]{border-radius:28px 2px 2px 2px}}
+  /* Larger editorial copy beside the model photographs. */
+  [data-fold="2"] [data-content]>div:not([data-decode]){font-size:clamp(34px,3.2vw,50px)!important;line-height:1.08!important;max-width:18ch!important;margin-bottom:28px!important}
+  [data-fold="2"] [data-content]>p{font-size:clamp(22px,1.8vw,28px)!important;line-height:1.4!important;max-width:32ch!important;margin-bottom:40px!important}
+  [data-fold="2"] [data-content]>[data-decode]{font-size:clamp(17px,1.35vw,22px)!important;line-height:1.35!important;margin-bottom:28px!important}
+  [data-fold="2"] [data-content]>a{font-size:16px!important;padding:18px 22px!important}
+  @media(max-width:760px){[data-fold="2"] [data-content]>div:not([data-decode]){font-size:32px!important}[data-fold="2"] [data-content]>p{font-size:21px!important}[data-fold="2"] [data-content]>[data-decode]{font-size:16px!important}}
+  /* Give enlarged model copy a real column gap instead of internal offsets. */
+  [data-fold="2"] [data-blk]{display:grid!important;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);column-gap:clamp(40px,5vw,80px)!important;row-gap:32px!important;align-items:center!important}
+  [data-fold="2"] [data-content]{padding:0!important;min-width:0!important}
+  [data-fold="2"] [data-asset]{min-width:0!important;width:100%!important}
+  [data-fold="2"] [data-blk]:nth-child(2) [data-content]{grid-column:1;grid-row:1}
+  [data-fold="2"] [data-blk]:nth-child(2) [data-asset]{grid-column:2;grid-row:1}
+  [data-fold="2"] [data-content]>p,[data-fold="2"] [data-content]>div{overflow-wrap:break-word}
+  @media(max-width:760px){[data-fold="2"] [data-blk]{grid-template-columns:minmax(0,1fr)!important}[data-fold="2"] [data-blk]:nth-child(2) [data-content],[data-fold="2"] [data-blk]:nth-child(2) [data-asset]{grid-column:auto;grid-row:auto}}
+  [data-asset-socio]{aspect-ratio:1/1!important;clip-path:polygon(0 10%,84% 0,100% 0,100% 78%,83% 100%,0 94%)!important;border-radius:2px 48px 2px 2px}
+  @media(max-width:760px){[data-asset-socio]{aspect-ratio:5/4!important;border-radius:2px 28px 2px 2px}}
+  .results-scene{position:relative;z-index:4;overflow:hidden;color:#F4F3E8;background:linear-gradient(115deg,rgba(12,32,76,.96),rgba(30,63,168,.89)),url('./img/agua-textura.jpg') center/cover;padding:clamp(90px,9vw,140px) clamp(24px,6vw,96px);box-sizing:border-box}
+  .results-inner{max-width:1280px;margin:auto}
+  .results-eyebrow{display:flex;justify-content:space-between;gap:24px;font:11px/1.6 'Chivo Mono',monospace;letter-spacing:.16em;color:#BDCDF1}
+  .results-scene h2{font-size:clamp(38px,5vw,72px);font-weight:400;letter-spacing:-.045em;line-height:1.02;margin:44px 0 56px}
+  .results-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);border-top:1px solid #718BB6;border-bottom:1px solid #718BB6}
+  .results-main{padding:40px 40px 48px 0;display:flex;flex-direction:column;justify-content:center}
+  .results-label{font:11px/1.5 'Chivo Mono',monospace;letter-spacing:.13em;color:#C9D6EF}
+  .results-number{font-size:clamp(100px,13vw,180px);letter-spacing:-.065em;line-height:1;margin:24px 0 28px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .results-number span{font-size:clamp(25px,3.2vw,46px);letter-spacing:-.04em}
+  .results-description{font-size:clamp(18px,1.7vw,23px);line-height:1.45;letter-spacing:-.02em;margin:0;color:#DFE7F6}
+  .results-secondary{border-left:1px solid #718BB6;padding-left:40px}
+  .results-secondary>div{padding:32px 0}.results-secondary>div+div{border-top:1px solid #718BB6}
+  .results-metric{font-size:clamp(62px,6.5vw,94px);line-height:1;letter-spacing:-.055em;margin:14px 0}.results-metric span{font-size:.48em}
+  .results-footer{display:flex;justify-content:space-between;gap:32px;padding-top:28px}.results-footer p{margin:0;font:11px/1.8 'Chivo Mono',monospace;color:#BDCDF1;letter-spacing:.04em}.results-footer p+p{font:15px/1.6 Archivo,sans-serif;letter-spacing:0;max-width:46ch}.results-footer strong{color:#F4F3E8;font-weight:500}
+  @media(max-width:760px){.results-eyebrow{flex-direction:column;gap:8px}.results-grid{grid-template-columns:1fr}.results-main{padding:32px 0}.results-secondary{padding:0;border-left:0;border-top:1px solid #718BB6;display:grid;grid-template-columns:1fr 1fr;gap:24px}.results-secondary>div+div{border-top:0}.results-number{font-size:110px}.results-number span{font-size:28px}.results-footer{flex-direction:column;gap:20px}.results-scene h2{margin:32px 0}}
+[data-fold="35"]{background:#F4F3E8 url('./img/founder-ivory.png') center/cover!important;color:#17212A!important}
+[data-fold="35"] p{color:#46545F!important}
+[data-fold="35"] [data-decode],[data-socio-foto]>div:last-child{color:#53616A!important}
+[data-fold="35"] [style*="color:#9DB4F5"]{color:#1E3FA8!important}
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -102,41 +176,52 @@
 
       <svg data-sail viewBox="0 0 1216 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <g data-s="1" opacity="0">
-          <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".1">
+          <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".24">
             <path d="M180 195h880M180 250h880M180 305h880M180 415h880M180 470h880M180 525h880"></path>
             <path d="M290 140v440M510 140v440M730 140v440M950 140v440"></path>
           </g>
-          <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".26">
+          <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".46">
             <path d="M180 140h880M180 360h880"></path>
             <path d="M400 140v440M620 140v440M840 140v440M1060 140v440"></path>
           </g>
-          <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".62">
+          <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".9">
             <path d="M180 580h880"></path><path d="M180 140v440"></path>
           </g>
-          <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".62">
+          <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".9">
             <path d="M180 580v9M400 580v9M620 580v9M840 580v9M1060 580v9"></path>
             <path d="M171 140h9M171 250h9M171 360h9M171 470h9M171 580h9"></path>
           </g>
           <g stroke="#4E76E8" fill="none" stroke-width="1.4">
             <path d="M180 158v-18h18M1042 140h18v18M180 562v18h18M1042 580h18v-18"></path>
           </g>
-          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".62">
+          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".9">
             <text x="180" y="608">HOJE</text><text x="400" y="608">MÊS 01</text><text x="620" y="608">MÊS 02</text><text x="840" y="608">MÊS 03</text><text x="1006" y="608">MÊS 04</text>
             <text x="160" y="145" text-anchor="end">TETO</text><text x="160" y="365" text-anchor="end">MÉDIA</text><text x="160" y="585" text-anchor="end">BASE</text>
           </g>
         </g>
 
         <g data-s="2" opacity="0">
-          <g stroke="#F1F2EE" fill="none" stroke-width="1.6" stroke-dasharray="6 7" opacity=".8">
+        <g data-mini-sailboat transform="translate(570 445)" aria-hidden="true" fill="none" stroke="#F1F2EE" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M-2-43V-9"/>
+          <path d="M-6-37L-24-12H-6Z" fill="#0E1114" fill-opacity=".7"/>
+          <path d="M3-42L25-12H3Z" fill="#AEC7FF" fill-opacity=".18"/>
+          <path d="M-27-7H28L17 1H-17Z" fill="#0E1114" fill-opacity=".85"/>
+          <path d="M-19 6H17" stroke="#AEC7FF" stroke-width="1.2"/>
+        </g>
+          <g stroke="#F1F2EE" fill="none" stroke-width="2.2" stroke-dasharray="6 7" opacity="1">
             <path d="M180 508C290 500 350 492 400 482 470 468 540 454 620 448"></path>
           </g>
           <g stroke="#F1F2EE" fill="none" opacity=".18">
             <path d="M180 508h880" stroke-dasharray="3 9"></path>
           </g>
-          <g fill="#F1F2EE" opacity=".9"><circle cx="180" cy="508" r="3.4"></circle><circle cx="620" cy="448" r="5"></circle></g>
-          <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".4"><path d="M636 448h34"></path></g>
-          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".62">
-            <text x="682" y="452">O QUE VOCÊ JÁ VENDE</text>
+          <g fill="#FF8585" opacity=".9"><circle cx="180" cy="508" r="3.4"></circle><circle cx="620" cy="448" r="5"></circle></g>
+          <g stroke="#FF8585" fill="none" stroke-width="3.6" stroke-linecap="round">
+            <path d="M620 448H1016"></path>
+          </g>
+          <g fill="#0B0D0F" stroke="#FF8585" stroke-width="2.4"><circle cx="1016" cy="448" r="7"></circle></g>
+          <g stroke="#FF8585" fill="none" stroke-width="1.6"><path d="M1004 440l12 8-12 8"></path></g>
+          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#FF8585" opacity="1">
+            <text x="682" y="478">O QUE VOCÊ JÁ VENDE</text>
           </g>
         </g>
 
@@ -144,27 +229,27 @@
           <g stroke="#4E76E8" fill="none" stroke-width="9" opacity=".16" stroke-linecap="round">
             <path d="M620 448C700 430 760 372 830 306 900 240 960 196 1016 168"></path>
           </g>
-          <g stroke="#9DB4F5" fill="none" stroke-width="2.6" stroke-linecap="round">
+          <g stroke="#AEC7FF" fill="none" stroke-width="3.6" stroke-linecap="round">
             <path d="M620 448C700 430 760 372 830 306 900 240 960 196 1016 168"></path>
           </g>
-          <g stroke="#9DB4F5" fill="none" stroke-width="1.6"><path d="M1016 168l-20 3M1016 168l3 20"></path></g>
-          <g fill="#9DB4F5"><circle cx="830" cy="306" r="4.4"></circle></g>
-          <g fill="#0B0D0F" stroke="#9DB4F5" stroke-width="2.4"><circle cx="1016" cy="168" r="7"></circle></g>
-          <g stroke="#9DB4F5" fill="none" opacity=".3" stroke-dasharray="3 9">
+          <g stroke="#AEC7FF" fill="none" stroke-width="1.6"><path d="M1016 168l-20 3M1016 168l3 20"></path></g>
+          <g fill="#AEC7FF"><circle cx="830" cy="306" r="4.4"></circle></g>
+          <g fill="#0B0D0F" stroke="#AEC7FF" stroke-width="2.4"><circle cx="1016" cy="168" r="7"></circle></g>
+          <g stroke="#AEC7FF" fill="none" opacity=".3" stroke-dasharray="3 9">
             <path d="M620 448 620 580M830 306 830 580M1016 168 1016 580"></path>
           </g>
-          <g stroke="#9DB4F5" fill="none" stroke-width="1" opacity=".55"><path d="M666 402h30"></path></g>
-          <g font-family="'Chivo Mono',monospace" font-size="13" letter-spacing="2.4" fill="#9DB4F5">
+          <g stroke="#AEC7FF" fill="none" stroke-width="1" opacity=".85"><path d="M666 402h30"></path></g>
+          <g font-family="'Chivo Mono',monospace" font-size="13" letter-spacing="2.4" fill="#AEC7FF">
             <text x="708" y="406">O BRAÇO NOVO</text>
           </g>
         </g>
 
         <g data-s="4" opacity="0">
-          <g stroke="#F1F2EE" fill="none" opacity=".42" stroke-width="1">
+          <g stroke="#F1F2EE" fill="none" opacity=".75" stroke-width="1">
             <path d="M1074 168h30M1074 448h30"></path><path d="M1094 174v268"></path>
             <path d="M1094 168l-6 11M1094 168l6 11M1094 448l-6-11M1094 448l6-11"></path>
           </g>
-          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity=".7">
+          <g font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE" opacity="1">
             <text x="1094" y="486" text-anchor="middle">DELTA</text><text x="1094" y="508" text-anchor="middle">DE RECEITA</text>
           </g>
           <g stroke="#F1F2EE" fill="none" stroke-width="1.4" opacity=".9">
@@ -176,7 +261,7 @@
         </g>
       </svg>
 
-      <div data-holes style="position:absolute;inset:0;display:grid;pointer-events:none"></div>
+      <div data-cinema aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 62% 42%,transparent 20%,rgba(14,17,20,.48) 72%,#0E1114 100%),linear-gradient(115deg,rgba(14,17,20,.92),rgba(30,63,168,.16) 58%,rgba(14,17,20,.65));will-change:opacity"></div>
 
       <div data-marks style="position:absolute;left:auto;right:0;top:0;bottom:0;width:min(58%,760px);opacity:0;pointer-events:none">
         <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">
@@ -229,7 +314,20 @@
     </div>
   </section>
 
-  <section data-fold="2" style="position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;background:#0E1114;color:#F1F2EE">
+  <section class="eligibility-scene" aria-labelledby="eligibility-title">
+    <div class="eligibility-inner">
+      <p class="eligibility-kicker">CRITÉRIOS DE PARCERIA</p>
+      <h2 id="eligibility-title">Veja se o seu negócio está elegível.</h2>
+      <ol class="eligibility-list">
+        <li><strong>Potencial de crescimento validado por benchmark.</strong><small>REQUISITO</small></li>
+        <li><strong>A credencial que o mercado exige.</strong><small>LICENÇA · REGISTRO · HABILIDADES ESPECIAIS</small></li>
+        <li><strong>Um decisor com autonomia para avançar.</strong><small>DECISÃO POR COMITÊ ELIMINA</small></li>
+        <li><strong>Capacidade de entregar tudo o que for vendido.</strong><small>CAPACIDADE OPERACIONAL</small></li>
+        <li><strong>Verba para mídia e tokens de IA desde o início.</strong><small>ADS E TOKENS DE IA</small></li>
+      </ol>
+    </div>
+  </section>
+  <section data-fold="2" style="position:relative;z-index:2;background:#0E1114;color:#F1F2EE">
     <div style="margin:0 1.6rem">
       <div data-decode data-reveal style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B;padding-top:14.5rem">02 — O modelo</div>
       <h2 data-reveal style="margin:0;font-size:clamp(30px,7.4vw,6.4rem);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:67rem;padding:2.4rem 0 7.5rem;text-wrap:pretty">Custo zero na entrada. Participação no lucro do braço novo.</h2>
@@ -249,7 +347,7 @@
       </div>
       <div data-blk style="display:flex;flex-wrap:wrap;gap:3.2rem 0;align-items:stretch;flex-direction:row-reverse;">
         <div data-asset style="flex:1 1 320px;min-width:0;aspect-ratio:776/830;overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,4rem 100%,0 calc(100% - 4rem))">
-          <div data-img data-parallax="-170" style="position:relative;width:100%;height:120%;top:-10%"><image-slot id="v2-blk-2" shape="rect" fit="cover" src="./img/marina-noite.jpg" placeholder="Marina"></image-slot></div>
+          <div data-img data-parallax="-170" style="position:relative;width:100%;height:120%;top:-10%"><image-slot id="v2-blk-2" shape="rect" fit="cover" src="./img/veleiro-operacao.png" placeholder="Veleiro em operação, com velas e cordas tensionadas"></image-slot></div>
         </div>
         <div data-content style="flex:1 1 320px;min-width:0;box-sizing:border-box;padding-inline:min(19.6rem,12vw) 0;display:flex;flex-direction:column;justify-content:center">
           <div data-decode style="font-family:'Chivo Mono',monospace;font-size:2rem;line-height:1.2;text-transform:uppercase;display:flex;align-items:center;gap:1.2rem;margin-bottom:2.4rem;color:#84837B">
@@ -278,12 +376,50 @@
     </div>
   </section>
 
-  <section data-fold="3" style="position:relative;z-index:3;height:520vh;background:#0E1114;color:#F1F2EE">
+  <section data-scale-chart style="position:relative;z-index:3;background:#0E1114;color:#F1F2EE;border-top:1px solid #252A2E;border-bottom:1px solid #252A2E;overflow:hidden">
+    <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 24%,rgba(78,118,232,.12),transparent 30%)"></div>
+    <div class="scale-chart" style="position:relative;max-width:1600px;margin:0 auto;padding:clamp(90px,13vw,168px) clamp(20px,4vw,40px);box-sizing:border-box">
+      <div class="scale-chart__copy" data-reveal style="display:flex;flex-direction:column;align-items:flex-start">
+        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B;margin-bottom:2.4rem">03 — CARTA DE ESCALA</div>
+        <h2 style="margin:0;font-size:clamp(34px,5.4vw,64px);line-height:1.01;letter-spacing:-.04em;font-weight:400;max-width:10ch;text-wrap:balance">Escalar não é acelerar sem rumo.</h2>
+        <p style="margin:2.6rem 0 0;font-size:18px;line-height:1.55;letter-spacing:-.025em;color:#C8CDD2;max-width:38ch">É sair do cais com uma tese, provar a rota em águas controladas e só então abrir vela. Cada real de mídia acompanha capacidade real de entrega.</p>
+        <div class="scale-chart__legend" style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:4.8rem;padding-top:2rem;border-top:1px solid #404040;font-family:'Chivo Mono',monospace;font-size:12px;letter-spacing:.08em;color:#84837B">
+          <span><b style="display:block;color:#F1F2EE;font-weight:400;margin-bottom:7px">01 · PROVAR</b>Oferta + primeira venda</span>
+          <span><b style="display:block;color:#9DB4F5;font-weight:400;margin-bottom:7px">02 · REPETIR</b>Funil + processo</span>
+          <span><b style="display:block;color:#F1F2EE;font-weight:400;margin-bottom:7px">03 · ESCALAR</b>Mídia + operação</span>
+        </div>
+      </div>
+
+      <div class="scale-chart__visual" data-reveal aria-label="Carta náutica ilustrando a rota da validação até a escala">
+        <svg viewBox="0 0 720 680" preserveAspectRatio="xMidYMid meet" role="img" style="position:absolute;inset:0;width:100%;height:100%">
+          <title>Rota náutica da prova à escala</title>
+          <defs><pattern id="scaleGrid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#F1F2EE" stroke-opacity=".07" stroke-width="1"/></pattern></defs>
+          <rect width="720" height="680" fill="url(#scaleGrid)"/>
+          <g fill="none" stroke="#F1F2EE" opacity=".16"><circle cx="360" cy="340" r="250"/><circle cx="360" cy="340" r="170"/><path d="M360 54V626M74 340H646M158 138l404 404M562 138 158 542"/></g>
+          <g font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#84837B"><text x="24" y="34">23°00' S</text><text x="605" y="34">043°10' W</text><text x="24" y="652">RICC / ROTA 01</text><text x="574" y="652">ESCALA 1:90</text></g>
+
+          <path d="M90 558C155 527 180 485 223 463C278 435 322 468 367 414C406 367 389 320 448 284C495 255 535 260 608 156" fill="none" stroke="#4E76E8" stroke-opacity=".14" stroke-width="16" stroke-linecap="round"/>
+          <path class="scale-chart__route" d="M90 558C155 527 180 485 223 463C278 435 322 468 367 414C406 367 389 320 448 284C495 255 535 260 608 156" fill="none" stroke="#9DB4F5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M595 159l17-8-1 19" fill="none" stroke="#9DB4F5" stroke-width="2"/>
+
+          <g transform="translate(91 558)"><circle r="10" fill="#101417" stroke="#F1F2EE" stroke-width="2"/><circle r="3" fill="#F1F2EE"/><path d="M-1-18v-28M-1-46l-17 25h17zM2-43l16 22H2zM-20-18h39l-6 7h-27z" fill="none" stroke="#F1F2EE"/><text x="-4" y="31" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#F1F2EE">CAIS</text></g>
+          <g transform="translate(367 414)"><circle r="17" fill="#101417" stroke="#9DB4F5" stroke-width="2"/><path d="M-7 0h14M0-7v14" stroke="#9DB4F5"/><path d="M0 23v35M-17 58h34" stroke="#F1F2EE" stroke-opacity=".4" stroke-dasharray="4 5"/><text x="0" y="78" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="2" fill="#9DB4F5">VALIDAÇÃO</text></g>
+          <g class="scale-chart__buoy" transform="translate(608 156)"><circle r="34" fill="none" stroke="#4E76E8" stroke-opacity=".35"/><circle r="21" fill="#1E3FA8"/><path d="M-10 8 0-14 10 8zM-14 13h28" fill="none" stroke="#F1F2EE" stroke-width="1.6"/><path d="M0-14v-15M-8-29H8" stroke="#F1F2EE" stroke-width="1.6"/><text x="0" y="58" text-anchor="middle" font-family="'Chivo Mono',monospace" font-size="12" letter-spacing="2.2" fill="#F1F2EE">ESCALA</text></g>
+
+          <g transform="translate(190 175)" fill="none" stroke="#F1F2EE" stroke-opacity=".52"><circle r="54"/><circle r="39"/><circle r="6" fill="#F1F2EE" fill-opacity=".8"/><path d="M0-65V65M-65 0H65M-46-46l92 92M46-46l-92 92"/><path d="M0-48 9-8 0 0-9-8z" fill="#9DB4F5" stroke="none" transform="rotate(42)"/></g>
+          <g font-family="'Chivo Mono',monospace" font-size="11" letter-spacing="1.8" fill="#84837B"><text x="119" y="260">RISCO CALCULADO</text><text x="452" y="375">REPETIÇÃO</text><text x="451" y="393">COM MARGEM</text></g>
+          <g stroke="#F1F2EE" stroke-opacity=".28"><path d="M452 402h96"/><path d="M118 270h105"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section data-fold="3" style="position:relative;z-index:3;height:380vh;background:#0E1114;color:#F1F2EE">
     <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
       <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
       <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-        <span data-decode>03 — O QUE ENTRA NA OPERAÇÃO</span>
-        <span style="white-space:nowrap"><span data-p3-num style="color:#F1F2EE">001</span> / 004</span>
+        <span data-decode>04 — O QUE ENTRA NA OPERAÇÃO</span>
+        <span style="white-space:nowrap"><span data-p3-num style="color:#F1F2EE">001</span> / 003</span>
       </div>
 
       <div data-panel="0" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box">
@@ -316,49 +452,6 @@
 
       <div data-panel="2" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
         <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">Veja se o seu negócio está elegível.</h2>
-          <div style="display:flex;flex-direction:column;gap:21px;max-width:760px">
-          <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;align-items:baseline">
-            <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">01</span>
-            <span style="display:flex;flex-direction:column;gap:5px">
-              <span style="font-size:18px;line-height:1.25;letter-spacing:-0.03em">Empresa consolidada, com entrega comprovada</span>
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">REQUISITO</span>
-            </span>
-          </div>
-          <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;align-items:baseline">
-            <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">02</span>
-            <span style="display:flex;flex-direction:column;gap:5px">
-              <span style="font-size:18px;line-height:1.25;letter-spacing:-0.03em">Credencial que o mercado exige</span>
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">LICENÇA · REGISTRO · HISTÓRICO</span>
-            </span>
-          </div>
-          <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;align-items:baseline">
-            <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">03</span>
-            <span style="display:flex;flex-direction:column;gap:5px">
-              <span style="font-size:18px;line-height:1.25;letter-spacing:-0.03em">Decisor único</span>
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">COMITÊ ELIMINA</span>
-            </span>
-          </div>
-          <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;align-items:baseline">
-            <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">04</span>
-            <span style="display:flex;flex-direction:column;gap:5px">
-              <span style="font-size:18px;line-height:1.25;letter-spacing:-0.03em">Entrega se a demanda triplicar em 90 dias</span>
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">CAPACIDADE</span>
-            </span>
-          </div>
-          <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;align-items:baseline">
-            <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">05</span>
-            <span style="display:flex;flex-direction:column;gap:5px">
-              <span style="font-size:18px;line-height:1.25;letter-spacing:-0.03em">Verba de mídia desde o primeiro mês</span>
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;color:#84837B">OBRIGATÓRIO</span>
-            </span>
-          </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-panel="3" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
           <h2 style="margin:0;font-size:clamp(26px,3.8vw,44px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:24ch;text-wrap:pretty">Agência e partner não são a mesma coisa.</h2>
           <div style="display:flex;flex-direction:column;max-width:980px">
             <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding-bottom:14px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
@@ -377,7 +470,6 @@
         <div data-p3-dot="0" style="width:7px;height:7px;border-radius:3.6px;background:#4E76E8"></div>
         <div data-p3-dot="1" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
         <div data-p3-dot="2" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
-        <div data-p3-dot="3" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
       </div>
     </div>
   </section>
@@ -386,16 +478,16 @@
     <div style="margin:0 1.6rem;padding:12rem 0 12rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(29px,5vw,86px);align-items:start">
       <div data-reveal data-socio-foto style="position:relative">
         <div data-asset-socio style="position:relative;width:100%;aspect-ratio:776/830;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 4rem),calc(100% - 4rem) 100%,0 100%)">
-          <div data-img data-parallax="-140" style="position:absolute;left:0;right:0;top:-10%;height:120%"><image-slot id="v2-socio" shape="rect" fit="cover" src="./img/renato.jpg" placeholder="Paulo Renato Boechat"></image-slot></div>
+          <img src="./img/renato-santorini.jpg" alt="Paulo Renato Boechat diante do mar em Santorini" loading="lazy" decoding="async" width="960" height="768" style="display:block;width:100%;height:100%;object-fit:cover;object-position:78% center">
         </div>
         <div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding-top:1.8rem;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#84837B">
-          <span>Paulo Renato Boechat</span><span>Rio de Janeiro</span>
+          <span>Paulo Renato Boechat</span><span>Santorini</span>
         </div>
       </div>
 
       <div data-reveal style="display:flex;flex-direction:column;gap:2.4rem;padding-top:clamp(0px,4vw,6rem)">
         <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:1.2rem;color:#84837B">
-          <span style="width:.6rem;height:.6rem;background:#4E76E8;flex:none"></span>04 — Quem conduz a operação
+          <span style="width:.6rem;height:.6rem;background:#4E76E8;flex:none"></span>05 — Quem conduz a operação
         </div>
         <h2 style="margin:0;font-size:4.4rem;line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">Alguém precisa responder pelo número. Sou eu.</h2>
         <div style="font-family:'Chivo Mono',monospace;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#9DB4F5">Sócio-fundador · Diretor de Operação</div>
@@ -411,26 +503,29 @@
     </div>
   </section>
 
-  <section data-fold="4" style="position:relative;z-index:4;min-height:100vh;min-height:100dvh;background:#1E3FA8;color:#F1F2EE;display:flex;align-items:center;overflow:hidden">
-    <div data-img data-parallax="-64" style="position:absolute;left:0;right:0;top:-8%;height:116%;opacity:.3;mix-blend-mode:soft-light"><image-slot id="v2-agua" shape="rect" fit="cover" src="./img/agua-textura.jpg" placeholder="Água"></image-slot></div>
-    <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(241,242,238,.18) 1px,transparent 1px);background-size:22px 22px"></div>
-    <div style="position:relative;max-width:1200px;width:100%;margin:0 auto;padding:clamp(90px,14vh,150px) clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em">
-        <span data-decode>05 — Primeira parceria da RICC Partners</span><span><span data-prova-num>001</span> / 003</span>
+  <section data-fold="4" class="results-scene" aria-labelledby="results-title">
+    <div class="results-inner">
+      <div class="results-eyebrow"><span>06 — RESULTADOS DA PRIMEIRA PARCERIA</span><span>RICC / CASO 001</span></div>
+      <h2 id="results-title">O trabalho aparece<br>no resultado.</h2>
+      <div class="results-grid">
+        <div class="results-main">
+          <span class="results-label">FATURAMENTO EM QUATRO MESES</span>
+          <p class="results-number"><span>R$</span> 2 <span>milhões</span></p>
+          <p class="results-description">Produto criado do zero.<br>Uma nova operação de receita.</p>
+        </div>
+        <div class="results-secondary">
+          <div><span class="results-label">RETORNO SOBRE MÍDIA</span><p class="results-metric">50<span>×</span></p><p class="results-description">ROAS com atendimento por IA.</p></div>
+          <div><span class="results-label">CONSTRUÇÃO DO FUNIL</span><p class="results-metric">21 <span>dias</span></p><p class="results-description">Do zero ao funil construído.</p></div>
+        </div>
       </div>
-      <div data-prova-slot style="font-size:clamp(34px,7vw,84px);line-height:.98;letter-spacing:-0.03em;font-weight:400;max-width:24ch;min-height:3.2em">R$ 2 milhões em faturamento em quatro meses.</div>
-      <div style="height:1px;background:rgba(241,242,238,.35)"></div>
-      <p style="margin:0;font-size:17px;line-height:1.55;letter-spacing:-0.03em;max-width:56ch">Não publicamos o nome de quem trabalha com a gente. Quem constrói um braço de receita dentro de uma empresa não expõe essa empresa para captar a próxima.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:14px 40px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em">
-        <span>SETOR REGULADO · RIO DE JANEIRO</span><span>PRODUTO CRIADO DO ZERO</span><span>NOME SOB SIGILO</span>
-      </div>
+      <div class="results-footer"><p>SETOR REGULADO · RIO DE JANEIRO<br>PRODUTO CRIADO DO ZERO</p><p><strong>O resultado é público. O cliente, não.</strong><br>Preservamos a identidade de quem trabalha com a gente.</p></div>
     </div>
   </section>
 
   <section id="candidatura" style="position:relative;z-index:5;background:#F4F3E8;color:#13140E">
     <div style="max-width:1200px;margin:0 auto;padding:clamp(64px,11vh,140px) clamp(20px,4vw,40px) clamp(40px,7vw,86px);box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(29px,5vw,59px)">
       <div data-reveal style="display:flex;flex-direction:column;gap:21px">
-        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#5C6560">06 — CANDIDATURA</div>
+        <div data-decode style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#5C6560">07 — CANDIDATURA</div>
         <h2 style="margin:0;font-size:clamp(30px,5.4vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400">Uma vaga. Aberta até fechar.</h2>
         <p style="margin:0;font-size:18px;line-height:1.62;letter-spacing:-0.03em;color:#5C6560;max-width:44ch">A triagem é curta e a checagem vem antes da reunião. Se não servir, você recebe um não com o motivo.</p>
       </div>
@@ -651,24 +746,7 @@ class Component extends DCLogic {
 
     const q = s => Array.from(document.querySelectorAll(s));
     const shot = document.querySelector('[data-shot]');
-    const holes = document.querySelector('[data-holes]');
-    const tiles = [];
-    if (holes) {
-      const C = 22, R = 14;
-      holes.style.gridTemplateColumns = 'repeat(' + C + ',1fr)';
-      holes.style.gridTemplateRows = 'repeat(' + R + ',1fr)';
-      for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
-        const d = document.createElement('i');
-        d.style.background = '#EFEDE1';
-        d.style.opacity = '0';
-        holes.appendChild(d);
-        const cx = Math.abs((c + 0.5) / C - 0.5) * 2;
-        const cy = Math.abs((r + 0.5) / R - 0.5) * 2;
-        const ring = Math.max(cx, cy);
-        tiles.push({ el: d, th: Math.max(0.02, 1 - ring + (Math.random() - 0.5) * 0.16) });
-      }
-      tiles.sort((a, b) => a.th - b.th);
-    }
+    const cinema = document.querySelector('[data-cinema]');
     const shotImg = document.querySelector('[data-shotimg]');
     const heroVid = document.querySelector('[data-shotimg] video');
     if (heroVid) heroVid.muted = true;
@@ -706,7 +784,7 @@ class Component extends DCLogic {
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
     resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '460vh'; });
-    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '440vh'; });
+    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
     ['a', 'b', 'c', 'd'].forEach(k => {
@@ -730,8 +808,7 @@ class Component extends DCLogic {
       // a ultima linha e o total: rotulo longo + numero em mono nao cabem lado a lado no retrato
       if (i === a.length - 1) { e.style.flexDirection = 'column'; e.style.alignItems = 'flex-start'; e.style.gap = '4px'; }
     }));
-    q('[data-panel="2"] div[style*="32px minmax(0px"]').forEach(el => resp(el, e => { e.style.gap = '14px'; e.style.fontSize = '15px'; e.style.paddingBlock = '10px'; }));
-    q('[data-panel="3"] div[style*="1.1fr"]').forEach(el => resp(el, e => {
+    q('[data-panel="2"] div[style*="1.1fr"]').forEach(el => resp(el, e => {
       e.style.gridTemplateColumns = '1fr 1fr'; e.style.fontSize = '13px'; e.style.gap = '4px 14px';
       const first = e.firstElementChild;
       if (first) { first.style.gridColumn = '1 / -1'; first.style.fontFamily = "'Chivo Mono',monospace"; first.style.fontSize = '12px'; first.style.letterSpacing = '.14em'; first.style.textTransform = 'uppercase'; }
@@ -799,7 +876,7 @@ class Component extends DCLogic {
     // traçado sobre o vídeo: entra em sequência e sai antes da máscara fechar
     const sail = document.querySelector('[data-sail]');
     const sSteps = q('[data-s]');
-    const sWin = [0.02, 0.06, 0.10, 0.14];
+    const sWin = [0.20, 0.24, 0.28, 0.32];
 
     const fold1 = document.querySelector('[data-fold="1"]');
     const fold3 = document.querySelector('[data-fold="3"]');
@@ -836,60 +913,29 @@ class Component extends DCLogic {
     };
     this._decoded = new Set();
 
-    // prova: rotação dos três depoimentos
-    const provaSlot = document.querySelector('[data-prova-slot]');
-    const provaNum = document.querySelector('[data-prova-num]');
-    const provas = [
-      'R$ 2 milhões em faturamento em quatro meses.',
-      'ROAS de 50x rodando com atendimento por IA.',
-      'Funil construído do zero em 21 dias.'
-    ];
-    let pi = 0;
-    if (provaSlot) {
-      provaSlot.style.transition = 'opacity .4s linear, transform .5s ' + EASE;
-      this._prova = setInterval(() => {
-        const r = provaSlot.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > window.innerHeight) return;
-        provaSlot.style.opacity = '0';
-        provaSlot.style.transform = 'translateY(-14px)';
-        setTimeout(() => {
-          pi = (pi + 1) % provas.length;
-          provaSlot.textContent = provas[pi];
-          if (provaNum) provaNum.textContent = String(pi + 1).padStart(3, '0');
-          provaSlot.style.transition = 'none';
-          provaSlot.style.opacity = '0';
-          provaSlot.style.transform = 'translateY(14px)';
-          void provaSlot.offsetHeight;
-          provaSlot.style.transition = 'opacity .4s linear, transform .5s ' + EASE;
-          provaSlot.style.opacity = '1';
-          provaSlot.style.transform = 'none';
-        }, 420);
-      }, 4200);
-    }
-
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
       const vh = window.innerHeight || 1;
       const y = scrollY();
 
-      // dobra 1: câmera sobe, imagem perde cor e a máscara abre um buraco
+      // dobra 1: aproximação lenta e luz azul-grafite contínua
       if (fold1 && shot) {
         const hh = fold1.offsetHeight - vh;
         const p = clamp01((y - fold1.offsetTop) / (hh || 1));
 
-        const close = clamp01((p - 0.10) / 0.40);
-        const open = clamp01((p - 0.60) / 0.24);
+        // A continuous dusk-and-reveal, with no tile boundaries or random flashing.
+        const smooth = v => { const x = clamp01(v); return x * x * (3 - 2 * x); };
+        const close = smooth((p - 0.10) / 0.40);
+        const open = smooth((p - 0.60) / 0.24);
         const t = clamp01(close - open);
-        const mono = clamp01(close * 1.1 - open * 1.1);
-        const tm = t * mo;
-        if (tiles.length) {
-          const n = Math.floor(tm * 0.50 * tiles.length);
-          for (let i = 0; i < tiles.length; i++) tiles[i].el.style.opacity = i < n ? '1' : '0';
-        }
-        shot.style.filter = 'saturate(' + (1 - mono * 0.97).toFixed(3) + ') contrast(' + (1 + mono * 0.24).toFixed(3) + ') brightness(' + (1 - mono * 0.2).toFixed(3) + ')';
-        if (shotImg) shotImg.style.transform = 'scale(' + (1 + t * 0.18 * mo).toFixed(4) + ') translate3d(0,' + (-t * 26 * mo).toFixed(1) + 'px,0)';
-        if (veil) veil.style.opacity = (1 - mono * 0.8).toFixed(3);
+        const motion = reduce ? 0 : mo;
+        // The next section overlaps the final viewport: finish this beat before p=.82.
+        const finale = smooth((p - 0.64) / 0.08);
+        if (cinema) cinema.style.opacity = Math.max(t * 0.78, finale).toFixed(3);
+        shot.style.filter = 'saturate(' + (1 - t * 0.32).toFixed(3) + ') contrast(' + (1 + t * 0.08).toFixed(3) + ') brightness(' + (1 - t * 0.12 - finale * 0.65).toFixed(3) + ')';
+        if (shotImg) shotImg.style.transform = 'scale(' + (1 + smooth(p) * 0.08 * motion).toFixed(4) + ') translate3d(0,' + (-smooth(p) * 14 * motion).toFixed(1) + 'px,0)';
+        if (veil) veil.style.opacity = '1';
         if (marksL) {
           const m = clamp01((p - 0.06) / 0.07);
           marksL.style.opacity = m.toFixed(3);
@@ -913,12 +959,15 @@ class Component extends DCLogic {
           });
         }
         if (sail) {
-          const out = clamp01((p - 0.26) / 0.07);
-          sail.style.opacity = (1 - out).toFixed(3);
+          // Give the chart its own scene, then dissolve into the final message.
+          sail.style.opacity = (smooth((p - 0.20) / 0.045) * (1 - finale)).toFixed(3);
           sSteps.forEach((g, i) => { g.setAttribute('opacity', clamp01((p - sWin[i % sWin.length]) / 0.045).toFixed(3)); });
         }
         fade(sA, win(p, -0.4, 0.18, 0.06));
-        fade(sB, win(p, 0.22, 0.70, 0.045));
+        if (sB) {
+          sB.style.opacity = smooth((p - 0.72) / 0.055).toFixed(3);
+          sB.style.transform = 'translate3d(0,' + ((1 - smooth((p - 0.72) / 0.055)) * 18 * motion).toFixed(1) + 'px,0)';
+        }
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
         if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
       }
