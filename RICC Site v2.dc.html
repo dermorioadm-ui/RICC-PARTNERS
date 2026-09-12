@@ -44,7 +44,7 @@
   .scale-chart__visual{position:relative;min-height:clamp(430px,56vw,680px);border:1px solid #32383D;background:linear-gradient(145deg,rgba(78,118,232,.1),transparent 42%),#101417;overflow:hidden;clip-path:polygon(0 0,100% 0,100% calc(100% - 34px),calc(100% - 34px) 100%,0 100%)}
   .scale-chart__route{stroke-dasharray:1100;stroke-dashoffset:1100;animation:riccRoute 2.2s cubic-bezier(.165,.84,.44,1) .3s forwards}
   .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
-  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:470px}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
+  @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:470px}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}[data-pin="1"],[data-pin="3"]{height:var(--ricc-vh,100dvh)!important}}
   @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
 </style>
 </helmet>
@@ -520,6 +520,23 @@
 class Component extends DCLogic {
   componentDidMount() {
     try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}
+    // Instagram/Safari mobile chrome changes visible height while scrolling.
+    // Keep sticky choreography on a stable viewport; refresh only on real orientation/width changes.
+    let riccViewportW = window.innerWidth;
+    const setStableViewport = () => {
+      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 1;
+      this._stableVh = Math.round(h);
+      document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
+    };
+    setStableViewport();
+    const refreshStableViewport = () => {
+      const w = window.innerWidth;
+      if (Math.abs(w - riccViewportW) < 80) return;
+      riccViewportW = w;
+      setStableViewport();
+    };
+    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));
+    window.addEventListener('resize', refreshStableViewport);
     // abertura: fios desenham, mosaico decodifica, moldura sangra, título sobe
     (() => {
       let boot = document.querySelector('[data-boot]');
@@ -823,6 +840,28 @@ class Component extends DCLogic {
       meterEl.style.margin = '0';
       meterEl.style.transform = 'translateX(-50%)';
     }
+    let routeFill = null, routeLabel = null, routeTicks = [];
+    if (coarse && meterEl) {
+      meterEl.innerHTML = '';
+      meterEl.style.cssText = 'position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(286px,calc(100vw - 42px));height:auto;margin:0;transform:translateX(-50%);z-index:12;pointer-events:none;opacity:0;transition:opacity .28s linear;font-family:"Chivo Mono",monospace;color:#F1F2EE';
+      const top = document.createElement('div');
+      top.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:10px;letter-spacing:.16em;color:#AEB6BC';
+      routeLabel = document.createElement('span'); routeLabel.textContent = 'ROTA 01 / 03';
+      const tag = document.createElement('span'); tag.textContent = 'NAVEGAÇÃO'; tag.style.color = '#657079';
+      top.appendChild(routeLabel); top.appendChild(tag);
+      const railM = document.createElement('div');
+      railM.style.cssText = 'position:relative;height:2px;background:#31383D;overflow:visible';
+      routeFill = document.createElement('div');
+      routeFill.style.cssText = 'position:absolute;left:0;top:0;height:2px;width:0;background:#4E76E8;transition:width .08s linear';
+      railM.appendChild(routeFill);
+      [0,50,100].forEach((pct,i) => {
+        const t = document.createElement('i');
+        t.style.cssText = 'position:absolute;left:'+pct+'%;top:50%;width:5px;height:5px;border:1px solid #657079;background:#0E1114;transform:translate(-50%,-50%) rotate(45deg);box-sizing:border-box';
+        railM.appendChild(t); routeTicks.push(t);
+      });
+      meterEl.appendChild(top); meterEl.appendChild(railM);
+    }
+
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
     const responsive = () => {
       const m = window.innerWidth < 760;
@@ -918,7 +957,7 @@ class Component extends DCLogic {
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
-      const vh = window.innerHeight || 1;
+      const vh = this._stableVh || window.innerHeight || 1;
       const y = scrollY();
 
       // dobra 1: câmera sobe, imagem perde cor e a máscara abre um buraco
@@ -969,6 +1008,15 @@ class Component extends DCLogic {
         fade(sB, win(p, 0.22, 0.70, 0.045));
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
         if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
+        if (routeFill) {
+          routeFill.style.width = (p * 100).toFixed(1) + '%';
+          const etapa = p < .34 ? 1 : p < .67 ? 2 : 3;
+          if (routeLabel) routeLabel.textContent = 'ROTA 0' + etapa + ' / 03';
+          routeTicks.forEach((t, i) => {
+            t.style.borderColor = i < etapa ? '#4E76E8' : '#657079';
+            t.style.background = i < etapa ? '#4E76E8' : '#0E1114';
+          });
+        }
       }
 
       // dobra 3: carrossel horizontal movido a scroll
@@ -1037,8 +1085,9 @@ class Component extends DCLogic {
         this._lastY = y;
         // no celular o medidor fica ancorado no centro do rodape e cobria texto e foto:
         // vira convite so na primeira tela, que e onde ele tem funcao
-        const cabe = !this._dock || y < vh * 0.9;
-        meter.style.opacity = (Date.now() - mAt < 900 && cabe) ? '1' : '0';
+        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
+        const cabe = !this._dock || inFold1;
+        meter.style.opacity = this._dock ? (cabe ? '1' : '0') : ((Date.now() - mAt < 900 && cabe) ? '1' : '0');
       }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
@@ -1055,7 +1104,7 @@ class Component extends DCLogic {
     const arm = () => {
       if (this._armed || reduce) return;
       this._armed = true;
-      const vh = window.innerHeight || 1;
+      const vh = this._stableVh || window.innerHeight || 1;
       this._pending = reveals.filter(el => el.getBoundingClientRect().top >= vh * 0.9);
       this._pending.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
     };
