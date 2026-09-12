@@ -255,7 +255,7 @@
     <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
-  <section data-fold="1" style="position:relative;height:660vh;background:#0B0D0F">
+  <section data-fold="1" style="position:relative;height:473vh;background:#0B0D0F">
     <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
@@ -862,14 +862,14 @@ class Component extends DCLogic {
     let heroTimeline;
     resp(document.querySelector('[data-fold="1"]'), e => {
       const vh = this._stableVh;
-      const unit = 4.2 * vh;
+      const unit = 2.8 * vh;   // 4.2 / 1.5 — hero 1,5x mais rapida
       const video = 0.20 * unit;
       const chart = (0.76 - 0.20) * unit;
       const dissolve = 0.06 * unit;
       const copy = 0.05 * unit;
       const copyStart = video + chart + dissolve;
       const copyEnd = copyStart + copy;
-      const duration = Math.round(copyEnd + 0.65 * vh);
+      const duration = Math.round(copyEnd + 0.4333 * vh);   // 0.65 / 1.5
       heroTimeline = { unit, copyEnd, duration };
       // Coverage height differs from the safe composition height, not from the pin.
       // Sticky travel = (cover + duration) - cover = duration, exactly.
