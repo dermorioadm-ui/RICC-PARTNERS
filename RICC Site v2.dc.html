@@ -255,7 +255,7 @@
     <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
-  <section data-fold="1" style="position:relative;height:516vh;background:#0B0D0F">
+  <section data-fold="1" style="position:relative;height:673vh;background:#0B0D0F">
     <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
@@ -628,18 +628,37 @@ class Component extends DCLogic {
     // (barra do app recolhendo, webview terminando de abrir); nunca encolhe por barra de ferramentas.
     const VH_MIN = 320;
     const VH_RETRY = [80, 160, 320, 640, 1000, 1500, 2200, 3000];
-    let vhRetry = null, vhRetryN = 0;
+    let vhRetry = null, vhRetryN = 0, vhResetPending = false;
     const cancelVhRetry = () => { clearTimeout(vhRetry); vhRetry = null; };
     const setStableViewport = (reset = false) => {
+      reset = reset || vhResetPending;   // rotacao pediu medida do zero: vale ate chegar uma medida sa
+      const w = window.innerWidth || 0;
       const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0);
-      const sane = h >= VH_MIN && (window.innerWidth || 0) >= 200;
+      // paisagem de celular cai no layout largo (>= 760) e pode ter menos de 320px com a barra do navegador
+      const sane = h >= (w >= 760 ? 200 : VH_MIN) && w >= 200;
       if (!sane) {
+        vhResetPending = reset;
+        if (reset && this._stableVh) {
+          // a medida guardada e de OUTRA orientacao: pior que nenhuma. Cai no fallback ate medir.
+          this._stableVh = undefined; this._heroCoverVh = undefined;
+          document.documentElement.style.removeProperty('--ricc-vh');
+          document.documentElement.style.removeProperty('--ricc-hero-cover-vh');
+          syncHeroViewport();
+        }
         if (vhRetryN < VH_RETRY.length) { cancelVhRetry(); vhRetry = setTimeout(() => setStableViewport(reset), VH_RETRY[vhRetryN++]); }
-        return;   // mantem a medida anterior, se houver; sem nenhuma, a hero fica no sticky nativo
+        return;   // sem medida sa a hero fica no sticky nativo
       }
-      vhRetryN = 0; cancelVhRetry();
+      vhRetryN = 0; cancelVhRetry(); vhResetPending = false;
       const prev = this._stableVh;
-      const next = (reset || !prev) ? Math.round(h) : Math.max(prev, Math.round(h));
+      if (!reset && prev) {
+        // ja ha medida sa e so a altura mudou. No celular isso e a barra do navegador recolhendo
+        // durante o scroll: ignorar, como antes — re-derivar a timeline no meio da hero move a
+        // composicao e esconde o CTA atras da barra. So cresce com a pagina ainda no topo
+        // (webview terminando de abrir), e nunca encolhe.
+        const noTopo = (window.scrollY || document.documentElement.scrollTop || 0) === 0;
+        if (!noTopo || Math.round(h) <= prev) return;
+      }
+      const next = Math.round(h);
       if (next === prev) return;
       this._stableVh = next;
       document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
@@ -658,12 +677,10 @@ class Component extends DCLogic {
     setStableViewport(true);
     const refreshStableViewport = () => {
       const w = window.innerWidth;
-      if (Math.abs(w - riccViewportW) >= 80 || (w < 760) !== (riccViewportW < 760)) {
-        riccViewportW = w;
-        setStableViewport(true);   // largura mudou (rotacao): mede do zero
-        return;
-      }
-      setStableViewport(false);    // so a altura mudou: aceita se for MAIOR
+      const larguraMudou = Math.abs(w - riccViewportW) >= 80 || (w < 760) !== (riccViewportW < 760);
+      if (larguraMudou) riccViewportW = w;
+      // desktop nao tem barra dinamica: toda mudanca de altura e um resize real, mede do zero
+      setStableViewport(larguraMudou || w >= 760);
     };
     let orientationTimer;
     const onOrientation = () => { clearTimeout(orientationTimer); orientationTimer = setTimeout(() => setStableViewport(true), 180); };
@@ -896,7 +913,9 @@ class Component extends DCLogic {
         // syncHeroViewport() refazer tudo. Antes, isso virava duration~0 -> estado 'after' ->
         // absolute -> a hero rolava como conteudo comum.
         heroTimeline = null;
-        e.style.height = '340svh';
+        // = cover + duration (2.869*vh): o fim do sticky nativo coincide com o release da
+        // timeline, e a medida sa chegando em qualquer y nao move a hero nem o conteudo abaixo
+        e.style.height = 'calc(100lvh + 287svh)';
         return;
       }
       const unit = 2.8 * vh;   // 4.2 / 1.5 — hero 1,5x mais rapida
@@ -1007,6 +1026,7 @@ class Component extends DCLogic {
     // Fixed while traversing the hero; absolute at either boundary. No touch interception.
     const syncHeroPin = () => {
       if (!heroPin || !fold1) return;
+      if (!this._stableVh) setStableViewport(false);   // retries esgotadas e viewport sao sem resize: mede no scroll
       if (!narrow || !heroTimeline || !isFinite(heroTimeline.duration) || heroTimeline.duration < 200) {
         // sem timeline confiavel o estado sai de cena e o sticky nativo do inline vale
         heroPin.removeAttribute('data-pin-state');
@@ -1068,16 +1088,20 @@ class Component extends DCLogic {
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
-      const vh = this._stableVh || window.innerHeight || 1;
+      const vh = this._stableVh || (heroPin && heroPin.offsetHeight) || window.innerHeight || 1;
       const y = scrollY();
 
       // dobra 1: aproximação lenta e luz azul-grafite contínua
       if (fold1 && shot) {
-        // desktop: hold de leitura em pixels depois do copy. Sem ele o painel REALIDADE vivia
-        // 269px de scroll e rolava embora junto com a hero (p fica em 1 enquanto o sticky segura).
-        const hold = narrow ? 0 : Math.round(0.4333 * vh);
+        // desktop: hold de leitura em pixels depois do copy — uma tela inteira de scroll com o
+        // painel REALIDADE parado e livre, antes de a cortina da elegibilidade comecar a subir.
+        // (p fica em 1 enquanto o sticky segura; 43vh era pouco: o texto era engolido cedo.)
+        const hold = narrow ? 0 : Math.round(1.0 * vh);
+        // no desktop a .eligibility-scene sobe por cima dos ULTIMOS 100vh do pin (margin-top:-100vh).
+        // O hold precisa acabar antes dela entrar, senao o copy fica o tempo todo atras da cortina.
+        const curtain = narrow ? 0 : vh;
         const tl = narrow && heroTimeline && isFinite(heroTimeline.duration) ? heroTimeline : null;
-        const hh = tl ? tl.duration : Math.max(1, fold1.offsetHeight - vh - hold);
+        const hh = tl ? tl.duration : Math.max(1, fold1.offsetHeight - vh - hold - curtain);
         const distance = Math.max(0, y - fold1.offsetTop);
         const progress = clamp01(distance / (hh || 1));
         const p = tl
@@ -1194,7 +1218,7 @@ class Component extends DCLogic {
     const arm = () => {
       if (this._armed || reduce) return;
       this._armed = true;
-      const vh = this._stableVh || window.innerHeight || 1;
+      const vh = this._stableVh || (heroPin && heroPin.offsetHeight) || window.innerHeight || 1;
       this._pending = reveals.filter(el => el.getBoundingClientRect().top >= vh * 0.9);
       this._pending.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
     };
