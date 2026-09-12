@@ -141,17 +141,24 @@
     [data-st="b"]>div{gap:24px!important}
     .eligibility-scene{margin-top:0!important}
   }
+
+  @media(max-width:760px), (pointer:coarse){
+    .ricc-progress{right:max(7px,env(safe-area-inset-right))!important;bottom:calc(50% - 70px)!important;gap:10px!important;align-items:center!important}
+    .ricc-progress__rail{width:5px!important;height:140px!important;border-radius:4px;background:rgba(15,25,40,.7)!important;box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+    .ricc-progress__fill{width:100%!important;background:#AEC7FF!important;border-radius:4px;box-shadow:0 0 6px rgba(78,118,232,.55)}
+    .ricc-progress__label{writing-mode:vertical-rl;font-size:10px;letter-spacing:.08em;color:#fff;text-shadow:0 1px 3px #000;background:#142131;border-radius:4px;padding:7px 4px}
+  }
+  @media(max-width:760px){
+    [data-fold="3"]{height:auto!important}
+    [data-pin="3"]{position:relative!important;height:auto!important;overflow:visible!important;padding-bottom:32px}
+    [data-panel]{position:relative!important;inset:auto!important;opacity:1!important;transform:none!important;pointer-events:auto!important;min-height:var(--ricc-vh,100svh);height:auto;padding:96px 0 48px!important}
+    [data-p3-dot],[data-p3-num]{display:none!important}
+    [data-pin="3"]>div:nth-child(2){position:relative!important;top:auto!important;padding-top:32px}[data-pin="3"]>div:nth-child(2)>span:last-child{display:none}[data-pin="3"]>[data-img]{inset:0!important;height:100%!important;overflow:hidden}
+    [data-fold="3"] [data-parallax]{transform:none!important}[data-panel]>div{padding-right:44px!important}.eligibility-scene{padding-right:40px!important}
+  }
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
-
-    <div data-meter style="position:fixed;left:0;top:0;width:clamp(96px,9vw,128px);height:clamp(96px,9vw,128px);margin:calc(clamp(96px,9vw,128px) / -2) 0 0 calc(clamp(96px,9vw,128px) / -2);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .45s linear;z-index:8">
-    <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)">
-      <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(241,242,238,.32)" stroke-width="1"></circle>
-      <circle data-ring cx="50" cy="50" r="46" fill="none" stroke="#4E76E8" stroke-width="1.8" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="butt"></circle>
-    </svg>
-    <span style="font-family:'Chivo Mono',monospace;font-size:12px;letter-spacing:.2em;color:#F1F2EE">SCROLL</span>
-  </div>
 
   <div data-boot style="position:fixed;inset:0;z-index:60;background:#0B0D0F;overflow:hidden">
     <div class="boot-chart" aria-hidden="true"><svg viewBox="0 0 300 250" fill="none">
@@ -635,7 +642,10 @@ class Component extends DCLogic {
       riccViewportW = w;
       setStableViewport();
     };
-    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));
+    let orientationTimer;
+    const onOrientation = () => { clearTimeout(orientationTimer); orientationTimer = setTimeout(setStableViewport, 180); };
+    window.addEventListener('orientationchange', onOrientation);
+    this._viewportOff = () => { clearTimeout(orientationTimer); window.removeEventListener('orientationchange', onOrientation); window.removeEventListener('resize', refreshStableViewport); };
     window.addEventListener('resize', refreshStableViewport);
     // abertura: fios desenham, mosaico decodifica, moldura sangra, título sobe
     (() => {
@@ -801,18 +811,11 @@ class Component extends DCLogic {
     fill.style.cssText = 'position:absolute;left:0;top:0;width:1px;height:0;background:#4E76E8';
     rail.appendChild(fill);
     hud.appendChild(hudTxt); hud.appendChild(rail);
-    // no retrato o trilho vertical ocupava ~118px de altura em cima da coluna de texto
-    const hudDeitado = window.matchMedia('(pointer: coarse)').matches;
-    if (hudDeitado) {
-      hud.style.flexDirection = 'row';
-      hud.style.alignItems = 'center';
-      hud.style.bottom = '12px';
-      hud.style.fontSize = '10px';
-      rail.style.width = '112px';
-      rail.style.height = '1px';
-      fill.style.width = '0';
-      fill.style.height = '1px';
-    }
+    hud.className = 'ricc-progress';
+    rail.className = 'ricc-progress__rail';
+    fill.className = 'ricc-progress__fill';
+    hudTxt.className = 'ricc-progress__label';
+    hud.setAttribute('aria-hidden', 'true');
     document.body.appendChild(hud);
     this._hud = hud;
 
@@ -827,9 +830,6 @@ class Component extends DCLogic {
     const ring = document.querySelector('[data-ring]');
     const sA = document.querySelector('[data-st="a"]');
     const sB = document.querySelector('[data-st="b"]');
-    const meter = document.querySelector('[data-meter]');
-    let mx = window.innerWidth * 0.34, my = window.innerHeight * 0.6, mAt = 0;
-    window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
     const win = (p, a, b, f) => clamp01(Math.min((p - a) / f, (b - p) / f));
     const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.pointerEvents = v < 0.08 ? 'none' : 'auto'; el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
     // ---- adaptação mobile: mesma composição, medidas de retrato ----
@@ -867,13 +867,13 @@ class Component extends DCLogic {
       const copy = 0.05 * unit;
       const copyStart = video + chart + dissolve;
       const copyEnd = copyStart + copy;
-      const duration = Math.round(copyEnd + 0.12 * vh);
+      const duration = Math.round(copyEnd + 0.65 * vh);
       heroTimeline = { unit, copyEnd, duration };
       // Coverage height differs from the safe composition height, not from the pin.
       // Sticky travel = (cover + duration) - cover = duration, exactly.
       e.style.height = (this._heroCoverVh + duration) + 'px';
     });
-    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
+    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = 'auto'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
     ['a', 'b', 'c', 'd'].forEach(k => {
@@ -930,33 +930,7 @@ class Component extends DCLogic {
     // o espacador de 14.5rem abria 136px de preto antes da dobra 03
     resp(document.querySelector('[data-fold="2"] > div > div[style^="height"]'), e => { e.style.height = '4rem'; });
 
-    const meterEl = document.querySelector('[data-meter]');
-    const coarse = window.matchMedia('(pointer: coarse)').matches;
     let narrow = window.innerWidth < 760;
-    this._dock = false;
-    let touchAt = 0;
-    let touchActive = false;
-    const placeTouchMeter = (x, y) => {
-      if (!coarse || !meterEl) return;
-      mx = x; my = y; touchAt = Date.now(); touchActive = true;
-      meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
-    };
-    const onTouchStart = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
-    const onTouchMove = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
-    const onTouchEnd = () => { touchActive = false; touchAt = Date.now(); };
-    const onPointerDown = e => { if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY); };
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('touchend', onTouchEnd, { passive: true });
-    window.addEventListener('touchcancel', onTouchEnd, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
-    this._meterTouchOff = () => {
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', onTouchEnd);
-      window.removeEventListener('touchcancel', onTouchEnd);
-      window.removeEventListener('pointerdown', onPointerDown);
-    };
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
     let responsiveWidth;
     const responsive = (force = false) => {
@@ -1044,7 +1018,7 @@ class Component extends DCLogic {
         const close = smooth((p - 0.10) / 0.40);
         const open = smooth((p - 0.60) / 0.24);
         const t = clamp01(close - open);
-        const motion = reduce ? 0 : mo;
+        const motion = reduce || narrow ? 0 : mo;
         // Mobile gets a full third beat before the next section enters normal document flow.
         const finaleStart = narrow ? 0.76 : 0.84;
         const finale = smooth((p - finaleStart) / 0.06);
@@ -1091,7 +1065,7 @@ class Component extends DCLogic {
       }
 
       // dobra 3: carrossel horizontal movido a scroll
-      if (fold3 && panels.length) {
+      if (fold3 && panels.length && !narrow) {
         const h = fold3.offsetHeight - vh;
         const p = clamp01((y - fold3.offsetTop) / (h || 1));
         const pos = p * (panels.length - 1);
@@ -1110,6 +1084,7 @@ class Component extends DCLogic {
 
       // paralaxe das imagens
       imgs.forEach(el => {
+        if (narrow || reduce) { el.style.transform = 'none'; return; }
         const w = el.parentElement;
         const r = w.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) return;
@@ -1125,6 +1100,7 @@ class Component extends DCLogic {
         el.style.transform = 'translate3d(0,' + (rel * Math.sign(depth) * travel * mo).toFixed(2) + 'px,0)';
       });
       paras.forEach(w => {
+        if (narrow || reduce) { w.style.transform = 'none'; return; }
         const r = w.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) return;
         const rel = (r.top + r.height / 2 - vh / 2) / vh;
@@ -1150,26 +1126,15 @@ class Component extends DCLogic {
         if (r.top < vh * 0.92 && r.bottom > 0) { this._decoded.add(el); if (!reduce) decode(el); }
       });
 
-      if (meter) {
-        meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
-        if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
-        this._lastY = y;
-        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + (narrow ? heroTimeline.duration : fold1.offsetHeight - vh) + 4;
-        if (coarse) {
-          meter.style.opacity = (touchActive || Date.now() - touchAt < 180) ? '1' : '0';
-        } else {
-          meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';
-        }
-      }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
         heroVid.play().catch(e => console.warn('hero video retry:', e.name));
       }
       const doc = document.documentElement;
-      const max = (doc.scrollHeight - vh) || 1;
+      const max = Math.max(1, doc.scrollHeight - doc.clientHeight);
       const pct = clamp01(y / max) * 100;
       hudTxt.textContent = 'FASE ' + String(Math.round(pct)).padStart(2, '0') + '%';
-      if (hudDeitado) fill.style.width = pct.toFixed(2) + '%'; else fill.style.height = pct.toFixed(2) + '%';
+      fill.style.height = pct.toFixed(2) + '%';
     };
 
     // estado inicial só é aplicado no primeiro quadro real
@@ -1183,9 +1148,10 @@ class Component extends DCLogic {
 
     let alive = true;
     const safeTick = () => { try { tick(); } catch (e) { if (!this._tickWarned) { this._tickWarned = 1; console.warn('tick:', e.message); } } };
-    const loop = () => { if (!alive) return; arm(); safeTick(); requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
-    const kick = () => { if (alive) requestAnimationFrame(loop); };
+    let frameId = 0;
+    const loop = () => { frameId = 0; if (!alive || document.hidden) return; arm(); safeTick(); frameId = requestAnimationFrame(loop); };
+    const kick = () => { if (frameId) cancelAnimationFrame(frameId); frameId = 0; if (alive && !document.hidden) frameId = requestAnimationFrame(loop); };
+    kick();
     document.addEventListener('visibilitychange', kick);
     const watchdog = setInterval(() => {
       if (!alive) return;
@@ -1197,7 +1163,7 @@ class Component extends DCLogic {
         this._pending = [];
       }
     }, 250);
-    this._off = () => { alive = false; clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
+    this._off = () => { alive = false; cancelAnimationFrame(frameId); clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
 
     this._applyProps();
 
@@ -1259,9 +1225,10 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    if (this._viewportOff) this._viewportOff();
     if (this._off) this._off();
     if (this._resp) this._resp();
-    if (this._meterTouchOff) this._meterTouchOff();
+
     if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);
     if (this._hud && this._hud.parentElement) this._hud.parentElement.removeChild(this._hud);
   }
