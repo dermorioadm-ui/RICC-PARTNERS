@@ -1,0 +1,39 @@
+name: Patch Instagram fold transition
+
+on:
+  push:
+    branches:
+      - fix/instagram-fold-transition
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/instagram-fold-transition
+      - name: Remove overlapping fold transition
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('RICC Site v2.dc.html')
+          s = p.read_text(encoding='utf-8')
+          old = 'style="position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;background:#0E1114;color:#F1F2EE"'
+          new = 'style="position:relative;z-index:2;margin-top:0;background:#0E1114;color:#F1F2EE"'
+          if old not in s:
+              raise SystemExit('Expected fold transition markup not found; refusing to change anything else.')
+          s2 = s.replace(old, new, 1)
+          p.write_text(s2, encoding='utf-8')
+          PY
+      - name: Commit only the transition fix
+        run: |
+          rm .github/workflows/patch-instagram-transition.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "RICC Site v2.dc.html" .github/workflows/patch-instagram-transition.yml
+          git commit -m "fix: remove overlapping fold transition on Instagram browser"
+          git push origin HEAD:fix/instagram-fold-transition
