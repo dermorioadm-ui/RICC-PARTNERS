@@ -24,41 +24,29 @@ jobs:
           p = Path('RICC Site v2.dc.html')
           s = p.read_text(encoding='utf-8')
 
-          # Founder section: restore dark page background and light text.
           marker = '<section data-fold="35"'
           i = s.find(marker)
           if i == -1:
-              raise SystemExit('Founder section not found; refusing unrelated edits.')
+              raise SystemExit('Founder section not found.')
           j = s.find('>', i)
           tag = s[i:j+1]
-          tag2 = re.sub(r'background:#[0-9A-Fa-f]{6}', 'background:#0E1114', tag, count=1)
-          tag2 = re.sub(r'color:#[0-9A-Fa-f]{6}', 'color:#F1F2EE', tag2, count=1)
-          if tag2 == tag:
-              raise SystemExit('Founder section colors not safely identifiable.')
-          s = s[:i] + tag2 + s[j+1:]
+          # Keep/restore the original dark page color; remove any light override if present.
+          if 'background:#0E1114' not in tag:
+              if re.search(r'background:#[0-9A-Fa-f]{6}', tag):
+                  tag = re.sub(r'background:#[0-9A-Fa-f]{6}', 'background:#0E1114', tag, count=1)
+              else:
+                  tag = tag[:-1] + ';background:#0E1114>'
+          if 'color:#F1F2EE' not in tag:
+              if re.search(r'color:#[0-9A-Fa-f]{6}', tag):
+                  tag = re.sub(r'color:#[0-9A-Fa-f]{6}', 'color:#F1F2EE', tag, count=1)
+              else:
+                  tag = tag[:-1] + ';color:#F1F2EE>'
+          s = s[:i] + tag + s[j+1:]
 
-          start = s.find(marker)
-          end = s.find('</section>', start)
-          if end == -1:
-              raise SystemExit('Founder section end not found.')
-          block = s[start:end]
-          block = block.replace('color:#5C6560', 'color:#C8CDD2')
-          block = block.replace('color:#13140E', 'color:#F1F2EE')
-          s = s[:start] + block + s[end:]
-
-          # Double mobile route/progress reference width.
-          changed = False
-          for old, new in [
-              ("rail.style.width = '56px';", "rail.style.width = '112px';"),
-              ("rail.style.width='56px';", "rail.style.width='112px';"),
-              ("width:56px", "width:112px"),
-          ]:
-              if old in s:
-                  s = s.replace(old, new, 1)
-                  changed = True
-                  break
-          if not changed:
-              raise SystemExit('Expected mobile route width not found; refusing unrelated edits.')
+          # Double the global mobile scroll-reference rail from 56px to 112px.
+          if "rail.style.width = '56px';" not in s:
+              raise SystemExit('Mobile HUD rail width not found.')
+          s = s.replace("rail.style.width = '56px';", "rail.style.width = '112px';", 1)
 
           p.write_text(s, encoding='utf-8')
           PY
@@ -68,5 +56,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "RICC Site v2.dc.html" .github/workflows/patch-founder-background-scrollbar.yml
-          git commit -m "fix: restore founder dark background and widen mobile route bar"
+          git commit -m "fix: keep founder dark background and widen mobile scroll rail"
           git push origin HEAD:fix/founder-background-scrollbar
