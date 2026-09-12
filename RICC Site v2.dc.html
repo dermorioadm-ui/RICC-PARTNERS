@@ -46,6 +46,13 @@
   .scale-chart__buoy{transform-box:fill-box;transform-origin:center;animation:riccBuoy 3.2s ease-in-out infinite}
   @media(max-width:760px){.scale-chart{grid-template-columns:1fr}.scale-chart__visual{min-height:0}.scale-chart__copy{padding-right:12vw}.scale-chart__legend{grid-template-columns:1fr!important}}
   @media(max-width:760px){[data-pin="1"],[data-pin="3"]{height:var(--ricc-vh,100dvh)!important}}
+  [data-hero-stage]{display:contents}
+  @media(max-width:759px){
+    /* Cover retracted browser chrome without moving the foreground composition. */
+    [data-pin="1"]{height:var(--ricc-hero-cover-vh,100lvh)!important}
+    [data-hero-stage]{display:block;position:absolute;inset:0;height:var(--ricc-vh,100svh)}
+    [data-hero-stage] [data-cinema]{height:var(--ricc-hero-cover-vh,100lvh)}
+  }
   @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}
   /* Final hero beat: open typography, separate from the chart. */
   [data-st="b"]{inset:0!important;max-width:none!important;max-inline-size:none!important;display:flex;align-items:center;justify-content:center;padding:100px clamp(24px,7vw,112px)!important;pointer-events:none!important}
@@ -121,7 +128,7 @@
   [data-boot-stage]{top:78%!important;width:min(520px,84vw)!important}
   [data-boot-stage]>div:nth-child(2){padding-left:0!important;gap:24px!important}
   [data-boot-hold]{width:auto!important;flex:1!important}
-  [data-boot-bar]{height:3px!important;gap:0!important}
+  [data-boot-bar]{display:none!important}   /* barra de progresso do preloader removida; a caixa fica como espacador e os leitores ROTA/RUMO nao se movem */
   [data-boot-rule]{display:none}
   [data-boot-fade]{font-size:11px!important}
   [data-boot-tag]{border:0!important;padding:0!important;color:#AEC7FF!important}
@@ -134,17 +141,73 @@
     [data-st="b"]>div{gap:24px!important}
     .eligibility-scene{margin-top:0!important}
   }
+
+  @media(max-width:760px), (pointer:coarse){
+    .ricc-progress{right:max(7px,env(safe-area-inset-right))!important;bottom:calc(50% - 70px)!important;gap:10px!important;align-items:center!important}
+    .ricc-progress__rail{width:5px!important;height:140px!important;border-radius:4px;background:rgba(15,25,40,.7)!important;box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+    .ricc-progress__fill{width:100%!important;background:#AEC7FF!important;border-radius:4px;box-shadow:0 0 6px rgba(78,118,232,.55)}
+    .ricc-progress__label{writing-mode:vertical-rl;font-size:10px;letter-spacing:.08em;color:#fff;text-shadow:0 1px 3px #000;background:#142131;border-radius:4px;padding:7px 4px}
+  }
+  @media(max-width:760px){
+    [data-fold="3"]{height:auto!important}
+    [data-pin="3"]{position:relative!important;height:auto!important;overflow:visible!important;padding-bottom:32px}
+    [data-panel]{position:relative!important;inset:auto!important;opacity:1!important;transform:none!important;pointer-events:auto!important;min-height:var(--ricc-vh,100svh);height:auto;padding:96px 0 48px!important}
+    [data-p3-dot],[data-p3-num]{display:none!important}
+    [data-pin="3"]>div:nth-child(2){position:relative!important;top:auto!important;padding-top:32px}[data-pin="3"]>div:nth-child(2)>span:last-child{display:none}[data-pin="3"]>[data-img]{inset:0!important;height:100%!important;overflow:hidden}
+    [data-fold="3"] [data-parallax]{transform:none!important}[data-panel]>div{padding-right:44px!important}.eligibility-scene{padding-right:40px!important}
+  }
+
+  .operation-open{position:relative;z-index:3;height:auto;background:#0E1821;color:#F1F2EE;isolation:isolate}
+  .operation-open::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,18,26,.88),rgba(10,18,26,.97)),url('./img/mar-azul.jpg') center top/cover}
+  .operation-inner{max-width:1240px;margin:auto;padding:110px 64px 120px}
+  .operation-kicker{font:11px/1.6 'Chivo Mono',monospace;letter-spacing:.16em;color:#AEC7FF;margin:0 0 24px}
+  .operation-header{padding-bottom:64px;border-bottom:1px solid #34424D}
+  .operation-header h2{font-size:clamp(40px,4.6vw,68px);font-weight:400;line-height:1.06;letter-spacing:-.04em;margin:0}
+  .operation-header h2 span{color:#A6B3C0}
+  .operation-overview{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:64px 0 80px}
+  .operation-open h3{font-size:clamp(27px,2.7vw,39px);font-weight:400;line-height:1.13;letter-spacing:-.03em;margin:0 0 32px}
+  .operation-team ul{padding:0;margin:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+  .operation-team li{padding:16px 0;border-top:1px solid #34424D;font-size:17px;line-height:1.35;color:#D0D8DE}
+  .operation-cost dl{margin:0}
+  .operation-cost dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;padding:15px 0;border-top:1px solid #34424D;font-size:16px;line-height:1.4}
+  .operation-cost dt{color:#D0D8DE}.operation-cost dd{margin:0;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}.operation-cost small{font-size:12px;color:#A6B3C0}
+  .operation-total{border-top:1px solid #AEC7FF;padding-top:25px;margin-top:16px}
+  .operation-total>span{font:10px 'Chivo Mono',monospace;letter-spacing:.14em;color:#AEC7FF}
+  .operation-total strong{display:block;font-size:clamp(34px,3.5vw,48px);line-height:1.2;font-weight:400;letter-spacing:-.035em;margin:12px 0}.operation-total strong small{font-size:16px}
+  .operation-total p{font-size:15px;color:#D0D8DE;line-height:1.5;margin:0}
+  .operation-comparison{border-top:1px solid #34424D;padding-top:60px}
+  .operation-comparison-title{display:flex;justify-content:space-between;gap:40px;align-items:start;margin-bottom:26px}
+  .operation-comparison-title h3{max-width:26ch;margin:0}
+  .operation-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:left;font-size:20px;line-height:1.4}
+  .operation-table th,.operation-table td{padding:24px;border-bottom:1px solid #34424D;vertical-align:top;font-weight:400}
+  .operation-table thead th{font:12px 'Chivo Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A6B3C0}
+  .operation-table th:first-child{width:21%;padding-left:0}
+  .operation-table tbody th{font:11px/1.6 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#A6B3C0}
+  .operation-table td:nth-child(2){color:#BBC6CE}
+  .operation-table td:last-child,.operation-table thead th:last-child{background:rgba(78,118,232,.12);color:#C3D5FF}
+  .operation-mobile-label{display:none}
+  .operation-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  @media(max-width:760px){
+    .operation-inner{padding:80px 40px 80px 24px}.operation-header{padding-bottom:36px}.operation-header h2{font-size:36px}
+    .operation-overview{grid-template-columns:1fr;gap:44px;padding:40px 0 48px}.operation-open h3{font-size:29px;margin-bottom:24px}.operation-kicker{font-size:10px;margin-bottom:18px}
+    .operation-team li{font-size:15px;padding:14px 0}.operation-team ul{gap:0 20px}
+    .operation-cost dl>div{font-size:15px;gap:12px}.operation-cost dd small{display:block;font-size:11px}.operation-total strong{font-size:40px}
+    .operation-comparison{padding-top:40px}.operation-comparison-title{display:block;margin-bottom:28px}
+    .operation-table,.operation-table tbody{display:block}.operation-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+    .operation-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid #34424D;padding:22px 0;gap:14px 12px}
+    .operation-table tbody th{grid-column:1/-1;width:auto!important;padding:0!important;border:0;color:#F1F2EE}
+    .operation-table td{font-size:16px;line-height:1.4;padding:12px 10px;border:0;overflow-wrap:break-word}.operation-table td:nth-child(2){padding-left:0}
+    .operation-mobile-label{display:block;font:9px/1.5 'Chivo Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;color:#A6B3C0}.operation-table td:last-child .operation-mobile-label{color:#AEC7FF}
+  }
+
+  @media(max-width:759px){
+    [data-pin="1"][data-pin-state="active"]{position:fixed!important;top:0!important;left:0;right:0;width:100%;margin:0;transform:none}
+    [data-pin="1"][data-pin-state="before"]{position:absolute!important;top:0!important;left:0;right:0;width:100%}
+    [data-pin="1"][data-pin-state="after"]{position:absolute!important;top:var(--ricc-pin-release)!important;left:0;right:0;width:100%}
+  }
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
-
-    <div data-meter style="position:fixed;left:0;top:0;width:clamp(96px,9vw,128px);height:clamp(96px,9vw,128px);margin:calc(clamp(96px,9vw,128px) / -2) 0 0 calc(clamp(96px,9vw,128px) / -2);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .45s linear;z-index:8">
-    <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)">
-      <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(241,242,238,.32)" stroke-width="1"></circle>
-      <circle data-ring cx="50" cy="50" r="46" fill="none" stroke="#4E76E8" stroke-width="1.8" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="butt"></circle>
-    </svg>
-    <span style="font-family:'Chivo Mono',monospace;font-size:12px;letter-spacing:.2em;color:#F1F2EE">SCROLL</span>
-  </div>
 
   <div data-boot style="position:fixed;inset:0;z-index:60;background:#0B0D0F;overflow:hidden">
     <div class="boot-chart" aria-hidden="true"><svg viewBox="0 0 300 250" fill="none">
@@ -192,7 +255,7 @@
     <a href="#candidatura" style="position:relative;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#F1F2EE;padding:15px 6px;margin:-15px -6px;pointer-events:auto">CANDIDATURA</a>
   </div>
 
-  <section data-fold="1" style="position:relative;height:473vh;background:#0B0D0F">
+  <section data-fold="1" style="position:relative;height:673vh;background:#0B0D0F">
     <div data-pin="1" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#0B0D0F">
 
       <div data-shot style="position:absolute;inset:0;overflow:hidden;will-change:clip-path,filter">
@@ -200,6 +263,7 @@
         <div data-veil style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,15,.5) 0%,rgba(11,13,15,.04) 30%,rgba(11,13,15,.62) 66%,rgba(11,13,15,.9) 100%)"></div>
       </div>
 
+      <div data-hero-stage>
       <svg data-sail viewBox="0 0 1216 800" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
         <g data-s="1" opacity="0">
           <g stroke="#F1F2EE" fill="none" stroke-width="1" opacity=".24">
@@ -342,6 +406,7 @@
           <p style="margin:0;font-size:clamp(22px,3vw,34px);line-height:1.28;letter-spacing:-0.02em;text-wrap:pretty;text-shadow:0 4px 30px rgba(6,8,10,.6)">Agência cobra porque promete resultado — e aceita você mesmo sem potencial de crescimento.</p>
         </div>
       </div>
+      </div>
 
 
     </div>
@@ -447,62 +512,15 @@
     </div>
   </section>
 
-  <section data-fold="3" style="position:relative;z-index:3;height:380vh;background:#0E1114;color:#F1F2EE">
-    <div data-pin="3" style="position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden">
-      <div data-img data-parallax="-90" style="position:absolute;left:0;right:0;top:-7%;height:114%"><image-slot id="v2-mar" shape="rect" fit="cover" src="./img/mar-azul.jpg" placeholder="Mar azul-marinho"></image-slot></div>
-      <div style="position:absolute;left:0;right:0;top:clamp(86px,13vh,120px);max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;justify-content:space-between;gap:20px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-        <span data-decode>04 — O QUE ENTRA NA OPERAÇÃO</span>
-        <span style="white-space:nowrap"><span data-p3-num style="color:#F1F2EE">001</span> / 003</span>
+  <section data-fold="3" class="operation-open" aria-labelledby="operation-title">
+    <div class="operation-inner">
+      <header class="operation-header"><p class="operation-kicker">04 — O QUE ENTRA NA OPERAÇÃO</p><h2 id="operation-title">Uma operação inteira.<br><span>Do produto ao fechamento.</span></h2></header>
+      <div class="operation-overview">
+        <div class="operation-team"><p class="operation-kicker">01 / COMPETÊNCIAS</p><h3>As competências que<br>entram com a gente.</h3><ul><li>Head de Produto</li><li>Diretor de Criação</li><li>Media Buyer sênior</li><li>Arquiteto de Funil</li><li>Desenvolvimento de Software</li><li>Especialista em IA aplicada</li><li>Head Comercial</li><li>Closer</li><li>Diretor de Operações</li></ul></div>
+        <div class="operation-cost"><p class="operation-kicker">02 / ESTRUTURA</p><h3>O time que você<br>deixaria de contratar.</h3><dl><div><dt>Media Buyer sênior</dt><dd>R$ 15 mil <small>/ mês</small></dd></div><div><dt>Diretor de Criação</dt><dd>R$ 18 mil <small>/ mês</small></dd></div><div><dt>Desenvolvimento de Software</dt><dd>R$ 22 mil <small>/ mês</small></dd></div><div><dt>Closer e SDR</dt><dd>R$ 16 mil <small>/ mês</small></dd></div><div><dt>Head Comercial</dt><dd>R$ 28 mil <small>/ mês</small></dd></div></dl><div class="operation-total"><span>FOLHA ESTIMADA</span><strong>R$ 99 mil <small>/ mês</small></strong><p>Com a RICC, zero em folha dessa equipe.</p></div></div>
       </div>
-
-      <div data-panel="0" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">As competências que entram com a gente.</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px 59px;font-size:18px;line-height:1.25;letter-spacing:-0.03em;max-width:900px">
-            <span>Head de Produto</span><span>Diretor de Criação</span><span>Media Buyer sênior</span>
-            <span>Arquiteto de Funil</span><span>Desenvolvimento de Software</span><span>Especialista em IA aplicada</span>
-            <span>Head Comercial</span><span>Closer</span><span>Diretor de Operações</span>
-          </div>
-        </div>
-      </div>
-
-      <div data-panel="1" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:22ch;text-wrap:pretty">O time que você deixaria de contratar.</h2>
-          <div style="display:flex;flex-direction:column;gap:18px;max-width:720px">
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Media Buyer sênior</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 15 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Diretor de Criação</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 18 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Desenvolvimento de Software</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 22 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Closer e SDR</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 16 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;font-size:18px;letter-spacing:-0.03em"><span>Head Comercial</span><span style="font-family:'Chivo Mono',monospace;color:#84837B">R$ 28 mil / mês</span></div>
-            <div style="display:flex;justify-content:space-between;gap:29px;align-items:baseline;padding-top:18px;border-top:1px solid #404040">
-              <span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">FOLHA ESTIMADA · COM A RICC, ZERO</span>
-              <span style="font-family:'Chivo Mono',monospace;font-weight:300;font-size:clamp(24px,3vw,29px);letter-spacing:-0.02em">R$ 99 MIL / MÊS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-panel="2" style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(140px,20vh,190px) 0 clamp(60px,9vh,104px);box-sizing:border-box;opacity:0">
-        <div style="max-width:1200px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,40px);box-sizing:border-box;display:flex;flex-direction:column;gap:29px">
-          <h2 style="margin:0;font-size:clamp(26px,3.8vw,44px);line-height:1.06;letter-spacing:-0.03em;font-weight:400;max-width:24ch;text-wrap:pretty">Agência e partner não são a mesma coisa.</h2>
-          <div style="display:flex;flex-direction:column;max-width:980px">
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding-bottom:14px;font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.14em;color:#84837B">
-              <span></span><span>AGÊNCIA</span><span style="color:#9DB4F5">RICC PARTNERS</span>
-            </div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">COBRANÇA</span><span>Valor fixo + comissão</span><span style="color:#9DB4F5">Zero na entrada</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">REMUNERAÇÃO</span><span>Cobra mesmo sem resultado</span><span style="color:#9DB4F5">33% a 50% do lucro</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">O QUE VENDE</span><span>O que a empresa já vende</span><span style="color:#9DB4F5">O que ela ainda não vende</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">RISCO</span><span>Todo do cliente</span><span style="color:#9DB4F5">Sem lucro, sem pagamento</span></div>
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:18px 29px;padding:14px 0;border-top:1px solid #404040;border-bottom:1px solid #404040;font-size:18px;line-height:1.25;letter-spacing:-0.03em"><span style="font-family:'Chivo Mono',monospace;font-size:13px;letter-spacing:.1em;color:#84837B">SELEÇÃO</span><span>Qualquer cliente que pague</span><span style="color:#9DB4F5">Uma empresa por vez</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div style="position:absolute;right:clamp(14px,2.4vw,26px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:10px">
-        <div data-p3-dot="0" style="width:7px;height:7px;border-radius:3.6px;background:#4E76E8"></div>
-        <div data-p3-dot="1" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
-        <div data-p3-dot="2" style="width:7px;height:7px;border-radius:3.6px;background:#404040"></div>
+      <div class="operation-comparison"><div class="operation-comparison-title"><p class="operation-kicker">03 / MODELO DE PARCERIA</p><h3>Agência e partner<br>não são a mesma coisa.</h3></div>
+      <table class="operation-table"><caption class="operation-sr">Comparação entre agência e RICC Partners</caption><thead><tr><th scope="col">Critério</th><th scope="col">Agência</th><th scope="col">RICC Partners</th></tr></thead><tbody><tr><th scope="row">Cobrança</th><td><span class="operation-mobile-label">Agência</span>Valor fixo + comissão</td><td><span class="operation-mobile-label">RICC Partners</span>Zero na entrada</td></tr><tr><th scope="row">Remuneração</th><td><span class="operation-mobile-label">Agência</span>Cobra mesmo sem resultado</td><td><span class="operation-mobile-label">RICC Partners</span>33% a 50% do lucro</td></tr><tr><th scope="row">O que vende</th><td><span class="operation-mobile-label">Agência</span>O que a empresa já vende</td><td><span class="operation-mobile-label">RICC Partners</span>O que ela ainda não vende</td></tr><tr><th scope="row">Risco</th><td><span class="operation-mobile-label">Agência</span>Todo do cliente</td><td><span class="operation-mobile-label">RICC Partners</span>Sem lucro, sem pagamento</td></tr><tr><th scope="row">Seleção</th><td><span class="operation-mobile-label">Agência</span>Qualquer cliente que pague</td><td><span class="operation-mobile-label">RICC Partners</span>Uma empresa por vez</td></tr></tbody></table>
       </div>
     </div>
   </section>
@@ -602,19 +620,79 @@ class Component extends DCLogic {
     try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}
     // Stable viewport for Instagram/Safari dynamic browser chrome.
     let riccViewportW = window.innerWidth;
-    const setStableViewport = () => {
-      const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0) || 1;
-      this._stableVh = Math.round(h);
+    let syncHeroViewport = () => {};
+    // Uma medida so, no init, envenenava a timeline: o WKWebView do Instagram reporta viewport
+    // 0/minusculo durante a animacao de abertura, e so a LARGURA disparava re-medicao — no
+    // celular ela nunca muda, entao a hero nascia com timeline de poucos px e rolava como conteudo.
+    // Agora: medida so vale se for sa; re-mede ate vir uma; aceita viewport MAIOR quando aparecer
+    // (barra do app recolhendo, webview terminando de abrir); nunca encolhe por barra de ferramentas.
+    const VH_MIN = 320;
+    const VH_RETRY = [80, 160, 320, 640, 1000, 1500, 2200, 3000];
+    let vhRetry = null, vhRetryN = 0, vhResetPending = false;
+    const cancelVhRetry = () => { clearTimeout(vhRetry); vhRetry = null; };
+    const setStableViewport = (reset = false) => {
+      reset = reset || vhResetPending;   // rotacao pediu medida do zero: vale ate chegar uma medida sa
+      const w = window.innerWidth || 0;
+      const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0);
+      // paisagem de celular cai no layout largo (>= 760) e pode ter menos de 320px com a barra do navegador
+      const sane = h >= (w >= 760 ? 200 : VH_MIN) && w >= 200;
+      if (!sane) {
+        vhResetPending = reset;
+        if (reset && this._stableVh) {
+          // a medida guardada e de OUTRA orientacao: pior que nenhuma. Cai no fallback ate medir.
+          this._stableVh = undefined; this._heroCoverVh = undefined;
+          document.documentElement.style.removeProperty('--ricc-vh');
+          document.documentElement.style.removeProperty('--ricc-hero-cover-vh');
+          syncHeroViewport();
+        }
+        if (vhRetryN < VH_RETRY.length) { cancelVhRetry(); vhRetry = setTimeout(() => setStableViewport(reset), VH_RETRY[vhRetryN++]); }
+        return;   // sem medida sa a hero fica no sticky nativo
+      }
+      vhRetryN = 0; cancelVhRetry(); vhResetPending = false;
+      const prev = this._stableVh;
+      if (!reset && prev) {
+        // ja ha medida sa e so a altura mudou. No celular isso e a barra do navegador recolhendo
+        // durante o scroll: ignorar, como antes — re-derivar a timeline no meio da hero move a
+        // composicao e esconde o CTA atras da barra. So cresce com a pagina ainda no topo
+        // (webview terminando de abrir), e nunca encolhe.
+        const noTopo = (window.scrollY || document.documentElement.scrollTop || 0) === 0;
+        if (!noTopo || Math.round(h) <= prev) return;
+      }
+      const next = Math.round(h);
+      if (next === prev) return;
+      this._stableVh = next;
       document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
+      if (window.innerWidth < 760) {
+        // innerHeight/visualViewport only describe the CURRENT chrome state.
+        // Measure the largest viewport, not the toolbar-only resize events.
+        const probe = document.createElement('div');
+        probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:0;height:100vh;height:100lvh';
+        document.body.appendChild(probe);
+        this._heroCoverVh = Math.max(this._stableVh, Math.ceil(probe.getBoundingClientRect().height));
+        probe.remove();
+        document.documentElement.style.setProperty('--ricc-hero-cover-vh', this._heroCoverVh + 'px');
+        syncHeroViewport();
+      }
     };
-    setStableViewport();
+    setStableViewport(true);
     const refreshStableViewport = () => {
       const w = window.innerWidth;
-      if (Math.abs(w - riccViewportW) < 80) return;
-      riccViewportW = w;
-      setStableViewport();
+      const larguraMudou = Math.abs(w - riccViewportW) >= 80 || (w < 760) !== (riccViewportW < 760);
+      if (larguraMudou) riccViewportW = w;
+      // desktop nao tem barra dinamica: toda mudanca de altura e um resize real, mede do zero
+      setStableViewport(larguraMudou || w >= 760);
     };
-    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));
+    let orientationTimer;
+    const onOrientation = () => { clearTimeout(orientationTimer); orientationTimer = setTimeout(() => setStableViewport(true), 180); };
+    const onVisualViewport = () => setStableViewport(false);
+    window.addEventListener('orientationchange', onOrientation);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', onVisualViewport);
+    this._viewportOff = () => {
+      clearTimeout(orientationTimer); cancelVhRetry();
+      window.removeEventListener('orientationchange', onOrientation);
+      window.removeEventListener('resize', refreshStableViewport);
+      if (window.visualViewport) window.visualViewport.removeEventListener('resize', onVisualViewport);
+    };
     window.addEventListener('resize', refreshStableViewport);
     // abertura: fios desenham, mosaico decodifica, moldura sangra, título sobe
     (() => {
@@ -780,18 +858,11 @@ class Component extends DCLogic {
     fill.style.cssText = 'position:absolute;left:0;top:0;width:1px;height:0;background:#4E76E8';
     rail.appendChild(fill);
     hud.appendChild(hudTxt); hud.appendChild(rail);
-    // no retrato o trilho vertical ocupava ~118px de altura em cima da coluna de texto
-    const hudDeitado = window.matchMedia('(pointer: coarse)').matches;
-    if (hudDeitado) {
-      hud.style.flexDirection = 'row';
-      hud.style.alignItems = 'center';
-      hud.style.bottom = '12px';
-      hud.style.fontSize = '10px';
-      rail.style.width = '112px';
-      rail.style.height = '1px';
-      fill.style.width = '0';
-      fill.style.height = '1px';
-    }
+    hud.className = 'ricc-progress';
+    rail.className = 'ricc-progress__rail';
+    fill.className = 'ricc-progress__fill';
+    hudTxt.className = 'ricc-progress__label';
+    hud.setAttribute('aria-hidden', 'true');
     document.body.appendChild(hud);
     this._hud = hud;
 
@@ -806,9 +877,6 @@ class Component extends DCLogic {
     const ring = document.querySelector('[data-ring]');
     const sA = document.querySelector('[data-st="a"]');
     const sB = document.querySelector('[data-st="b"]');
-    const meter = document.querySelector('[data-meter]');
-    let mx = window.innerWidth * 0.34, my = window.innerHeight * 0.6, mAt = 0;
-    window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
     const win = (p, a, b, f) => clamp01(Math.min((p - a) / f, (b - p) / f));
     const fade = (el, v) => { if (el) { el.style.opacity = v.toFixed(3); el.style.pointerEvents = v < 0.08 ? 'none' : 'auto'; el.style.transform = 'translate3d(0,' + ((1 - v) * 20 * (this._mo == null ? 1 : this._mo)).toFixed(1) + 'px,0)'; } };
     // ---- adaptação mobile: mesma composição, medidas de retrato ----
@@ -834,8 +902,36 @@ class Component extends DCLogic {
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
-    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '380svh'; });
-    resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
+    // Pixel budgets preserve the nominal scene speed (4.2 viewports per p unit).
+    // Only the unused tail after the copy reveal is replaced by a short reading beat.
+    let heroTimeline;
+    resp(document.querySelector('[data-fold="1"]'), e => {
+      const vh = this._stableVh;
+      if (!(vh >= 320)) {
+        // sem viewport confiavel (WKWebView abrindo): sem timeline explicita. O position:sticky
+        // do inline segura a hero e a dobra fica numa altura segura ate a medida sa chegar e
+        // syncHeroViewport() refazer tudo. Antes, isso virava duration~0 -> estado 'after' ->
+        // absolute -> a hero rolava como conteudo comum.
+        heroTimeline = null;
+        // = cover + duration (2.869*vh): o fim do sticky nativo coincide com o release da
+        // timeline, e a medida sa chegando em qualquer y nao move a hero nem o conteudo abaixo
+        e.style.height = 'calc(100lvh + 287svh)';
+        return;
+      }
+      const unit = 2.8 * vh;   // 4.2 / 1.5 — hero 1,5x mais rapida
+      const video = 0.20 * unit;
+      const chart = (0.76 - 0.20) * unit;
+      const dissolve = 0.06 * unit;
+      const copy = 0.05 * unit;
+      const copyStart = video + chart + dissolve;
+      const copyEnd = copyStart + copy;
+      const duration = Math.round(copyEnd + 0.4333 * vh);   // 0.65 / 1.5
+      heroTimeline = { unit, copyEnd, duration };
+      // Coverage height differs from the safe composition height, not from the pin.
+      // Sticky travel = (cover + duration) - cover = duration, exactly.
+      e.style.height = (this._heroCoverVh + duration) + 'px';
+    });
+
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
     ['a', 'b', 'c', 'd'].forEach(k => {
@@ -892,36 +988,14 @@ class Component extends DCLogic {
     // o espacador de 14.5rem abria 136px de preto antes da dobra 03
     resp(document.querySelector('[data-fold="2"] > div > div[style^="height"]'), e => { e.style.height = '4rem'; });
 
-    const meterEl = document.querySelector('[data-meter]');
-    const coarse = window.matchMedia('(pointer: coarse)').matches;
     let narrow = window.innerWidth < 760;
-    this._dock = false;
-    let touchAt = 0;
-    let touchActive = false;
-    const placeTouchMeter = (x, y) => {
-      if (!coarse || !meterEl) return;
-      mx = x; my = y; touchAt = Date.now(); touchActive = true;
-      meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
-    };
-    const onTouchStart = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
-    const onTouchMove = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
-    const onTouchEnd = () => { touchActive = false; touchAt = Date.now(); };
-    const onPointerDown = e => { if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY); };
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('touchend', onTouchEnd, { passive: true });
-    window.addEventListener('touchcancel', onTouchEnd, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
-    this._meterTouchOff = () => {
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', onTouchEnd);
-      window.removeEventListener('touchcancel', onTouchEnd);
-      window.removeEventListener('pointerdown', onPointerDown);
-    };
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
-    const responsive = () => {
+    let responsiveWidth;
+    const responsive = (force = false) => {
       const m = window.innerWidth < 760;
+      // Safari chrome resizes must not restore/rewrite the animated mobile styles.
+      if (m && narrow && responsiveWidth === window.innerWidth && force !== true) return;
+      responsiveWidth = window.innerWidth;
       narrow = m;
       const feitos = new Set();
       RESP.forEach(([el]) => {
@@ -936,6 +1010,7 @@ class Component extends DCLogic {
       });
       if (m) RESP.forEach(([el, fn]) => fn(el));
     };
+    syncHeroViewport = () => { responsive(true); if (this._syncHeroPin) this._syncHeroPin(); };
     responsive();   // daqui para baixo nenhum resp() novo tem efeito no carregamento — registre acima
     window.addEventListener('resize', responsive);
     this._resp = () => window.removeEventListener('resize', responsive);
@@ -947,9 +1022,38 @@ class Component extends DCLogic {
     const sWin = [0.20, 0.24, 0.28, 0.32];
 
     const fold1 = document.querySelector('[data-fold="1"]');
-    const fold3 = document.querySelector('[data-fold="3"]');
-    const panels = q('[data-panel]');
-    const dots = q('[data-p3-dot]');
+    const heroPin = document.querySelector('[data-pin="1"]');
+    // Fixed while traversing the hero; absolute at either boundary. No touch interception.
+    const syncHeroPin = () => {
+      if (!heroPin || !fold1) return;
+      if (!this._stableVh) setStableViewport(false);   // retries esgotadas e viewport sao sem resize: mede no scroll
+      if (!narrow || !heroTimeline || !isFinite(heroTimeline.duration) || heroTimeline.duration < 200) {
+        // sem timeline confiavel o estado sai de cena e o sticky nativo do inline vale
+        heroPin.removeAttribute('data-pin-state');
+        heroPin.style.removeProperty('--ricc-pin-release');
+        return;
+      }
+      const start = fold1.getBoundingClientRect().top + scrollY();
+      const distance = scrollY() - start;
+      const end = heroTimeline.duration;
+      const state = distance < 0 ? 'before' : distance <= end ? 'active' : 'after';
+      heroPin.style.setProperty('--ricc-pin-release', end + 'px');
+      if (heroPin.dataset.pinState !== state) heroPin.dataset.pinState = state;
+    };
+    this._syncHeroPin = syncHeroPin;
+    window.addEventListener('scroll', syncHeroPin, { passive: true });
+    window.addEventListener('resize', syncHeroPin);
+    window.addEventListener('pageshow', syncHeroPin);
+    this._heroPinOff = () => {
+      window.removeEventListener('scroll', syncHeroPin);
+      window.removeEventListener('resize', syncHeroPin);
+      window.removeEventListener('pageshow', syncHeroPin);
+      if (heroPin) heroPin.removeAttribute('data-pin-state');
+      this._syncHeroPin = null;
+    };
+    syncHeroPin();
+
+
     const f1fill = null;
     const imgs = q('[data-img]');
     const paras = q('[data-parallax]').filter(el => !el.hasAttribute('data-img'));
@@ -984,20 +1088,32 @@ class Component extends DCLogic {
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
-      const vh = this._stableVh || window.innerHeight || 1;
+      const vh = this._stableVh || (heroPin && heroPin.offsetHeight) || window.innerHeight || 1;
       const y = scrollY();
 
       // dobra 1: aproximação lenta e luz azul-grafite contínua
       if (fold1 && shot) {
-        const hh = fold1.offsetHeight - vh;
-        const p = clamp01((y - fold1.offsetTop) / (hh || 1));
+        // desktop: hold de leitura em pixels depois do copy — uma tela inteira de scroll com o
+        // painel REALIDADE parado e livre, antes de a cortina da elegibilidade comecar a subir.
+        // (p fica em 1 enquanto o sticky segura; 43vh era pouco: o texto era engolido cedo.)
+        const hold = narrow ? 0 : Math.round(1.0 * vh);
+        // no desktop a .eligibility-scene sobe por cima dos ULTIMOS 100vh do pin (margin-top:-100vh).
+        // O hold precisa acabar antes dela entrar, senao o copy fica o tempo todo atras da cortina.
+        const curtain = narrow ? 0 : vh;
+        const tl = narrow && heroTimeline && isFinite(heroTimeline.duration) ? heroTimeline : null;
+        const hh = tl ? tl.duration : Math.max(1, fold1.offsetHeight - vh - hold - curtain);
+        const distance = Math.max(0, y - fold1.offsetTop);
+        const progress = clamp01(distance / (hh || 1));
+        const p = tl
+          ? Math.min(distance, tl.copyEnd) / tl.unit
+          : progress;
 
         // A continuous dusk-and-reveal, with no tile boundaries or random flashing.
         const smooth = v => { const x = clamp01(v); return x * x * (3 - 2 * x); };
         const close = smooth((p - 0.10) / 0.40);
         const open = smooth((p - 0.60) / 0.24);
         const t = clamp01(close - open);
-        const motion = reduce ? 0 : mo;
+        const motion = reduce || narrow ? 0 : mo;
         // Mobile gets a full third beat before the next section enters normal document flow.
         const finaleStart = narrow ? 0.76 : 0.84;
         const finale = smooth((p - finaleStart) / 0.06);
@@ -1039,30 +1155,13 @@ class Component extends DCLogic {
           sB.style.opacity = finalCopy.toFixed(3);
           sB.style.transform = 'translate3d(0,' + ((1 - finalCopy) * 18 * motion).toFixed(1) + 'px,0)';
         }
-        if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
-        if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
-      }
-
-      // dobra 3: carrossel horizontal movido a scroll
-      if (fold3 && panels.length) {
-        const h = fold3.offsetHeight - vh;
-        const p = clamp01((y - fold3.offsetTop) / (h || 1));
-        const pos = p * (panels.length - 1);
-        panels.forEach((pan, i) => {
-          const d = pos - i;
-          const off = Math.max(-1.15, Math.min(1.15, d));
-          pan.style.transform = 'translate3d(' + (-off * (narrow ? 14 : 42)).toFixed(2) + 'vw,0,0)';
-          pan.style.opacity = String(clamp01((narrow ? 2.2 : 1.6) - Math.abs(d) * (narrow ? 4.4 : 2.2)));
-          pan.style.pointerEvents = Math.abs(d) < 0.5 ? 'auto' : 'none';
-        });
-        const act = Math.round(pos);
-        dots.forEach((dt, i) => { dt.style.background = i === act ? '#4E76E8' : '#404040'; });
-        const num = document.querySelector('[data-p3-num]');
-        if (num) num.textContent = String(act + 1).padStart(3, '0');
+        if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - progress)).toFixed(1));
+        if (f1fill) f1fill.style.height = (progress * 100).toFixed(1) + '%';
       }
 
       // paralaxe das imagens
       imgs.forEach(el => {
+        if (narrow || reduce) { el.style.transform = 'none'; return; }
         const w = el.parentElement;
         const r = w.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) return;
@@ -1078,6 +1177,7 @@ class Component extends DCLogic {
         el.style.transform = 'translate3d(0,' + (rel * Math.sign(depth) * travel * mo).toFixed(2) + 'px,0)';
       });
       paras.forEach(w => {
+        if (narrow || reduce) { w.style.transform = 'none'; return; }
         const r = w.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) return;
         const rel = (r.top + r.height / 2 - vh / 2) / vh;
@@ -1103,42 +1203,32 @@ class Component extends DCLogic {
         if (r.top < vh * 0.92 && r.bottom > 0) { this._decoded.add(el); if (!reduce) decode(el); }
       });
 
-      if (meter) {
-        meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
-        if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();
-        this._lastY = y;
-        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
-        if (coarse) {
-          meter.style.opacity = (touchActive || Date.now() - touchAt < 180) ? '1' : '0';
-        } else {
-          meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';
-        }
-      }
       if (heroVid && heroVid.paused && heroVid.readyState >= 2 && Date.now() - (this._vidTry || 0) > 900) {
         this._vidTry = Date.now();
         heroVid.play().catch(e => console.warn('hero video retry:', e.name));
       }
       const doc = document.documentElement;
-      const max = (doc.scrollHeight - vh) || 1;
+      const max = Math.max(1, doc.scrollHeight - doc.clientHeight);
       const pct = clamp01(y / max) * 100;
       hudTxt.textContent = 'FASE ' + String(Math.round(pct)).padStart(2, '0') + '%';
-      if (hudDeitado) fill.style.width = pct.toFixed(2) + '%'; else fill.style.height = pct.toFixed(2) + '%';
+      fill.style.height = pct.toFixed(2) + '%';
     };
 
     // estado inicial só é aplicado no primeiro quadro real
     const arm = () => {
       if (this._armed || reduce) return;
       this._armed = true;
-      const vh = this._stableVh || window.innerHeight || 1;
+      const vh = this._stableVh || (heroPin && heroPin.offsetHeight) || window.innerHeight || 1;
       this._pending = reveals.filter(el => el.getBoundingClientRect().top >= vh * 0.9);
       this._pending.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
     };
 
     let alive = true;
     const safeTick = () => { try { tick(); } catch (e) { if (!this._tickWarned) { this._tickWarned = 1; console.warn('tick:', e.message); } } };
-    const loop = () => { if (!alive) return; arm(); safeTick(); requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
-    const kick = () => { if (alive) requestAnimationFrame(loop); };
+    let frameId = 0;
+    const loop = () => { frameId = 0; if (!alive || document.hidden) return; arm(); safeTick(); frameId = requestAnimationFrame(loop); };
+    const kick = () => { if (frameId) cancelAnimationFrame(frameId); frameId = 0; if (alive && !document.hidden) frameId = requestAnimationFrame(loop); };
+    kick();
     document.addEventListener('visibilitychange', kick);
     const watchdog = setInterval(() => {
       if (!alive) return;
@@ -1150,7 +1240,7 @@ class Component extends DCLogic {
         this._pending = [];
       }
     }, 250);
-    this._off = () => { alive = false; clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
+    this._off = () => { alive = false; cancelAnimationFrame(frameId); clearInterval(watchdog); clearInterval(this._prova); document.removeEventListener('visibilitychange', kick); };
 
     this._applyProps();
 
@@ -1212,9 +1302,11 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    if (this._heroPinOff) this._heroPinOff();
+    if (this._viewportOff) this._viewportOff();
     if (this._off) this._off();
     if (this._resp) this._resp();
-    if (this._meterTouchOff) this._meterTouchOff();
+
     if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);
     if (this._hud && this._hud.parentElement) this._hud.parentElement.removeChild(this._hud);
   }
