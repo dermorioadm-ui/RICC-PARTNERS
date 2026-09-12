@@ -54,7 +54,7 @@
   [data-st="b"] [data-decode]{font-size:11px!important;letter-spacing:.24em!important;color:#9DB4F5}
   [data-marks]{display:none!important}
   @media(max-width:760px){[data-st="b"]{padding:90px 24px!important}[data-st="b"] p{font-size:clamp(28px,7vw,42px)!important}}
-  .eligibility-scene{position:relative;z-index:2;margin-top:0;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:flex;align-items:center;color:#F1F2EE;background:linear-gradient(90deg,rgba(11,15,21,.58),rgba(11,15,21,.28)),url('./img/partnership-harbor.png') center/cover;padding:clamp(90px,10vw,150px) clamp(24px,7vw,112px)}
+  .eligibility-scene{position:relative;z-index:2;margin-top:calc(-1 * var(--ricc-vh,100dvh));min-height:var(--ricc-vh,100dvh);box-sizing:border-box;display:flex;align-items:center;color:#F1F2EE;background:linear-gradient(90deg,rgba(11,15,21,.58),rgba(11,15,21,.28)),url('./img/partnership-harbor.png') center/cover;padding:clamp(90px,10vw,150px) clamp(24px,7vw,112px)}
   .eligibility-inner{width:100%;max-width:1040px;margin:auto}
   .eligibility-kicker{font:11px 'Chivo Mono',monospace;letter-spacing:.24em;color:#9DB4F5;margin:0 0 28px}
   .eligibility-scene h2{font-size:clamp(34px,4.6vw,66px);font-weight:400;line-height:1.04;letter-spacing:-.035em;max-width:20ch;margin:0 0 clamp(32px,5vh,60px);text-wrap:balance}
@@ -109,10 +109,10 @@
   .results-metric{font-size:clamp(62px,6.5vw,94px);line-height:1;letter-spacing:-.055em;margin:14px 0}.results-metric span{font-size:.48em}
   .results-footer{display:flex;justify-content:space-between;gap:32px;padding-top:28px}.results-footer p{margin:0;font:11px/1.8 'Chivo Mono',monospace;color:#BDCDF1;letter-spacing:.04em}.results-footer p+p{font:15px/1.6 Archivo,sans-serif;letter-spacing:0;max-width:46ch}.results-footer strong{color:#F4F3E8;font-weight:500}
   @media(max-width:760px){.results-eyebrow{flex-direction:column;gap:8px}.results-grid{grid-template-columns:1fr}.results-main{padding:32px 0}.results-secondary{padding:0;border-left:0;border-top:1px solid #718BB6;display:grid;grid-template-columns:1fr 1fr;gap:24px}.results-secondary>div+div{border-top:0}.results-number{font-size:110px}.results-number span{font-size:28px}.results-footer{flex-direction:column;gap:20px}.results-scene h2{margin:32px 0}}
-[data-fold="35"]{background:#F4F3E8 url('./img/founder-ivory.png') center/cover!important;color:#17212A!important}
-[data-fold="35"] p{color:#46545F!important}
-[data-fold="35"] [data-decode],[data-socio-foto]>div:last-child{color:#53616A!important}
-[data-fold="35"] [style*="color:#9DB4F5"]{color:#1E3FA8!important}
+[data-fold="35"]{background:#0E1114!important;color:#F1F2EE!important}
+[data-fold="35"] p{color:#C8CDD2!important}
+[data-fold="35"] [data-decode],[data-socio-foto]>div:last-child{color:#84837B!important}
+[data-fold="35"] [style*="color:#9DB4F5"]{color:#9DB4F5!important}
 
   [data-boot]{background:radial-gradient(ellipse at 50% 44%,#152a3c,#0B0D0F 70%)!important}
   .boot-chart{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:min(70vw,340px);text-align:center;color:#AEC7FF}
@@ -603,7 +603,7 @@ class Component extends DCLogic {
     // Stable viewport for Instagram/Safari dynamic browser chrome.
     let riccViewportW = window.innerWidth;
     const setStableViewport = () => {
-      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 1;
+      const h = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0, document.documentElement.clientHeight || 0) || 1;
       this._stableVh = Math.round(h);
       document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');
     };
@@ -897,20 +897,26 @@ class Component extends DCLogic {
     let narrow = window.innerWidth < 760;
     this._dock = false;
     let touchAt = 0;
+    let touchActive = false;
     const placeTouchMeter = (x, y) => {
       if (!coarse || !meterEl) return;
-      mx = x; my = y; touchAt = Date.now();
+      mx = x; my = y; touchAt = Date.now(); touchActive = true;
       meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';
     };
     const onTouchStart = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
     const onTouchMove = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };
+    const onTouchEnd = () => { touchActive = false; touchAt = Date.now(); };
     const onPointerDown = e => { if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY); };
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true });
     window.addEventListener('pointerdown', onPointerDown, { passive: true });
     this._meterTouchOff = () => {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchEnd);
       window.removeEventListener('pointerdown', onPointerDown);
     };
     const KEEP = ['opacity', 'transform', 'transition', 'clipPath'];
@@ -1101,7 +1107,7 @@ class Component extends DCLogic {
         this._lastY = y;
         const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;
         if (coarse) {
-          meter.style.opacity = (inFold1 && Date.now() - touchAt < 420) ? '1' : '0';
+          meter.style.opacity = (touchActive || Date.now() - touchAt < 180) ? '1' : '0';
         } else {
           meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';
         }
