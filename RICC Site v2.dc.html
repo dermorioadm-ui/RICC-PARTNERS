@@ -63,7 +63,7 @@
   .eligibility-list li::before{content:counter(criteria,decimal-leading-zero);font:12px 'Chivo Mono',monospace;color:#9DB4F5}
   .eligibility-list strong{font-size:clamp(19px,2vw,27px);line-height:1.22;font-weight:400;letter-spacing:-.025em}
   .eligibility-list small{font:10px/1.6 'Chivo Mono',monospace;letter-spacing:.1em;color:#A9B3C0;text-align:right}
-  @media(max-width:760px){.eligibility-list li{grid-template-columns:26px minmax(0,1fr);gap:8px 14px;padding:18px 0}.eligibility-list small{grid-column:2;text-align:left}.eligibility-scene{padding:90px 24px 64px}}
+  @media(max-width:760px){.eligibility-list li{grid-template-columns:26px minmax(0,1fr);gap:8px 14px;padding:18px 0}.eligibility-list small{grid-column:2;text-align:left}.eligibility-scene{margin-top:0!important;padding:90px 24px 64px}}
   /* Separate the chart from the moving footage without a surrounding card. */
   [data-sail]{filter:drop-shadow(0 1px 2px rgba(0,0,0,.9))}
   [data-sail] text{paint-order:stroke fill;stroke:#0B0D0F;stroke-width:2px;stroke-opacity:.75;stroke-linejoin:round}
@@ -834,7 +834,7 @@ class Component extends DCLogic {
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
-    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '600svh'; });
+    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '520svh'; });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
@@ -999,7 +999,7 @@ class Component extends DCLogic {
         const t = clamp01(close - open);
         const motion = reduce ? 0 : mo;
         // The next section overlaps the final viewport: finish this beat before p=.82.
-        const finale = smooth((p - 0.64) / 0.08);
+        const finale = smooth((p - 0.84) / 0.06);
         if (cinema) cinema.style.opacity = Math.max(t * 0.78, finale).toFixed(3);
         shot.style.filter = 'saturate(' + (1 - t * 0.32).toFixed(3) + ') contrast(' + (1 + t * 0.08).toFixed(3) + ') brightness(' + (1 - t * 0.12 - finale * 0.65).toFixed(3) + ')';
         if (shotImg) shotImg.style.transform = 'scale(' + (1 + smooth(p) * 0.08 * motion).toFixed(4) + ') translate3d(0,' + (-smooth(p) * 14 * motion).toFixed(1) + 'px,0)';
@@ -1034,8 +1034,8 @@ class Component extends DCLogic {
         }
         fade(sA, win(p, -0.4, 0.18, 0.06));
         if (sB) {
-          sB.style.opacity = smooth((p - 0.72) / 0.055).toFixed(3);
-          sB.style.transform = 'translate3d(0,' + ((1 - smooth((p - 0.72) / 0.055)) * 18 * motion).toFixed(1) + 'px,0)';
+          sB.style.opacity = smooth((p - 0.90) / 0.045).toFixed(3);
+          sB.style.transform = 'translate3d(0,' + ((1 - smooth((p - 0.90) / 0.045)) * 18 * motion).toFixed(1) + 'px,0)';
         }
         if (ring) ring.setAttribute('stroke-dashoffset', (289 * (1 - p)).toFixed(1));
         if (f1fill) f1fill.style.height = (p * 100).toFixed(1) + '%';
