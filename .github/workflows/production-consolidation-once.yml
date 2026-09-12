@@ -1,0 +1,83 @@
+name: Production consolidation once
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Consolidate latest visual + Instagram/mobile fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('RICC Site v2.dc.html')
+          s = p.read_text(encoding='utf-8')
+          before = s
+
+          old = ".eligibility-scene{position:relative;z-index:2;margin-top:-100vh;margin-top:-100dvh;"
+          if old not in s:
+              raise SystemExit('eligibility overlap signature not found')
+          s = s.replace(old, ".eligibility-scene{position:relative;z-index:2;margin-top:0;", 1)
+
+          media_anchor = "  @media(prefers-reduced-motion:reduce){.scale-chart__route{stroke-dashoffset:0;animation:none}.scale-chart__buoy{animation:none}}"
+          stable_css = "  @media(max-width:760px){[data-pin=\"1\"],[data-pin=\"3\"]{height:var(--ricc-vh,100dvh)!important}}\n"
+          if stable_css.strip() not in s:
+              if media_anchor not in s:
+                  raise SystemExit('reduced-motion CSS anchor not found')
+              s = s.replace(media_anchor, stable_css + media_anchor, 1)
+
+          mount_anchor = "  componentDidMount() {\n    try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}\n"
+          stable_js = """  componentDidMount() {\n    try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}\n    // Stable viewport for Instagram/Safari dynamic browser chrome.\n    let riccViewportW = window.innerWidth;\n    const setStableViewport = () => {\n      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 1;\n      this._stableVh = Math.round(h);\n      document.documentElement.style.setProperty('--ricc-vh', this._stableVh + 'px');\n    };\n    setStableViewport();\n    const refreshStableViewport = () => {\n      const w = window.innerWidth;\n      if (Math.abs(w - riccViewportW) < 80) return;\n      riccViewportW = w;\n      setStableViewport();\n    };\n    window.addEventListener('orientationchange', () => setTimeout(setStableViewport, 180));\n    window.addEventListener('resize', refreshStableViewport);\n"""
+          if 'this._stableVh = Math.round(h);' not in s:
+              if mount_anchor not in s:
+                  raise SystemExit('componentDidMount anchor not found')
+              s = s.replace(mount_anchor, stable_js, 1)
+
+          if 'const vh = window.innerHeight || 1;' not in s:
+              raise SystemExit('viewport calculations not found')
+          s = s.replace('const vh = window.innerHeight || 1;', 'const vh = this._stableVh || window.innerHeight || 1;')
+
+          if "rail.style.width = '56px';" not in s:
+              raise SystemExit('mobile HUD rail width signature not found')
+          s = s.replace("rail.style.width = '56px';", "rail.style.width = '112px';", 1)
+
+          dock_block = """    const meterEl = document.querySelector('[data-meter]');\n    const coarse = window.matchMedia('(pointer: coarse)').matches;\n    let narrow = window.innerWidth < 760;\n    this._dock = coarse;\n    if (coarse && meterEl) {\n      meterEl.style.left = '50%';\n      meterEl.style.top = 'auto';\n      meterEl.style.bottom = 'clamp(18px,4vh,34px)';\n      meterEl.style.margin = '0';\n      meterEl.style.transform = 'translateX(-50%)';\n    }\n"""
+          touch_block = """    const meterEl = document.querySelector('[data-meter]');\n    const coarse = window.matchMedia('(pointer: coarse)').matches;\n    let narrow = window.innerWidth < 760;\n    this._dock = false;\n    let touchAt = 0;\n    const placeTouchMeter = (x, y) => {\n      if (!coarse || !meterEl) return;\n      mx = x; my = y; touchAt = Date.now();\n      meterEl.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';\n    };\n    const onTouchStart = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };\n    const onTouchMove = e => { const t = e.touches && e.touches[0]; if (t) placeTouchMeter(t.clientX, t.clientY); };\n    const onPointerDown = e => { if (e.pointerType === 'touch' || e.pointerType === 'pen') placeTouchMeter(e.clientX, e.clientY); };\n    window.addEventListener('touchstart', onTouchStart, { passive: true });\n    window.addEventListener('touchmove', onTouchMove, { passive: true });\n    window.addEventListener('pointerdown', onPointerDown, { passive: true });\n    this._meterTouchOff = () => {\n      window.removeEventListener('touchstart', onTouchStart);\n      window.removeEventListener('touchmove', onTouchMove);\n      window.removeEventListener('pointerdown', onPointerDown);\n    };\n"""
+          if dock_block not in s:
+              raise SystemExit('mobile dock block not found')
+          s = s.replace(dock_block, touch_block, 1)
+
+          meter_old = """        if (!this._dock) meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';\n        if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();\n        this._lastY = y;\n        // no celular o medidor fica ancorado no centro do rodape e cobria texto e foto:\n        // vira convite so na primeira tela, que e onde ele tem funcao\n        const cabe = !this._dock || y < vh * 0.9;\n        meter.style.opacity = (Date.now() - mAt < 900 && cabe) ? '1' : '0';\n"""
+          meter_new = """        meter.style.transform = 'translate3d(' + mx.toFixed(0) + 'px,' + my.toFixed(0) + 'px,0)';\n        if (Math.abs(y - (this._lastY || 0)) > 1) mAt = Date.now();\n        this._lastY = y;\n        const inFold1 = fold1 && y >= fold1.offsetTop && y <= fold1.offsetTop + fold1.offsetHeight - vh + 4;\n        if (coarse) {\n          meter.style.opacity = (inFold1 && Date.now() - touchAt < 420) ? '1' : '0';\n        } else {\n          meter.style.opacity = (Date.now() - mAt < 900 && inFold1) ? '1' : '0';\n        }\n"""
+          if meter_old not in s:
+              raise SystemExit('meter tick block not found')
+          s = s.replace(meter_old, meter_new, 1)
+
+          cleanup_old = """    if (this._resp) this._resp();\n    if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);"""
+          cleanup_new = """    if (this._resp) this._resp();\n    if (this._meterTouchOff) this._meterTouchOff();\n    if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);"""
+          if cleanup_old not in s:
+              raise SystemExit('cleanup anchor not found')
+          s = s.replace(cleanup_old, cleanup_new, 1)
+
+          if s == before:
+              raise SystemExit('no changes applied')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit only consolidated production fix
+        run: |
+          rm .github/workflows/production-consolidation-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "RICC Site v2.dc.html" .github/workflows/production-consolidation-once.yml
+          git commit -m "fix: consolidate latest production visual and mobile behavior"
+          git push origin HEAD:main
