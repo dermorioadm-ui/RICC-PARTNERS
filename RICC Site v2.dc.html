@@ -112,6 +112,27 @@
 [data-fold="35"] p{color:#46545F!important}
 [data-fold="35"] [data-decode],[data-socio-foto]>div:last-child{color:#53616A!important}
 [data-fold="35"] [style*="color:#9DB4F5"]{color:#1E3FA8!important}
+
+  [data-boot]{background:radial-gradient(ellipse at 50% 44%,#152a3c,#0B0D0F 70%)!important}
+  .boot-chart{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:min(70vw,340px);text-align:center;color:#AEC7FF}
+  .boot-chart svg{display:block;width:100%;height:auto}
+  .boot-chart p{font:11px 'Chivo Mono',monospace;letter-spacing:.22em;margin:24px 0 0}
+  [data-boot-stage]{top:78%!important;width:min(520px,84vw)!important}
+  [data-boot-stage]>div:nth-child(2){padding-left:0!important;gap:24px!important}
+  [data-boot-hold]{width:auto!important;flex:1!important}
+  [data-boot-bar]{height:3px!important;gap:0!important}
+  [data-boot-rule]{display:none}
+  [data-boot-fade]{font-size:11px!important}
+  [data-boot-tag]{border:0!important;padding:0!important;color:#AEC7FF!important}
+  [data-sail-mobile]{display:none}
+  @media(max-width:760px){
+    [data-sail]{display:none!important}
+    [data-sail-mobile]{display:block;position:absolute;left:4%;top:14%;width:92%;height:70%;pointer-events:none;filter:drop-shadow(0 1px 2px #0B0D0F)}
+    [data-st="b"]{align-items:center!important;justify-content:center!important;padding:80px 28px 100px!important;box-sizing:border-box}
+    [data-st="b"] p{font-size:clamp(28px,7.4vw,38px)!important;line-height:1.16!important;text-wrap:balance}
+    [data-st="b"]>div{gap:24px!important}
+    .eligibility-scene{margin-top:0!important}
+  }
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -125,7 +146,11 @@
   </div>
 
   <div data-boot style="position:fixed;inset:0;z-index:60;background:#0B0D0F;overflow:hidden">
-    <div data-boot-raster style="position:absolute;inset:0;transition:opacity .6s linear;background-image:radial-gradient(rgba(244,243,232,.16) 1.5px,transparent 1.5px);background-size:168px 168px;background-position:38px 30px"></div>
+    <div class="boot-chart" aria-hidden="true"><svg viewBox="0 0 300 250" fill="none">
+<g stroke="#AEC7FF" opacity=".18"><circle cx="150" cy="120" r="106"/><circle cx="150" cy="120" r="78"/><path d="M150 0v240M30 120h240M65 35l170 170M65 205L235 35"/></g>
+<g stroke="#F1F2EE" stroke-width="2" stroke-linejoin="round"><path d="M148 53v99M139 65l-53 86h53Z"/><path d="M158 49l62 102h-62Z" fill="#AEC7FF" fill-opacity=".12"/><path d="M80 163h145l-24 18H105Z"/></g>
+<path data-boot-route d="M40 218C98 220 116 200 150 200s57 11 112-22" stroke="#AEC7FF" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+</svg><p>RUMO AO PRÓXIMO NÍVEL</p></div><div data-boot-raster style="position:absolute;inset:0;transition:opacity .6s linear;background-image:radial-gradient(rgba(244,243,232,.16) 1.5px,transparent 1.5px);background-size:168px 168px;background-position:38px 30px"></div>
 
     <div data-boot-stage style="position:absolute;left:50%;top:79%;width:min(1080px,86vw);transform:translate(-50%,-50%);display:flex;flex-direction:column;gap:9px">
       <div data-boot-rule style="height:1px;width:0;background:#404040;transition:width .9s ease-in-out"></div>
@@ -134,8 +159,8 @@
           <div data-boot-bar style="display:grid;grid-template-columns:repeat(28,1fr);gap:2px;height:18px"></div>
         </div>
         <div data-boot-fade style="opacity:0;display:flex;flex-direction:column;justify-content:center;gap:4px;font-family:'Chivo Mono',monospace;font-size:15px;letter-spacing:.06em;color:#F4F3E8;margin-left:auto">
-          <span style="display:flex;gap:clamp(14px,3vw,44px);justify-content:space-between"><span>PHASE</span><span data-boot-pct>0%</span></span>
-          <span style="display:flex;gap:clamp(14px,3vw,44px);justify-content:space-between"><span>FREQ</span><span data-boot-freq>16HZ</span></span>
+          <span style="display:flex;gap:clamp(14px,3vw,44px);justify-content:space-between"><span>ROTA</span><span data-boot-pct>0%</span></span>
+          <span style="display:flex;gap:clamp(14px,3vw,44px);justify-content:space-between"><span>RUMO</span><span data-boot-freq>DEFININDO</span></span>
         </div>
       </div>
       <div data-boot-rule style="height:1px;width:0;background:#404040;transition:width .9s ease-in-out"></div>
@@ -146,7 +171,7 @@
         <span style="font-family:Archivo,sans-serif;font-size:clamp(20px,2.4vw,29px);line-height:1;letter-spacing:-0.065em;font-weight:700;color:#F4F3E8">RICC</span>
         <span style="display:flex;justify-content:space-between;font-family:Archivo,sans-serif;font-size:clamp(7px,.8vw,9px);font-weight:500;text-transform:uppercase;color:#84837B"><span>P</span><span>A</span><span>R</span><span>T</span><span>N</span><span>E</span><span>R</span><span>S</span></span>
       </div>
-      <div data-boot-tag style="opacity:0;align-self:flex-start;padding:5px 7px;border-radius:3.6px;border:1px solid #404040;color:#F4F3E8;clip-path:polygon(0 0,100% 0,100% calc(100% - 1rem),calc(100% - 1rem) 100%,0 100%)">CARREGANDO<span style="animation:riccBlink 1.2s linear infinite">...</span></div>
+      <div data-boot-tag style="opacity:0;align-self:flex-start;padding:5px 7px;border-radius:3.6px;border:1px solid #404040;color:#F4F3E8;clip-path:polygon(0 0,100% 0,100% calc(100% - 1rem),calc(100% - 1rem) 100%,0 100%)">PREPARANDO A PARTIDA<span style="animation:riccBlink 1.2s linear infinite">...</span></div>
     </div>
   </div>
 
@@ -261,6 +286,13 @@
         </g>
       </svg>
 
+<svg data-sail-mobile viewBox="0 0 360 470" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Dois caminhos: receita atual estável e crescimento com um novo braço de receita">
+<g data-s="1" opacity="0" fill="none" stroke="#F1F2EE" stroke-opacity=".25"><path d="M30 55H330M30 120H330M30 185H330M30 250H330M30 315H330M30 380H330M30 55V380M130 55V380M230 55V380M330 55V380"/></g>
+<g data-s="2" opacity="0" fill="none"><path d="M30 350Q80 340 130 300" stroke="#F1F2EE" stroke-width="2" stroke-dasharray="5 5"/><path d="M130 300H320" stroke="#FF8585" stroke-width="3"/><circle cx="320" cy="300" r="5" stroke="#FF8585" fill="#0B0D0F" stroke-width="2"/>
+<g transform="translate(103 314)" stroke="#F1F2EE" stroke-width="1.5"><path d="M0-38V-8M-4-32L-21-9H-4ZM5-38L25-9H5ZM-24-3H27L17 4H-14Z"/></g>
+<text x="155" y="326" fill="#FF8585" font-size="12" font-family="Chivo Mono,monospace">O QUE VOCÊ JÁ VENDE</text></g>
+<g data-s="3" opacity="0" fill="none"><path d="M130 300C210 279 246 126 320 75" stroke="#AEC7FF" stroke-width="3.5"/><circle cx="320" cy="75" r="6" stroke="#AEC7FF" stroke-width="2" fill="#0B0D0F"/><text x="75" y="154" fill="#AEC7FF" font-size="13" font-family="Chivo Mono,monospace">O BRAÇO NOVO</text><path d="M175 163L216 180" stroke="#AEC7FF"/></g>
+<g data-s="4" opacity="0" fill="#F1F2EE" font-size="11" font-family="Chivo Mono,monospace"><text x="30" y="404">HOJE</text><text x="108" y="404">MÊS 02</text><text x="280" y="404">MÊS 04</text><text x="30" y="443">CUSTO PARA VOCÊ: R$ 0</text><text x="30" y="462">RISCO NOSSO</text></g></svg>
       <div data-cinema aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 62% 42%,transparent 20%,rgba(14,17,20,.48) 72%,#0E1114 100%),linear-gradient(115deg,rgba(14,17,20,.92),rgba(30,63,168,.16) 58%,rgba(14,17,20,.65));will-change:opacity"></div>
 
       <div data-marks style="position:absolute;left:auto;right:0;top:0;bottom:0;width:min(58%,760px);opacity:0;pointer-events:none">
@@ -648,7 +680,9 @@ class Component extends DCLogic {
         shown = Math.max(shown, Math.min(pace, gate));
         const e = 1 - (1 - shown) * (1 - shown);
         if (pct) pct.textContent = Math.round(e * 100) + '%';
-        if (freq) freq.textContent = (16 + Math.round(Math.sin(e * 34) * 3 + e * 22)) + 'HZ';
+        if (freq) freq.textContent = e < 1 ? 'DEFININDO' : 'PRONTO';
+        const route = boot.querySelector('[data-boot-route]');
+        if (route) route.style.strokeDashoffset = String(1 - e);
         const n = Math.round(e * SEG);
         for (let i = 0; i < SEG; i++) segs[i].style.background = i < n ? '#4E76E8' : '#252A2E';
         if (shown < 1) return requestAnimationFrame(runBoot);
@@ -783,7 +817,7 @@ class Component extends DCLogic {
     q('[data-sail] g[font-family]').forEach(el => resp(el, e => { e.setAttribute('font-size', '30'); e.setAttribute('letter-spacing', '4'); }));
     // com fonte 30 o par DELTA/DE RECEITA (22 unidades) se sobrepoe: afasta so no retrato
     resp(q('[data-sail] [data-s="4"] text')[1], e => { e.setAttribute('y', '526'); });
-    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '460vh'; });
+    resp(document.querySelector('[data-fold="1"]'), e => { e.style.height = '600svh'; });
     resp(document.querySelector('[data-fold="3"]'), e => { e.style.height = '327vh'; });
     // no celular o texto só ganha sombra — sem painel atrás
     const SCRIM = 'max-width:none;gap:16px';
@@ -875,6 +909,7 @@ class Component extends DCLogic {
 
     // traçado sobre o vídeo: entra em sequência e sai antes da máscara fechar
     const sail = document.querySelector('[data-sail]');
+    const sailMobile = document.querySelector('[data-sail-mobile]');
     const sSteps = q('[data-s]');
     const sWin = [0.20, 0.24, 0.28, 0.32];
 
@@ -961,6 +996,7 @@ class Component extends DCLogic {
         if (sail) {
           // Give the chart its own scene, then dissolve into the final message.
           sail.style.opacity = (smooth((p - 0.20) / 0.045) * (1 - finale)).toFixed(3);
+          if (sailMobile) sailMobile.style.opacity = sail.style.opacity;
           sSteps.forEach((g, i) => { g.setAttribute('opacity', clamp01((p - sWin[i % sWin.length]) / 0.045).toFixed(3)); });
         }
         fade(sA, win(p, -0.4, 0.18, 0.06));
