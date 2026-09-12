@@ -23,10 +23,10 @@ jobs:
           p = Path('RICC Site v2.dc.html')
           s = p.read_text(encoding='utf-8')
 
-          old = '''    [data-st="b"]>div{gap:24px!important}\n  }'''
-          new = '''    [data-st="b"]>div{gap:24px!important}\n    /* Mobile: normal document flow between hero and eligibility. */\n    .eligibility-scene{margin-top:0!important}\n  }'''
+          old = ".eligibility-scene{padding:90px 24px 64px}"
+          new = ".eligibility-scene{margin-top:0!important;padding:90px 24px 64px}"
           if old not in s:
-              raise SystemExit('mobile media anchor not found')
+              raise SystemExit('mobile eligibility rule not found')
           s = s.replace(old, new, 1)
 
           old = "resp(document.querySelector('[data-fold=\"1\"]'), e => { e.style.height = '600svh'; });"
