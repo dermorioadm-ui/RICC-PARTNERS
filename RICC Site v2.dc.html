@@ -644,43 +644,6 @@ class Component extends DCLogic {
     }
     this._scroller = scroller;
     const getScrollTop = () => scroller ? scroller.scrollTop : (window.scrollY || document.documentElement.scrollTop || (document.scrollingElement ? document.scrollingElement.scrollTop : 0));
-
-    // Dentes hapticos da hero: um tique curto a cada "dente" da timeline, como a roda do
-    // seletor de data do iPhone. Android: Vibration API (exige um toque previo, que o
-    // proprio gesto de rolar da). iPhone: nao existe API; o contorno e alternar um
-    // <input type=checkbox switch> nativo (iOS 17.4+), que da o tique do sistema. Onde nada
-    // disso existe, fica em silencio. So no celular, so com rolagem do usuario (toque ou
-    // roda) e nunca na rolagem programatica das ancoras.
-    const haptic = { modo: 'nenhum', tiques: 0, ultimo: 0, dente: null, atePermitido: 0, mudoAte: 0, el: null };
-    try {
-      if (window.innerWidth < 760 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        if (typeof navigator.vibrate === 'function') haptic.modo = 'vibrate';
-        else {
-          const inp = document.createElement('input');
-          inp.type = 'checkbox'; inp.setAttribute('switch', ''); inp.tabIndex = -1; inp.setAttribute('aria-hidden', 'true');
-          if ('switch' in inp) {
-            const lab = document.createElement('label');
-            lab.setAttribute('aria-hidden', 'true');
-            lab.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:.01;pointer-events:none;z-index:-1';
-            lab.appendChild(inp);
-            document.body.appendChild(lab);
-            haptic.el = lab; haptic.modo = 'switch';
-          }
-        }
-      }
-    } catch (e) {}
-    const hapticTick = () => {
-      const now = Date.now();
-      if (haptic.modo === 'nenhum' || now < haptic.mudoAte || now > haptic.atePermitido || now - haptic.ultimo < 60) return;
-      haptic.ultimo = now; haptic.tiques++;
-      try {
-        if (haptic.modo === 'vibrate') navigator.vibrate(10);
-        else { haptic.el.click(); const i = haptic.el.firstChild; if (i && i.blur) i.blur(); }
-      } catch (e) {}
-    };
-    const marcaInput = () => { haptic.atePermitido = Date.now() + 2500; };
-    ['touchstart', 'touchmove', 'wheel', 'pointerdown'].forEach(ev => window.addEventListener(ev, marcaInput, { passive: true }));
-    this._haptic = haptic;
     // Diagnostico de campo: so com ?debug=1 (ou #debug) na URL. Mostra o que o navegador
     // embutido (Instagram/Safari) reporta de viewport nos primeiros segundos e o que a hero
     // fez com isso — para consertar com numeros do aparelho real, nao com emulacao.
@@ -709,7 +672,6 @@ class Component extends DCLogic {
               'css --ricc-vh=' + (root.getPropertyValue('--ricc-vh').trim() || '-') + ' cover=' + (root.getPropertyValue('--ricc-hero-cover-vh').trim() || '-') + ' svh=' + (window.CSS && CSS.supports('height', '100svh')),
               'pin pos=' + (cs ? cs.position : '-') + ' estado=' + (pin ? (pin.dataset.pinState || 'nenhum') : '-') + ' top=' + (r ? Math.round(r.top) : '-') + ' h=' + (r ? Math.round(r.height) : '-') + ' release=' + rel,
               'dobra h=' + (f ? f.offsetHeight : '-') + ' style=' + (f ? (f.style.height || '-') : '-') + ' narrow=' + (window.innerWidth < 760) + ' timeline=' + (this._stableVh ? 'ok(' + this._stableVh + ')' : 'SEM MEDIDA'),
-              'haptico modo=' + haptic.modo + ' tiques=' + haptic.tiques + ' dente=' + haptic.dente,
             ].join('\n');
           } catch (e) { box.textContent = 'debug: ' + e.message; }
           requestAnimationFrame(paint);
@@ -1179,33 +1141,6 @@ class Component extends DCLogic {
     };
     this._decoded = new Set();
 
-    // Sonda dos dentes: ve se a posicao atual cruzou um dente e dispara o tique. No iPhone o
-    // tique do switch so sai enquanto o WebKit esta processando um gesto do usuario
-    // (UserGestureIndicator): dentro dos handlers de toque, ou em timers de ate 1 s agendados
-    // a partir deles (DOMTimer encaminha o token por 1 s). Por isso, no modo switch, a sonda
-    // roda no touchmove (dedo na tela) e numa cadeia de timers curtos depois do touchend
-    // (inercia, ate ~0,9 s); o loop de rAF nao serve. No Android (vibrate) nao ha esse limite
-    // e a sonda roda no rAF, dentro do tick.
-    const hapticProbe = () => {
-      if (haptic.modo === 'nenhum' || !fold1) return;
-      const vhH = this._stableVh || (heroPin && heroPin.offsetHeight) || window.innerHeight || 1;
-      const tl = narrow && heroTimeline && isFinite(heroTimeline.duration) ? heroTimeline : null;
-      const distance = Math.max(0, getScrollTop() - fold1.offsetTop);
-      const passo = tl ? tl.unit / 16 : Math.max(120, vhH * 0.18);
-      const fim = tl ? tl.copyEnd : Math.max(1, fold1.offsetHeight - vhH);
-      const dente = distance <= fim ? Math.floor(distance / passo) : null;
-      if (haptic.dente !== null && dente !== null && dente !== haptic.dente) hapticTick();
-      haptic.dente = dente;
-    };
-    if (haptic.modo === 'switch') {
-      window.addEventListener('touchmove', hapticProbe, { passive: true });
-      window.addEventListener('touchend', () => {
-        const t0 = Date.now();
-        const poll = () => { hapticProbe(); if (Date.now() - t0 < 900) setTimeout(poll, 40); };
-        setTimeout(poll, 40);
-      }, { passive: true });
-    }
-
     const tick = () => {
       this._rafAt = Date.now();
       const mo = this._mo == null ? 1 : this._mo;
@@ -1228,10 +1163,6 @@ class Component extends DCLogic {
         const p = tl
           ? Math.min(distance, tl.copyEnd) / tl.unit
           : progress;
-
-        // dentes hapticos no rAF: so no Android (vibrate). No iPhone a sonda roda nos
-        // eventos de toque (ver hapticProbe), porque o tique exige gesto em processamento.
-        if (haptic.modo === 'vibrate') hapticProbe();
 
         // A continuous dusk-and-reveal, with no tile boundaries or random flashing.
         const smooth = v => { const x = clamp01(v); return x * x * (3 - 2 * x); };
@@ -1397,7 +1328,6 @@ class Component extends DCLogic {
         const t = document.getElementById(a.getAttribute('href').slice(1));
         if (!t) return;
         ev.preventDefault();
-        haptic.mudoAte = Date.now() + 1600;
         (scroller || window).scrollTo({ top: t.getBoundingClientRect().top + scrollY() - 60, behavior: reduce ? 'auto' : 'smooth' });
       });
     });
