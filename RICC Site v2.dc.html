@@ -210,6 +210,16 @@
     div[data-dc-tpl][style*="overflow-x"]{overflow-x:visible!important}
     [data-fold="2"],[data-fold="35"],[data-fold="4"],#candidatura,#candidatura ~ div{overflow-x:clip}
   }
+
+  /* Modo embutido (navegador interno do Instagram/Facebook/Messenger/Threads/TikTok).
+     Esses WebViews redimensionam a area util e movem a origem do viewport ENQUANTO a pagina
+     rola (a barra de cima recolhe, a de baixo some), e todo sticky/fixed anda junto — e isso
+     que solta a hero la, e que nenhuma re-medicao de viewport conserta. Aqui o documento nao
+     rola: o wrapper vira o unico contêiner de scroll. O app nunca ve scroll no WebView, nunca
+     mexe nas barras, e o sticky da hero fica preso a um viewport que nao muda. So entra pelo
+     UA desses apps (ver componentDidMount); Safari, Chrome e desktop nao passam por aqui. */
+  html[data-ricc-inapp],html[data-ricc-inapp] body{height:100%;overflow:hidden;overscroll-behavior:none}
+  html[data-ricc-inapp] [data-ricc-scroller]{position:fixed!important;top:0;right:0;bottom:0;left:0;overflow-y:auto;overflow-x:hidden!important;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
 </style>
 </helmet>
 <div style="background:#0E1114;color:#F1F2EE;font-family:Archivo,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
@@ -623,6 +633,17 @@
 class Component extends DCLogic {
   componentDidMount() {
     try { sessionStorage.removeItem('ricc-boot'); } catch (e) {}
+    // Modo embutido: ver o comentario no CSS (html[data-ricc-inapp]). Detectado pelo UA dos
+    // apps cujo navegador interno redimensiona o WebView durante o scroll. Todo acesso a
+    // posicao de scroll passa por getScrollTop(), que le o contêiner certo nos dois modos.
+    const inApp = /Instagram|FBAN|FBAV|FB_IAB|Barcelona|musical_ly|Bytedance/i.test(navigator.userAgent);
+    const scroller = inApp ? document.querySelector('div[data-dc-tpl][style*="overflow-x"]') : null;
+    if (scroller) {
+      document.documentElement.setAttribute('data-ricc-inapp', '');
+      scroller.setAttribute('data-ricc-scroller', '');
+    }
+    this._scroller = scroller;
+    const getScrollTop = () => scroller ? scroller.scrollTop : (window.scrollY || document.documentElement.scrollTop || (document.scrollingElement ? document.scrollingElement.scrollTop : 0));
     // Diagnostico de campo: so com ?debug=1 (ou #debug) na URL. Mostra o que o navegador
     // embutido (Instagram/Safari) reporta de viewport nos primeiros segundos e o que a hero
     // fez com isso — para consertar com numeros do aparelho real, nao com emulacao.
@@ -645,8 +666,8 @@ class Component extends DCLogic {
             const root = getComputedStyle(document.documentElement);
             const rel = pin ? (pin.style.getPropertyValue('--ricc-pin-release') || '-') : '-';
             box.textContent = [
-              'UA ' + navigator.userAgent.replace(/^Mozilla\/5\.0 \(/, '(').slice(0, 110),
-              'agora ih=' + window.innerHeight + ' vv=' + (window.visualViewport ? Math.round(window.visualViewport.height) : '-') + ' ch=' + document.documentElement.clientHeight + ' w=' + window.innerWidth + ' y=' + Math.round(window.scrollY),
+              (scroller ? 'MODO EMBUTIDO (scroll no wrapper) ' : '') + 'UA ' + navigator.userAgent.replace(/^Mozilla\/5\.0 \(/, '(').slice(0, 110),
+              'agora ih=' + window.innerHeight + ' vv=' + (window.visualViewport ? Math.round(window.visualViewport.height) : '-') + ' ch=' + document.documentElement.clientHeight + ' w=' + window.innerWidth + ' y=' + Math.round(getScrollTop()),
               'init ' + hist.filter((h, i) => i < 6 || i % 8 === 0).map(h => h.t + 'ms:' + h.ih + '/' + h.vv + '/' + h.ch).join('  '),
               'css --ricc-vh=' + (root.getPropertyValue('--ricc-vh').trim() || '-') + ' cover=' + (root.getPropertyValue('--ricc-hero-cover-vh').trim() || '-') + ' svh=' + (window.CSS && CSS.supports('height', '100svh')),
               'pin pos=' + (cs ? cs.position : '-') + ' estado=' + (pin ? (pin.dataset.pinState || 'nenhum') : '-') + ' top=' + (r ? Math.round(r.top) : '-') + ' h=' + (r ? Math.round(r.height) : '-') + ' release=' + rel,
@@ -695,7 +716,7 @@ class Component extends DCLogic {
         // durante o scroll: ignorar, como antes — re-derivar a timeline no meio da hero move a
         // composicao e esconde o CTA atras da barra. So cresce com a pagina ainda no topo
         // (webview terminando de abrir), e nunca encolhe.
-        const noTopo = (window.scrollY || document.documentElement.scrollTop || 0) === 0;
+        const noTopo = getScrollTop() === 0;
         if (!noTopo || Math.round(h) <= prev) return;
       }
       const next = Math.round(h);
@@ -770,6 +791,7 @@ class Component extends DCLogic {
       boot.style.opacity = '1';
       window.scrollTo(0, 0);
       document.documentElement.style.overflow = 'hidden';
+      if (scroller) { scroller.scrollTop = 0; scroller.style.overflowY = 'hidden'; }
       lines.forEach(el => { el.style.transform = 'translateY(112%)'; });
       late.forEach(el => { el.style.opacity = '0'; });
 
@@ -842,6 +864,7 @@ class Component extends DCLogic {
         clearTimeout(bootFail);
         try { sessionStorage.setItem('ricc-boot', '1'); } catch (e) {}
         document.documentElement.style.overflow = '';
+        if (scroller) scroller.style.overflowY = '';
         // pisca a barra cheia, apaga o HUD e revela a hero
         if (barEl) barEl.style.animation = 'riccFlash .28s linear 1';
         setTimeout(() => {
@@ -851,6 +874,7 @@ class Component extends DCLogic {
             boot.style.transition = 'opacity .6s linear';
             boot.style.opacity = '0';
             document.documentElement.style.overflow = '';
+            if (scroller) scroller.style.overflowY = '';
             rise();
             setTimeout(() => { lightUp(); }, 500);
             setTimeout(() => { boot.style.display = 'none'; }, 640);
@@ -885,7 +909,7 @@ class Component extends DCLogic {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const EASE = 'cubic-bezier(.16,.84,.34,1)';
     const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
-    const scrollY = () => window.scrollY || document.documentElement.scrollTop || (document.scrollingElement ? document.scrollingElement.scrollTop : 0);
+    const scrollY = getScrollTop;
 
     // HUD: linha de progresso vertical à direita + fase
     const hud = document.createElement('div');
@@ -1073,11 +1097,11 @@ class Component extends DCLogic {
       heroPin.style.removeProperty('--ricc-pin-release');
     };
     this._syncHeroPin = syncHeroPin;
-    window.addEventListener('scroll', syncHeroPin, { passive: true });
+    (scroller || window).addEventListener('scroll', syncHeroPin, { passive: true });
     window.addEventListener('resize', syncHeroPin);
     window.addEventListener('pageshow', syncHeroPin);
     this._heroPinOff = () => {
-      window.removeEventListener('scroll', syncHeroPin);
+      (scroller || window).removeEventListener('scroll', syncHeroPin);
       window.removeEventListener('resize', syncHeroPin);
       window.removeEventListener('pageshow', syncHeroPin);
       if (heroPin) heroPin.removeAttribute('data-pin-state');
@@ -1239,7 +1263,7 @@ class Component extends DCLogic {
         this._vidTry = Date.now();
         heroVid.play().catch(e => console.warn('hero video retry:', e.name));
       }
-      const doc = document.documentElement;
+      const doc = scroller || document.documentElement;
       const max = Math.max(1, doc.scrollHeight - doc.clientHeight);
       const pct = clamp01(y / max) * 100;
       hudTxt.textContent = 'FASE ' + String(Math.round(pct)).padStart(2, '0') + '%';
@@ -1304,7 +1328,7 @@ class Component extends DCLogic {
         const t = document.getElementById(a.getAttribute('href').slice(1));
         if (!t) return;
         ev.preventDefault();
-        window.scrollTo({ top: t.getBoundingClientRect().top + scrollY() - 60, behavior: reduce ? 'auto' : 'smooth' });
+        (scroller || window).scrollTo({ top: t.getBoundingClientRect().top + scrollY() - 60, behavior: reduce ? 'auto' : 'smooth' });
       });
     });
   }
